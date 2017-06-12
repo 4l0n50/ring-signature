@@ -1,0 +1,12 @@
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.brf
+*.pdf
+*.swp
+*.old
+*.bcf
+*.xml
+*.zip

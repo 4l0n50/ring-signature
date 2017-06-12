@@ -1,0 +1,61 @@
+\documentclass
+{llncs}
+
+
+
+
+%\makeatletter
+%\def\input@path{{../}}
+%\makeatother
+%
+\input{common-packages}
+
+\newif\iffull
+\fullfalse
+%\usepackage{fullpage}
+\input{preamble}
+
+
+\author{Alonso Gonz\'alez \inst{1}}
+\institute{ENS de Lyon}
+
+\title{A Ring Signature of size $O(\sqrt[3]{n})$ without Random Oracles}
+\begin{document}
+%\begin{doublespace}
+
+\maketitle
+%\vspace*{-.5cm}
+\begin{abstract}
+    \input{abstract}
+\end{abstract} 
+
+\section{Introduction}
+    \input{intro/introduction}
+    \subsection{High Level Description}
+        \input{intro/high-level}
+
+\section{Preliminaries}
+        
+	\subsection{Groth-Sahai Proofs in the $\lin{2}$ Instantiation}
+        
+            \input{prelim/symm-gs}
+
+        \subsection{Flawed or Weaker Ring Signatures}\label{sec:rs-flawed}
+    
+            \input{prelim/flawed}
+
+        \subsection{Definition}
+    
+            \input{prelim/definition}
+
+        \subsection{Boneh-Boyen Signatures} \label{sec:bbs}
+    
+            \input{prelim/bb-signatures}
+
+    \section{Our Construction}
+    
+        \input{our-construction/construction}
+
+\bibliographystyle{abbrv}
+\bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}
+
