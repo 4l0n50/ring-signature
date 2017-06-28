@@ -17,7 +17,7 @@
 
 
 \author{Alonso Gonz\'alez \inst{1}}
-\institute{ENS de Lyon}
+\institute{Mi casita}
 
 \title{A Ring Signature of size $O(\sqrt[3]{n})$ without Random Oracles}
 \begin{document}
@@ -31,20 +31,34 @@
 
 \section{Introduction}
     \input{intro/introduction}
-    \subsection{High Level Description}
+    
+    \subsection{Chandran et al.'s Costruction}
+	
+         \input{intro/chandran} 
+    
+    \subsection{Our Construction}
+        
         \input{intro/high-level}
 
+    \subsection{Discussion}
+
+    	\input{intro/discussion}
+    
+    \subsection{Flawed or Weaker Ring Signatures}\label{sec:rs-flawed}
+    
+         \input{prelim/flawed}
+
+
+
 \section{Preliminaries}
+
+	\input{prelim/prelim}
         
-	\subsection{Groth-Sahai Proofs in the $\lin{2}$ Instantiation}
+	\subsection{Groth-Sahai Proofs in the $\lin{2}$ Instantiation} \label{sec:gs-proofs}
         
             \input{prelim/symm-gs}
 
-        \subsection{Flawed or Weaker Ring Signatures}\label{sec:rs-flawed}
-    
-            \input{prelim/flawed}
-
-        \subsection{Definition}
+                \subsection{Ring Signature Definition}
     
             \input{prelim/definition}
 
@@ -55,7 +69,7 @@
     \section{Our Construction}
     
         \input{our-construction/construction}
-
 \bibliographystyle{abbrv}
 \bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}
+\end{document}
 

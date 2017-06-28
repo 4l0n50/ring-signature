@@ -1,32 +1,59 @@
-Our scheme follows the ring signature of Chandran et al. Given a {Boneh-Boyen signature scheme} (Section \ref{sec:bbs}), where the secret/verification keys are of the form $(sk,[vk])$ and $sk=vk\in\Z_q$, and given a {one-time signature scheme} (Section \ref{sec:ots}), the signature of the message $m$ for a ring $R=\{[vk_1],\ldots,[vk_n]\}$ is computed as follows:\footnote{We could replace the Boneh-Boyen signature scheme with any structure preserving signature scheme secure under milder assumptions (e.g.~\cite{EPRINT:JutRoy17}). We rather keep it simple and stick to Boneh-Boyen signature which, since the verification key is just one group element, simplifies the notation and reduces the size of the final signature.}
-\begin{itemize}
-\item[a)] pick a one-time signature key $(sk_\mathsf{ot},vk_\mathsf{ot})$, sign $m$ with the one-time signature, and sign the one-time verification key with $sk$,
-\item[b)] commit to the signature of the one-time verification key and to $[vk]$ and show that it is a valid signature key using GS proofs,
-\item[c)] show that $[vk]\in R$.
-\end{itemize}
-The most costly part is c) and our contribution is a proof of size $\Theta(\sqrt[3]{n})$ of c).
+%We propose an alternative way of obtaining a $\sqrt{n}$ ring signature. We then combine both techniques, Chandran et al. and ours, and obtain a $\sqrt[3]{n}$ signature.
+%
+%
+%Following Chandran et al.'s approach, if we want to obtain a $m:=\sqrt[3]{n}$ proof it is natural to arrange the verification keys in $m$ matrices of size $m\times m$ (a 3d array) as depcited bellow
+%$$
+%\begin{pmatrix}
+%[vk_{1,1,1}] & \cdots & [vk_{1,1,m}]\\
+%\vdots       & \ddots & \vdots      \\
+%[vk_{1,m,1}] & \cdots & [vk_{1,m,m}]
+%\end{pmatrix},
+%\ldots,
+%\begin{pmatrix}
+%[vk_{m,1,1}] & \cdots & [vk_{m,1,m}]\\
+%\vdots       & \ddots & \vdots      \\
+%[vk_{m,m,1}] & \cdots & [vk_{m,m,m}]
+%\end{pmatrix},
+%$$
+%where $vk_{i,j,k}:=vk_{(i-1)m^2+(j-1)m+k}$ for $i,j,k\in[m]$.
+%
+%The naive approach of selecting one of this matrices and then applying Chandran et al.'s approach will end up with a proof of size $n^{2/3}$. We follow the approach of Gonzalez et al.~\cite{AC:GonHevRaf15} which aggreates the $m$ matrices into a single one selecting $\vecb{a}_1,\ldots,\vecb{a}_n$ from some distribution such that the corresponding kernel problem is hard (using the terminology of Morillo et al.~\cite{AC:MorRafVil16}). That is, compute
+%$$
+%[\matr{V}] := \sum_{i=1}^{m} \vecb{a}_i
+%\begin{pmatrix}
+%[vk_{i,1,1}] & \cdots & [vk_{i,1,m}]\\
+%\vdots       & \ddots & \vdots      \\
+%[vk_{i,m,1}] & \cdots & [vk_{i,m,m}]
+%\end{pmatrix}
+%$$
 
-Our construction is similar to the proof system for set membership with proof size $\Theta(\sqrt[3]{n})$ from Section~\ref{sec:bits-applications}. However, note that the proof system from Section~\ref{sec:bits-applications} does not suffice for constructing a ring signature because the CRS is fixed to a specific set and thus, the resulting ring signature will be fixed to a specific ring. 
-
-In our scheme the secret/verification keys of party $P$ are $(sk,\vecb{vk})$, where $\vecb{vk}=([vk],[\vecb{a}],\vecb{a}[vk])$, $(sk,[vk])$ are secret/verification keys of the Boneh-Boyen signature scheme, and $\vecb{a}\in\Z_q^2$ is chosen independently for each key from some distribution $\mathcal{Q}$ to be specified later. Suppose that $\vecb{vk}$ is the $\alpha$ th element in the ring $R=\{\vecb{vk}_{(1,1,1)},\ldots,\vecb{vk}_{(m,m,m)}\}$, where $\alpha=(i_\alpha,j_\alpha,k_\alpha):=(i_\alpha-1)m^2+(j_\alpha-1)m+k_\alpha$ for $i_\alpha,j_\alpha,k_\alpha\in[m],m:=\sqrt[3]{n}$. The prover commits to $[\vecb{x}]=[\vecb{s}_\mu]$ and $[\vecb{y}]=[\vecb{s}'_{\mu'}]$, for $\mu=\mu'=(j_\alpha-1)m+k_\alpha$, and shows, using the set-membership proof from Section \ref{sec:bits-applications} (which is the proof from Chandran et al.~adapted to work with vectors), that $[\vecb{x}]\in S$ and that $[\vecb{y}]\in S'$, 
-where
+In our scheme the secret/verification keys of party $P$ are $(sk,\vecb{vk})$, where $\vecb{vk}=([vk],[\vecb{a}],\vecb{a}[vk])$, $(sk,[vk])$ are secret/verification keys of the Boneh-Boyen signature scheme, and $\vecb{a}\in\Z_q^2$ is chosen independently for each key from some distribution $\mathcal{Q}$ to be specified later. Suppose that $\vecb{vk}$ is the $\alpha$ th element in the ring $R=\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $\vecb{vk}_{i,j,k}=\vecb{vk}_{(i-1)m^2+(j-1)m+k}$ for $i,j,k\in[m],m:=\sqrt[3]{n}$. Let $i_\alpha,j_\alpha,k_\alpha\in[m]$ such that $\vecb{vk}_\alpha = \vecb{vk}_{i_\alpha,j_\alpha,k_\alpha}$. Consider the sets
 \begin{align*}
-&S:=\{[\vecb{s}_1],\ldots,[\vecb{s}_{n^{2/3}}]\}:=\left\{\sum_{i\in[m]}[\vecb{a}_{(i,1,1)}],\ldots,\sum_{i\in[m]}[\vecb{a}_{(i,m,m)}]\right\}\text{ and }\\
-&S':=\{[\vecb{s}'_1],\ldots,[\vecb{s}'_{n^{2/3}}]\}:=\left\{\sum_{i\in[m]}\vecb{a}_{(i,1,1)}[vk_{(i,1,1)}],\ldots,\sum_{i\in[m]}\vecb{a}_{(i,m,m)}[vk_{(i,m,m)}]\right\}.
+&S:=\{[\vecb{s}_1],\ldots,[\vecb{s}_{n^{2/3}}]\}:=\left\{\sum_{i\in[m]}[\vecb{a}_{i,1,1}],\ldots,\sum_{i\in[m]}[\vecb{a}_{i,m,m}]\right\}\text{ and }\\
+&S':=\{[\vecb{s}'_1],\ldots,[\vecb{s}'_{n^{2/3}}]\}:=\left\{\sum_{i\in[m]}\vecb{a}_{i,1,1}[vk_{i,1,1}],\ldots,\sum_{i\in[m]}\vecb{a}_{i,m,m}[vk_{i,m,m}]\right\}.
 \end{align*}
 
-The prover also needs to assure that $\mu=\mu'$, which can be done reutilizing the commitment to $\mu$ (in fact to its $m$-ary representation ) used in the proof that $[\vecb{x}]\in S$ in the proof that $[\vecb{y}]\in S'$. Since both sets are of size $n^{2/3}$, the two set membership proofs are of size $\Theta(\sqrt[3]{n})$.
+The prover commits to $[\vecb{x}]=[\vecb{s}_\mu]$ and $[\vecb{y}]=[\vecb{s}'_{\mu'}]$, for $\mu=\mu'=(j_\alpha-1)m+k_\alpha$, and shows, using (twice) the set-membership proof of Chandran et al., that $[\vecb{x}]\in S$ and that $[\vecb{y}]\in S'$, 
+The prover also needs to assure that $\mu=\mu'$, which can be done reutilizing the commitment to $\mu$ (in fact to its binary representation) used in the proof that $[\vecb{x}]\in S$ in the proof that $[\vecb{y}]\in S'$. Since both sets are of size $n^{2/3}$, the two set membership proofs are of size $\Theta(\sqrt[3]{n})$.
  
-Now that the prover has commited to elements $[\vecb{x}]=\sum_{i\in[m]}[\vecb{a}_{(i,j_\alpha,k_\alpha)}]$ and $[\vecb{y}]=\sum_{i\in[m]}\vecb{a}_{(i,j_\alpha,k_\alpha)}[vk_{(i,j_\alpha,k_\alpha)}]$, it additionally commits to $[\kappa_1]:=[vk_{(1,j_\alpha,k_\alpha)}],\allowbreak\ldots,\allowbreak[\kappa_m]:=[vk_{(m,j_\alpha,k_\alpha)}]$ and $[\vecb{z}_1]:=[\vecb{a}_{(1,j_\alpha,k_\alpha)}],\ldots,[\vecb{z}_m]:=[\vecb{a}_{(m,j_\alpha,k_\alpha)}]$. The prover now gives a proof that
+Now that the prover has commited to elements $[\vecb{x}]=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}]$ and $[\vecb{y}]=\sum_{i\in[m]}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]$, it additionally commits to $[\kappa_1]:=[vk_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,\allowbreak[\kappa_m]:=[vk_{m,j_\alpha,k_\alpha}]$ and $[\vecb{z}_1]:=[\vecb{a}_{1,j_\alpha,k_\alpha}],\ldots,[\vecb{z}_m]:=[\vecb{a}_{m,j_\alpha,k_\alpha}]$. The prover now gives a proof that
 \begin{equation}
 \sum_{i\in[m]}[\vecb{z}_i][\kappa_i]=[\vecb{y}][1]. \label{eq:verif1}
 \end{equation}
 
-Provided that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vecb{a}_{(1,j_\alpha,k_\alpha)},\ldots,\vecb{a}_{(m,j_\alpha,k_\alpha)}$,
-we can show that if $[\kappa_1],\ldots,[\kappa_m]$ is not a permutation of $[vk_{(1,j_\alpha,k_\alpha)}],\allowbreak\ldots,\allowbreak[vk_{(m,j_\alpha,k_\alpha)}]$, then we can extract an element from the kernel of the matrix $([\vecb{a}_{1,j_\alpha,k_\alpha}]\cdots\allowbreak [\vecb{a}_{m,j_\alpha,k_\alpha}])$. Thereby, provided the corresponding kernel assumption holds, the prover can simply select the $i_\alpha$ th element from $[\kappa_1],\ldots,\allowbreak [\kappa_m]$ which is guaranteed to be an element from the ring.
+Assume for a while that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vecb{a}_{1,j_\alpha,k_\alpha},\ldots,\vecb{a}_{m,j_\alpha,k_\alpha}$, that is $\vecb{z}_i=\vecb{a}_{\pi(i),j_\alpha,k_\alpha}$, $i\in[m]$, for some permutation $\pi\in S_m$. Therefore, equation (\ref{eq:verif1}) implies that
+\begin{align*}
+\sum_{i\in[m]}[\vecb{z}_i][\kappa_i]&=\sum_{i\in[m]}[\vecb{a}_{\pi(i),j_\alpha,k_\alpha}][\kappa_i]=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}][\kappa_{\pi^{-1}(i)}]\\
+&=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}][vk_{i,j_\alpha,k_\alpha}].
+\end{align*}
+Then $\kappa_1,\ldots,\kappa_m$ is a permutation of $vk_{1,j_\alpha,k_\alpha},\ldots,vk_{m,j_\alpha,k_\alpha}$ (the same defined by $\vecb{z}_1,\ldots,\vecb{z}_m$), unless $(\kappa_{\pi^{-1}(1)}-{vk_{1,j_\alpha,k_\alpha}),\ldots,\kappa_{\pi^{-1}(m)}-vk_{m,j_\alpha,k_\alpha})})^\top$ is in the kernel of $\matr{A}$. Groth and Lu showed the hardness of finding an element from $\ker(\matr{A})$, when each column of $\matr{A}$ is sampled from $\mathcal{Q}$, in the generic group model. They called this assumption the \emph{simultaneous pairing assumption} and it corresponds to the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption in the terminology of Morillo et al.~\cite{AC:MorRafVil16}.
 
-Therefore, it is only left the to show that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vecb{a}_{(1,j_\alpha,k_\alpha)},\ldots,\vecb{a}_{(m,j_\alpha,k_\alpha)}$. To do so we will use the following assumption introduced by Groth and Lu \cite{AC:GroLu07}.
-\begin{definition}[Permutation Pairing Assumption]
+Finally, the prover commits also to $b_1,\ldots,b_m\in\bits$ such that $b_i=1$ iff $i=i_\alpha$ and shows that $[vk_\alpha] = \sum_{i=1}^m b_i[\kappa_i]$. This implies that $[vk_\alpha] = [vk_{i_\alpha,j_\alpha,k_\alpha}]$.
+
+%we can show that if $[\kappa_1],\ldots,[\kappa_m]$ is not a permutation of $[vk_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,\allowbreak[vk_{m,j_\alpha,k_\alpha}]$, then we can extract an element from the kernel of the matrix $([\vecb{a}_{1,j_\alpha,k_\alpha}]\cdots\allowbreak [\vecb{a}_{m,j_\alpha,k_\alpha}])$. Thereby, provided the corresponding kernel assumption holds, the prover can simply select the $i_\alpha$ th element from $[\kappa_1],\ldots,\allowbreak [\kappa_m]$ which is guaranteed to be an element from the ring.
+
+It is only left the to show that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vecb{a}_{1,j_\alpha,k_\alpha},\ldots,\vecb{a}_{m,j_\alpha,k_\alpha}$. To do so we will use the following assumption introduced by Groth and Lu \cite{AC:GroLu07}.
+\begin{definition}[Permutation Pairing Assumption]\label{def:ppa}
 Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
 We say that the $m$-permutation pairing assumption holds relative to $\G_s$ if for any adversary $\advA$
@@ -43,14 +70,5 @@ where $[\matr{Z}]=[(\vecb{z}_1,\ldots,\vecb{z}_m)],[\vecb{A}]=[(\vecb{a}_1,\ldot
 is negligible in $k$.
 \end{definition}
 
-If the prover additionally proves that equations (i) and (ii) are satisfied for $\matr{A}:=(\vecb{a}_{(1,j_\alpha,k_\alpha)},\ldots,\vecb{a}_{(m,j_\alpha,k_\alpha)})$, which can be done with $\Theta(m)$ group elements using Groth-Sahai proofs, the assumption is guaranteeing that the columns of $\matr{Z}$ are a permutation of the columns of $\matr{A}$, for some permutation $\pi\in S_m$. Therefore, equation (\ref{eq:verif1}) implies that
-\begin{align*}
-\sum_{i\in[m]}[\vecb{z}_i][\kappa_i]&=\sum_{i\in[m]}[\vecb{a}_{(\pi(i),j_\alpha,k_\alpha)}][\kappa_i]=\sum_{i\in[m]}[\vecb{a}_{(i,j_\alpha,k_\alpha)}][\kappa_{\pi^{-1}(i)}]\\
-&=\sum_{i\in[m]}[\vecb{a}_{(i,j_\alpha,k_\alpha)}][vk_{(i,j_\alpha,k_\alpha)}].
-\end{align*}
-Then $\kappa_1,\ldots,\kappa_m$ is a permutation of $\vecb{a}_{(1,j_\alpha,k_\alpha)},\ldots,\vecb{a}_{(m,j_\alpha,k_\alpha)}$ (the same defined by $\vecb{z}_1,\ldots,\vecb{z}_m$), unless $(\kappa_{\pi^{-1}(1)}-{vk_{(1,j_\alpha,k_\alpha)}),\ldots,\kappa_{\pi^{-1}(m)}-vk_{(m,j_\alpha,k_\alpha)})})^\top$ is in the kernel of $\matr{A}$. Groth and Lu showed the hardness of finding an element from $\ker(\matr{A})$, when $\matr{A}$ is sampled from $\mathcal{Q}_m$, in the generic group model. They called this assumption the \emph{simultaneous pairing assumption} and it corresponds to the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption.
-
-
-\paragraph{Remark.}
-A natural question is if this technique can be applied once again. That is, to compute a $\Theta(\sqrt[4]{n})$  proof, compute commitments to an element from $S=\{\sum_{i\in[m]}\vecb{a}_{(i,1,1,1)}[vk_{(i,1,1,1)}],\ldots,\sum_{i\in[m]}\vecb{a}_{(i,m,m,m)}[vk_{(i,m,m,m)}]\}$ and $S'=\allowbreak\{\sum_{i\in[m]}[\vecb{a}_{(i,1,1,1)}],\ldots,\sum_{i\in[m]}[\vecb{a}_{(i,m,m,m)}]\}$, and then prove that they belong to the respective sets with the proof of size $\Theta(\sqrt[3]{n})$. Since $|S|=|S'|=n^{3/4}$, proof will be of size $\Theta(\sqrt[3]{n^{3/4}})=\Theta(\sqrt[4]{n})$. However, this is not possible since the $\Theta(\sqrt[3]{n})$ proof is not a set membership proof for arbitrary sets, but only for sets where each element is of the form $([vk],\vecb{a}[vk],[\vecb{a}])$.
+If the prover additionally proves that equations (i) and (ii) from definition \ref{def:ppa} are satisfied for $\matr{A}:=(\vecb{a}_{1,j_\alpha,k_\alpha},\ldots,\vecb{a}_{m,j_\alpha,k_\alpha})$, which can be done with $\Theta(m)$ group elements using Groth-Sahai proofs, the assumption is guaranteeing that the columns of $\matr{Z}$ are a permutation of the columns of $\matr{A}$, for some permutation $\pi\in S_m$.
 
