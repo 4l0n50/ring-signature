@@ -46,7 +46,7 @@ Assume for a while that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vec
 \sum_{i\in[m]}[\vecb{z}_i][\kappa_i]&=\sum_{i\in[m]}[\vecb{a}_{\pi(i),j_\alpha,k_\alpha}][\kappa_i]=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}][\kappa_{\pi^{-1}(i)}]\\
 &=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}][vk_{i,j_\alpha,k_\alpha}].
 \end{align*}
-Then $\kappa_1,\ldots,\kappa_m$ is a permutation of $vk_{1,j_\alpha,k_\alpha},\ldots,vk_{m,j_\alpha,k_\alpha}$ (the same defined by $\vecb{z}_1,\ldots,\vecb{z}_m$), unless $(\kappa_{\pi^{-1}(1)}-{vk_{1,j_\alpha,k_\alpha}),\ldots,\kappa_{\pi^{-1}(m)}-vk_{m,j_\alpha,k_\alpha})})^\top$ is in the kernel of $\matr{A}$. Groth and Lu showed the hardness of finding an element from $\ker(\matr{A})$, when each column of $\matr{A}$ is sampled from $\mathcal{Q}$, in the generic group model. They called this assumption the \emph{simultaneous pairing assumption} and it corresponds to the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption in the terminology of Morillo et al.~\cite{AC:MorRafVil16}.
+Then $\kappa_1,\ldots,\kappa_m$ is a permutation of $vk_{1,j_\alpha,k_\alpha},\ldots,vk_{m,j_\alpha,k_\alpha}$ (the same defined by $\vecb{z}_1,\ldots,\vecb{z}_m$), unless $(\kappa_{\pi^{-1}(1)}-{vk_{1,j_\alpha,k_\alpha}),\ldots,\kappa_{\pi^{-1}(m)}-vk_{m,j_\alpha,k_\alpha})})^\top$ is in the kernel of $\matr{A}$. Groth and Lu showed the hardness of finding an element from $\ker(\matr{A})$, when each column of $\matr{A}$ is sampled from $\mathcal{Q}$, in the generic group model. They called this assumption the \emph{simultaneous pairing assumption} and it corresponds to the $(\mathcal{Q}^m)^\top\mbox{-}\kermdh$ assumption in the terminology of Morillo et al.~\cite{AC:MorRafVil16}.
 
 Finally, the prover commits also to $b_1,\ldots,b_m\in\bits$ such that $b_i=1$ iff $i=i_\alpha$ and shows that $[vk_\alpha] = \sum_{i=1}^m b_i[\kappa_i]$. This implies that $[vk_\alpha] = [vk_{i_\alpha,j_\alpha,k_\alpha}]$.
 
@@ -54,19 +54,19 @@ Finally, the prover commits also to $b_1,\ldots,b_m\in\bits$ such that $b_i=1$ i
 
 It is only left the to show that $\vecb{z}_1,\ldots,\vecb{z}_m$ is a permutation of $\vecb{a}_{1,j_\alpha,k_\alpha},\ldots,\vecb{a}_{m,j_\alpha,k_\alpha}$. To do so we will use the following assumption introduced by Groth and Lu \cite{AC:GroLu07}.
 \begin{definition}[Permutation Pairing Assumption]\label{def:ppa}
-Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
+Let $\mathcal{Q}^{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
 We say that the $m$-permutation pairing assumption holds relative to $\G_s$ if for any adversary $\advA$
 $$
 \Pr\left[
 \begin{array}{l}
-gk\gets\G_s(1^k);\matr{A}\gets\mathcal{Q}_{m};[\matr{Z}]\gets\advA(gk,[\matr{A}]):\\
+gk\gets\G_s(1^k);\matr{A}\gets\mathcal{Q}^{m};[\matr{Z}]\gets\advA(gk,[\matr{A}]):\\
 \mathrm{(i)} \sum_{i\in[m]}[\vecb{z}_i]=\sum_{i\in[m]}[\vecb{a}_i], \mathrm{(ii)}\ \forall i\in[m]\ [z_{2,i}][1]=[z_{1,i}][z_{1,i}],\\
 \text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
 \end{array}
 \right],
 $$
-where $[\matr{Z}]=[(\vecb{z}_1,\ldots,\vecb{z}_m)],[\vecb{A}]=[(\vecb{a}_1,\ldots,\vecb{a}_m)]\in\GG^{2\times m}$,
+where $[\matr{Z}]=[(\vecb{z}_1,\ldots,\vecb{z}_m)],[\matr{A}]=[(\vecb{a}_1,\ldots,\vecb{a}_m)]\in\GG^{2\times m}$,
 is negligible in $k$.
 \end{definition}
 
