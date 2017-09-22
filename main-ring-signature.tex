@@ -1,30 +1,23 @@
-\documentclass
-{llncs}
-
-
-
+\documentclass{llncs}
 
 %\makeatletter
 %\def\input@path{{../}}
 %\makeatother
 %
 \input{common-packages}
-
-\newif\iffull
-\fullfalse
-%\usepackage{fullpage}
 \input{preamble}
 
-
-\author{Alonso Gonz\'alez \inst{1}}
-\institute{Mi casita}
+\author{Alonso Gonz\'alez}
+\institute
+{
+	Ecole Normale Sup´\'erieure de Lyon, Laboratoire LIP (France)\\
+	\email{alonso.gonzalez@ens-lyon.fr}
+}
 
 \title{A Ring Signature of size $O(\sqrt[3]{n})$ without Random Oracles}
 \begin{document}
-%\begin{doublespace}
 
 \maketitle
-%\vspace*{-.5cm}
 \begin{abstract}
     \input{abstract}
 \end{abstract} 
@@ -36,7 +29,7 @@
 	
          \input{intro/chandran} 
     
-    \subsection{Our Construction}
+    \subsection{High Level Description of our Construction}
         
         \input{intro/high-level}
 
@@ -54,7 +47,7 @@
 
 	\input{prelim/prelim}
         
-	\subsection{Groth-Sahai Proofs in the $\lin{2}$ Instantiation} \label{sec:gs-proofs}
+	\subsection{Groth-Sahai Proofs in the DLin Instantiation} \label{sec:gs-proofs}
         
             \input{prelim/symm-gs}
 
@@ -74,8 +67,27 @@
 
 \appendix
 
-\section{The Permutation Pairing Assumption in Asymmetric Groups}
+\section{Our construction in Asymmetric Groups}
 
-	\input{appendix/asymm-ppa}
+	\input{appendix/asymm}
+
+	\subsection{Asymmetric Bilinear Groups}
+		\input{appendix/asymm-groups}
+
+	\subsection{The Permutation Pairing Assumption in Asymmetric Groups} \label{sec:aPPA}
+	
+		\input{appendix/asymm-ppa}
+
+
+	\subsection{Ring Signature in Asymmetric groups}
+
+		\subsubsection{Boneh-Boyen Signatures in Asymmetric Groups}
+
+		\input{appendix/asymm-bbs}
+
+		\subsubsection{Our construction}
+
+		\input{appendix/asymm-rs}
+
 \end{document}
 

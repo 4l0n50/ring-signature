@@ -1,23 +1,58 @@
-Let $\ggen_a$ be some probabilistic polynomial time algorithm which on input $1^{\lambda}$, where $\lambda$ is the security parameter, returns the \emph{group key} which is the description of an asymmetric bilinear group $gk:=(q,\GG_1,\GG_2,\GG_T,e,\mathcal{P}_1,\mathcal{P}_2)$, where $\GG_1,\GG_2$
-and $\GG_T$ are groups of prime order $q$, the elements $\mathcal{P}_1, \mathcal{P}_2$ are generators of 
-$\GG_1,\GG_2$ respectively, and $e:\GG_1\times\GG_2\to\GG_T$ is an efficiently
-computable, non-degenerate bilinear map. 
+Let $\ggen_s$ be some probabilistic polynomial time algorithm which on input $1^{\lambda}$, where $\lambda$ is the security parameter, returns the \emph{group key} which is the description of a symmetric bilinear group $gk:=(q,\GG,\GG_T,e,\mathcal{P})$, where $\GG$
+and $\GG_T$ are groups of prime order $q$, the element $\mathcal{P}$ is a generator of 
+$\GG$, and $e:\GG\times\GG\to\GG_T$ is an efficiently computable and non-degenerated bilinear map. We denote by $|\GG|$ the bit-size of the elements of $\GG$.
 
-Elements in $\GG_s$, are denoted implicitly as $[a]_s:=a \Pt_s$, where $s \in \{1,2,T\}$ and $\Pt_T:=e(\Pt_1,\Pt_2)$. 
-The pairing operation will be written as a product $\cdot$, that is $[a]_1 \cdot [b]_2=[a]_1 [b]_2=e([a]_1,[b]_2)=[ab]_T$. Vectors and matrices are denoted in boldface. Given a matrix $\matr{T}=(t_{i,j})$, $[\matr{T}]_s$ is
-the natural embedding of $\matr{T}$ in $\GG_s$, that is, the matrix whose $(i,j)$th entry
-is $t_{i,j}\mathcal{P}_s$. We denote by $|\GG_s|$ the bit-size of the elements of $\GG_s$.
+Elements in $\GG$, are denoted implicitly as $[a]:=a \Pt$ and $\Pt_T:=e(\Pt,\Pt)$. 
+The pairing operation will be written as a product $\cdot$, that is $[a] \cdot [b]=[a] [b]=e([a],[b])=[ab]_T$. Vectors and matrices are denoted in boldface. Given a matrix $\matr{T}=(t_{i,j})$, $[\matr{T}]$ is
+the natural embedding of $\matr{T}$ in $\GG$, that is, the matrix whose $(i,j)$th entry is $t_{i,j}\mathcal{P}$. Given a matrix $\matr{S}$ with the same number of rows as $\matr{T}$, we define $\matr{S}\cat\matr{T}$ as the concatenation of $\matr{S}$ and $\matr{T}$.
 
-$\matr{I}_{n\times n}$ refers to the identity matrix in $\Z_q^{n\times n}$, $\matr{0}_{m\times n}$ and $\matr{1}_{m\times n}$ the all-zero and all-one matrices in $\Z_q^{m\times n}$, respectively, and $\vecb{e}^{n}_i$ the $i$th element 
-of the canonical basis of $\Z_q^{n}$ (simply $\matr{I}$, $\matr{0}$, $\matr{1}$, and $\vecb{e}_i$, respectively, if $m$ and $n$ are clear from the context). 
-Given some matrices $\matr{A}\in\Z_q^{m\times t},\matr{A}_1\in\Z_q^{m_1\times t},\ldots,\matr{A}_n\in\Z_q^{m_n\times n}$, we define the operations
-\iffull
- $$\vecb{A}_1 \oplus \ldots \oplus \vecb{A}_n:=\smallpmatrix{ \vecb{A}_1 \\ \vdots \\  \vecb{A}_n} \qquad 
-\matr{A}^n:=\smallpmatrix{ \matr{A} &  & \matr{0} \\   & \ddots &   \\ \matr{0} &  & \matr{A}
-}.$$
-\else
-$\vecb{A}_1 \oplus \ldots \oplus \vecb{A}_n:=\smallpmatrix{ \vecb{A}_1 \\ \vdots \\  \vecb{A}_n}$ and $\matr{A}^n:=\smallpmatrix{ \matr{A} &  & \matr{0} \\   & \ddots &   \\ \matr{0} &  & \matr{A}}.$
-\fi
+We recall the definition of the decisional linear assumption (in matricial notation) and the kernel matrix Diffie-Hellman assumption.
+
+\begin{definition}[Decisional Diffie-Hellman Assumption (DLin)]\label{def:dlin}
+ Let  $\gk 
+\gets \ggen_s(1^\lambda)$ and let
+$$
+\matr{A} :=
+\begin{pmatrix} 
+a_1 & 0     \\
+0     & a_2 \\
+1     &  1
+\end{pmatrix},
+\quad
+a_1,a_2\gets\mathbb{Z}_q.
+$$
+We say that the DLin assumption holds relative to $\ggen_s$ if for all PPT adversaries $\advD$
+$$
+\adv_{\mathrm{DLin},\ggen_s}(\advD) := |
+	\Pr[
+		\advD(
+			gk,
+			[\matr{A}],
+			[\matr{A}\vecb{w}])=1]
+	-\Pr[
+		\advD(
+		gk,
+		[\matr{A}],
+		[\vecb{z}])=1]|
+$$
+is negligible in $\lambda$, where the probability is taken over $gk\gets\ggen_s(1^\lambda)$, $a_1,a_2\gets\ZZ_q$, $\vecb{w}\gets\ZZ_q^2$, $[\vecb{z}]\gets\GG^3$, and the coin tosses of the adversary. 
+\end{definition}
+
+\begin{definition}[Kernel Diffie-Hellman Assumption in $\GG$ \cite{EPRINT:MorRafVil15}] Let  $\gk 
+\gets\ggen_s(1^\lambda)$ and $\dist_{\ell,k}$ a distribution over $\Z_q^{\ell\times k}$.
+The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG_\gamma}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
+$[\vecb{x}]^{\top}[\matr{A}]=[\vecb{0}]_T$. 
+\end{definition}
+
+We will be using the $Q_m^\top\mbox{-}\kermdh$ assumption, which was proven secure in the generic bilinear group model by Groth and Lu \cite{AC:GroLu07}.
+
+%$\matr{I}_{n\times n}$ refers to the identity matrix in $\Z_q^{n\times n}$, $\matr{0}_{m\times n}$ and $\matr{1}_{m\times n}$ the all-zero and all-one matrices in $\Z_q^{m\times n}$, respectively, and $\vecb{e}^{n}_i$ the $i$th element 
+%of the canonical basis of $\Z_q^{n}$ (simply $\matr{I}$, $\matr{0}$, $\matr{1}$, and $\vecb{e}_i$, respectively, if $m$ and $n$ are clear from the context). 
+%Given some matrices $\matr{A}\in\Z_q^{m\times t},\matr{A}_1\in\Z_q^{m_1\times t},\ldots,\matr{A}_n\in\Z_q^{m_n\times n}$, we define the operations
+% $$\vecb{A}_1 \oplus \ldots \oplus \vecb{A}_n:=\smallpmatrix{ \vecb{A}_1 \\ \vdots \\  \vecb{A}_n} \qquad 
+%\matr{A}^n:=\smallpmatrix{ \matr{A} &  & \matr{0} \\   & \ddots &   \\ \matr{0} &  & \matr{A}
+%}.$$
+%$\vecb{A}_1 \oplus \ldots \oplus \vecb{A}_n:=\smallpmatrix{ \vecb{A}_1 \\ \vdots \\  \vecb{A}_n}$ and $\matr{A}^n:=\smallpmatrix{ \matr{A} &  & \matr{0} \\   & \ddots &   \\ \matr{0} &  & \matr{A}}.$
 %
 %We make extensive use of the set $[m+k]\times[m+k]\setminus\{(i,i):i\in[n]\}$ and for brevity we denote it by $\indexSet{m}{k}$.
 %

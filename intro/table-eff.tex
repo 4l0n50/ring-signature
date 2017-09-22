@@ -1,0 +1,22 @@
+\begin{table}[h]
+\begin{center}
+\begin{minipage}{\textwidth}
+\begin{center}
+%\begin{scriptsize}
+\begin{tabular}{|l|l|l|}
+\hline
+                                           & Chandran et al.~\cite{ICALP:ChaGroSah07} & This work \\
+\hline\hline
+\rule{0pt}{2.5ex}CRS size                  & $9$                                       & $9$       \\ 
+\rule{0pt}{2.5ex}Verification key size     & $1$                                       & $5$       \\
+\rule{0pt}{2.5ex}Signature size            & $24 \sqrt{n} + 24$                        & $39 \sqrt[3]{n} + 30 \sqrt[6]{n} + 81$\\    
+\rule{0pt}{2.5ex}Signature generation time & $42 \sqrt{n} + 49$                        & $69 \sqrt[3]{n} + 42 \sqrt[6]{n} + 142$\\
+\rule{0pt}{2.5ex}Verification time         & $3 n + 120 \sqrt{n} + 121$                & $6 n^{2/3} + 210 \sqrt[3]{n} + 186 \sqrt[6]{n} + 411$\\
+\hline 
+\end{tabular}
+%\end{scriptsize}
+\end{center}
+\caption{Comparison of Chandran et al.'s ring signature and ours for a ring of size $n$. 'Signature generation time' is measured in number of exponentiations, 'Verification time' is measured in number of pairings, and all other rows are measured in number of group elements.\label{table:eff}}
+\end{minipage}
+\end{center}
+\end{table}

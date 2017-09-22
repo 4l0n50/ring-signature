@@ -10,3 +10,6 @@
 *.bcf
 *.xml
 *.zip
+*.bak
+*.4ht
+*.gz

@@ -1,0 +1,18 @@
+The asymmetric Boneh-Boyen signature can be proven wUF-CMA secure under the asymmetric $m$-\emph{strong Diffie-Hellman} assumption \cite{JC:BonBoy08}, which is described below.
+
+\begin{definition}[$m\mbox{-}SDH$ assumption]
+For any adversary $\advA$
+$$
+\Pr\left[gk\gets\G_a(1^\lambda),x\gets\Z_q:\advA(gk,[x]_1,[x^2]_1,\ldots,[x^m]_1,[x]_2)=(c,\left[\frac{1}{x+c}\right]_1)\right]
+$$
+is negligible in $\lambda$.
+\end{definition}
+
+The Boneh-Boyen signature scheme is described below.
+
+\begin{description}
+\item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $vk\gets\Z_q$. The secret/public key pair is defined as $(sk,[vk]_2):=(vk,[vk]_2)$.
+\item[$\mathsf{BB}.\Sign$:] Given a secret key $sk\in\Z_q$ and a message $m\in\Z_q$, output the signature $[\sigma]_1:=\left[\frac{1}{sk+m}\right]_1$. In the unlikely case that $sk+m=0$ we let $[\sigma]_1:=[0]_1$.
+\item[$\mathsf{BB}.\Ver$:] On input the verification key $[vk]_2$, a message $m\in\Z_q$, and a signature $[\sigma]_1$, verify that $[\sigma]_1[m+vk]_2=[1]_T$.
+\end{description} 
+
