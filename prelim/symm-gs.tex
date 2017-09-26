@@ -2,11 +2,11 @@ The Groth Sahai (GS) proof system is a non-interactive witness indistinguishable
 \begin{equation}\label{gseq}
 \sum_{j=1}^{m_y} f(\alpha_j, \vary_j)+\sum_{i=1}^{m_x} f(\varx_i, \beta_i)+\sum_{i=1}^{m_x} \sum_{j=1}^{m_y}  f(\varx_i,\escQE_{i,j} \vary_j)=t,
 \end{equation}
- where $\boldsymbol \alpha  \in \Am_1^{m_y}$, $\boldsymbol \beta  \in \Am_2^{m_x}$, $\matr{\EscQE}=(\escQE_{i,j}) \in \Z_q^{m_x\times m_y}$, $t \in \Am_T$, and $\Am_1,\Am_2,\Am_T\in\{\Z_q,\GG_1,\GG_2,\GG_T\}$ 
+ where $\boldsymbol \alpha  \in \Am_1^{m_y}$, $\boldsymbol \beta  \in \Am_2^{m_x}$, $\matr{\EscQE}=(\escQE_{i,j}) \in \Z_q^{m_x\times m_y}$, $t \in \Am_T$, and $\Am_1,\Am_2,\Am_T\in\{\Z_q,\GG,\GG_T\}$ 
 are equipped with some bilinear map $f:\Am_1\times \Am_2 \rightarrow \Am_T$.
 
-The GS proof system is a \emph{commit-and-prove} proof system, that is, one first commits to solutions
-of equation (\ref{gseq}) using the GS commitments, and the computes a proof that the committed values satisfies equation (\ref{gseq}).
+The GS proof system is a \emph{commit-and-prove} proof system, that is, the prover first commits to solutions
+of equation (\ref{gseq}) using the GS commitments, and then computes a proof that the committed values satisfies equation (\ref{gseq}).
 
 GS proofs are perfectly sound when the CRS is sampled from the perfectly binding distribution, and perfectly witness-indistinguishable when sampled from the perfectly hiding distribution. Computational indistinguishability of  both distribution implies either perfect soundness and computational witness indistinguishability or computational soundness and perfect witness-indistinguishability.
 

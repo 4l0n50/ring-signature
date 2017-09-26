@@ -8,7 +8,7 @@ We define a natural variant of the PPA assumption in asymmetric groups, which we
 %\Pr\left[
 %\begin{array}{l}
 %	gk\gets\G_s(1^k);\matr{A}\gets\mathcal{Q}_1^{m},\matr{B}\gets\mathcal{Q}_2^m;([\matr{Y}]_1,[\matr{Z}]_2)\gets\advA(gk,[\matr{A}]_1,[\matr{B}]_2):\\
-%	\mathrm{(i)} \sum_{i\in[m]}[\vecb{y}_i]_1 = \sum_{i\in[m]}[\vecb{a}_i]_1 \text{ and }\sum_{i\in[m]}[z_i]_2 = \sum_{i\in[m]}[b_i]_2,\\
+%	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{y}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1 \text{ and }\sum_{i=1}^{m}[z_i]_2 = \sum_{i=1}^{m}[b_i]_2,\\
 %	\mathrm{(ii)}\ \forall i\in[m]\ [y_{2,i}][1]=[y_{1,i}][z_{i}],\\
 %	\text{ and }\pmatri{\matr{Y}\\\matr{Z}}\text{ is not a permutation of the columns of }\pmatri{\matr{A}\\\matr{B}}
 %\end{array}
@@ -25,8 +25,8 @@ $$
 \Pr\left[
 \begin{array}{l}
 	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};([\matr{Y}]_1,[\matr{Z}]_2)\gets\advA(gk,[\matr{A}]_1,[(a_{1,1},\ldots,a_{1,m})]_2):\\
-	\mathrm{(i)} \sum_{i\in[m]}[\vecb{y}_i]_1 = \sum_{i\in[m]}[\vecb{a}_i]_1,\\
-	\mathrm{(ii)}\ \forall i\in[m]\ [y_{1,i}]_1[1]_2=[1]_1[z_{1,i}]_2 \text{ and } [y_{2,i}]_1[1]_2=[y_{1,i}]_1[z_{i}]_2,\\
+	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{y}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1,\\
+	\mathrm{(ii)}\ \forall 1\leq i\leq m\ [y_{1,i}]_1[1]_2=[1]_1[z_{1,i}]_2 \text{ and } [y_{2,i}]_1[1]_2=[y_{1,i}]_1[z_{i}]_2,\\
 	\text{ and }\matr{Y}\text{ is not a permutation of the columns of }\matr{A}
 \end{array}
 \right],

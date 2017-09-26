@@ -5,9 +5,9 @@
 \begin{enumerate}
 \item Compute $(sk_\mathsf{ot},vk_\mathsf{ot})\gets\mathsf{OT}.\KG(gk)$ and $\sigma_\mathsf{ot}\gets\allowbreak\mathsf{OT}.\allowbreak\mathsf{Sign}_{sk_\mathsf{ot}}(m,R)$.
 \item Compute $[\vecb{c}]_2:=\GS.\Com_{ck}([vk]_2;\vecb{r})$, $\vecb{r}\gets\Z_q^2$, $[\sigma]_1\gets\mathsf{BB}.\mathsf{Sign}_{sk}(vk_\mathsf{ot})$, $[\vecb{d}]_1:=\GS.\Com_{ck}([\sigma]_1;\vecb{s})$, $\vecb{s}\gets\Z_q^3$, and a GS proof $\pi_\GS$ that $\mathsf{BB}.\mathsf{Ver}_{[vk]_2}(\allowbreak[\sigma]_1,vk_\mathsf{ot})=1$ (which can be expressed as a set of pairing product equations).
-\item Parse $R$ as $\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $m:=\sqrt[3]{n}$, $n:=|R|$, and let $\alpha=(i_\alpha,j_\alpha,k_\alpha)$ the index of $\vecb{vk}$ in $R$. Define the sets $S=\{\sum_{i\in[m]}[\vecb{a}_{i,1,1}]_1,\allowbreak\ldots,\sum_{i\in[m]}[\vecb{a}_{i,m,m}]_1\}$ and\\ $S'=\{\sum_{i\in[m]}\vecb{a}_{i,1,1}[vk_{i,1,1}]_2,\allowbreak\ldots,\sum_{i\in[m]}\vecb{a}_{i,m,m}[vk_{i,m,m}]_2\}$.
-\item Let $[\vecb{x}]_1:=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}]_1$ and $[\vecb{y}]_2=\sum_{i\in[m]}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]_2$. Compute GS commitments to $[\vecb{x}]_1$ and $[\vecb{y}]_2$, and compute proofs $\pi_1$ and $\pi_2$ that they belong to $S$ and $S'$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]_1$'s and $[\vecb{y}]_2$'s position in $S$ and $S'$ respectively.
-\item Let $[\kappa_1]_2:=[vk_{1,j_\alpha,k_\alpha}]_2,\ldots,[\kappa_m]_2:=[vk_{m,j_\alpha,k_\alpha}]_2$, $[\vecb{z}_1]_1:=\allowbreak[\vecb{a}_{1,j_\alpha,k_\alpha}]_1,\allowbreak\ldots,[\vecb{z}_m]_1:=[\vecb{a}_{m,j_\alpha,k_\alpha}]_1$, and $[z'_1]_2:=[b_{1,j_\alpha,k_\alpha}]_2,\ldots,[z'_m]_2:=[b_{m,j_\alpha,k_\alpha}]_2$. Compute GS commitments to all these values and compute a GS proof $\pi_\kappa$ that $\sum_{i\in[m]}[\vecb{z}_i]_1[\kappa_i]_2=[1]_1[\vecb{y}]_2$ and a GS proof $\pi_{z}$ that $\sum_{i\in[m]}[\vecb{z}_i]_1=[\vecb{x}]_1$,  $[z_{1,i}]_1[1]_2 = [1]_1[z'_i]_2$, and $[z_{2,i}]_1[1]_2=[z_{1,i}]_1[z'_{i}]_2$ for each $i\in[m]$.
+\item Parse $R$ as $\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $m:=\sqrt[3]{n}$, $n:=|R|$, and let $\alpha=(i_\alpha-1)m^2+(j_\alpha-1)m +k_\alpha$ the index of $\vecb{vk}$ in $R$. Define the sets $S=\{\sum_{i=1}^{m}[\vecb{a}_{i,1,1}]_1,\allowbreak\ldots,\sum_{i=1}^{m}[\vecb{a}_{i,m,m}]_1\}$ and\\ $S'=\{\sum_{i=1}^{m}\vecb{a}_{i,1,1}[vk_{i,1,1}]_2,\allowbreak\ldots,\sum_{i=1}^{m}\vecb{a}_{i,m,m}[vk_{i,m,m}]_2\}$.
+\item Let $[\vecb{x}]_1:=\sum_{i=1}^{m}[\vecb{a}_{i,j_\alpha,k_\alpha}]_1$ and $[\vecb{y}]_2=\sum_{i=1}^{m}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]_2$. Compute GS commitments to $[\vecb{x}]_1$ and $[\vecb{y}]_2$, and compute proofs $\pi_1$ and $\pi_2$ that they belong to $S$ and $S'$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]_1$'s and $[\vecb{y}]_2$'s position in $S$ and $S'$ respectively.
+\item Let $[\kappa_1]_2:=[vk_{1,j_\alpha,k_\alpha}]_2,\ldots,[\kappa_m]_2:=[vk_{m,j_\alpha,k_\alpha}]_2$, $[\vecb{z}_1]_1:=\allowbreak[\vecb{a}_{1,j_\alpha,k_\alpha}]_1,\allowbreak\ldots,[\vecb{z}_m]_1:=[\vecb{a}_{m,j_\alpha,k_\alpha}]_1$, and $[z'_1]_2:=[b_{1,j_\alpha,k_\alpha}]_2,\ldots,[z'_m]_2:=[b_{m,j_\alpha,k_\alpha}]_2$. Compute GS commitments to all these values and compute a GS proof $\pi_\kappa$ that $\sum_{i=1}^{m}[\vecb{z}_i]_1[\kappa_i]_2=[1]_1[\vecb{y}]_2$ and a GS proof $\pi_{z}$ that $\sum_{i=1}^{m}[\vecb{z}_i]_1=[\vecb{x}]_1$,  $[z_{1,i}]_1[1]_2 = [1]_1[z'_i]_2$, and $[z_{2,i}]_1[1]_2=[z_{1,i}]_1[z'_{i}]_2$ for each $1\leq i\leq m$.
 \item Compute a proof $\pi_3$ that $[vk]_2$ belongs to $S_3=\{[\kappa_1]_2,\ldots,[\kappa_m]_2\}$.
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\pi_1,\pi_2,\pi_3,\pi_\kappa,\pi_z)$. (GS proofs include commitments to variables).
 \end{enumerate}
@@ -71,23 +71,23 @@ where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for
 %Let $E$ the event where $[\vecb{z}_1],\ldots,[\vecb{z}_m]$ is a permutation of $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$, and assume that we are in the case $\neg E$.
 %Soundness of proof $\pi_\kappa$ implies that
 %\begin{align*}
-%&\sum_{i\in[m]}[\kappa_i][\vecb{z}_i]=[\vecb{y}].
+%&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=[\vecb{y}].
 %\end{align*}
 %Soundness of proof $\pi_z$ implies that
 %\begin{align}
-%&\sum_{i\in[m]}[\vecb{z}_i]=[\vecb{x}]\text{ and}\nonumber\\
+%&\sum_{i=1}^{m}[\vecb{z}_i]=[\vecb{x}]\text{ and}\nonumber\\
 %&[z_{i,2}][1]=[z_{i,1}][z_{i,1}] \text{ for all }i\in[m].\label{eq-rs-3}
 %\end{align}
 %Soundness of proofs $\pi_1,\pi_2,\pi_3$ implies, respectively, that there exist $j_\alpha,k_\alpha\in[m]$ such that
 %\begin{align}
-%&\sum_{i\in[m]}[\kappa_i][\vecb{z}_i]=\sum_{i\in[m]}\vecb{a}'_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}],\label{eq-rs-1}\\
-%&\sum_{i\in[m]}[\vecb{z}_i]=\sum_{i\in[m]}[\vecb{a}'_{i,j_\alpha,k_\alpha}], \label{eq-rs-2},
+%&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=\sum_{i=1}^{m}\vecb{a}'_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}],\label{eq-rs-1}\\
+%&\sum_{i=1}^{m}[\vecb{z}_i]=\sum_{i=1}^{m}[\vecb{a}'_{i,j_\alpha,k_\alpha}], \label{eq-rs-2},
 %\end{align}
 %and that $[vk]=[\kappa_{i^*}]$, for some $i^*\in[m]$.
 %
 %Equation (\ref{eq-rs-2}) and imply that
 %$$
-%\sum_{i\in[{q_\mathsf{gen}}-m]}[\tilde{\vecb{a}}_i]+\sum_{i\in[m]}[\vecb{z}_i] = \sum_{i\in[{q_\mathsf{gen}}]}[\vecb{a}'_i]
+%\sum_{i\in[{q_\mathsf{gen}}-m]}[\tilde{\vecb{a}}_i]+\sum_{i=1}^{m}[\vecb{z}_i] = \sum_{i\in[{q_\mathsf{gen}}]}[\vecb{a}'_i]
 %$$
 %and together with equation (\ref{eq-rs-3}), the fact that $[\tilde{a}_{i,2}][1]=[\tilde{a}_{i,1}][\tilde{a}_{i,1}]$, and that we assume $\neg E$, implies that 
 %$\advB_2$ breaks the ${q_\mathsf{gen}}$-permutation pairing assumption. Therefore
@@ -95,7 +95,7 @@ where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for
 %
 %Assume now that we are in the case $E$. Therefore, equation (\ref{eq-rs-1}) implies that
 %\begin{align*}
-%\sum_{i\in[m]}(\kappa_i-vk_{\pi(i),j_\alpha,k_\alpha})\vecb{a}_{\pi(i),j_\alpha,k_\alpha}=0.
+%\sum_{i=1}^{m}(\kappa_i-vk_{\pi(i),j_\alpha,k_\alpha})\vecb{a}_{\pi(i),j_\alpha,k_\alpha}=0.
 %\end{align*}
 %Since $[vk]=[\kappa_{i^*}]\notin R$, then $[\kappa_{i^*}]\neq vk_{i,j_\alpha,k_\alpha}$ for all $i\in[m]$. Therefore $([0],\ldots,[0],[\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}])\neq [\vecb{0}]$ and $\advB_3$ breaks the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption. We conclude that
 %$$\Pr[\sfGame_2=1|\mathsf{err}_2=1\wedge E]\leq\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)$$

@@ -1,13 +1,14 @@
+In the following consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme.
 \begin{description}
-\item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$, and a CRS for the proof of the $\Theta(\sqrt{n})$ proof of membership in a set $\crs_\sfset$ of Chandran et al., and output $\rho:=(gk,\crs_\GS,\crs_\sfset).$
+\item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
 \item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk])\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]$ and then erase $\vecb{a}$. The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$.
 \item[$\mathsf{Sign}_{\rho,sk}(m,R)$:]
 \begin{enumerate}
 \item Compute $(sk_\mathsf{ot},vk_\mathsf{ot})\gets\mathsf{OT}.\KG(gk)$ and $\sigma_\mathsf{ot}\gets\allowbreak\mathsf{OT}.\allowbreak\mathsf{Sign}_{sk_\mathsf{ot}}(m,R)$.
 \item Compute $[\vecb{c}]:=\GS.\Com_{ck}([vk];\vecb{r})$, $\vecb{r}\gets\Z_q^3$, $[\sigma]\gets\mathsf{BB}.\mathsf{Sign}_{sk}(vk_\mathsf{ot})$, $[\vecb{d}]:=\GS.\Com_{ck}([\sigma];\vecb{s})$, $\vecb{s}\gets\Z_q^3$, and a GS proof $\pi_\GS$ that $\mathsf{BB}.\mathsf{Ver}_{[vk]}(\allowbreak[\sigma],vk_\mathsf{ot})=1$ (which can be expressed as a set of pairing product equations).
-\item Parse $R$ as $\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $m:=\sqrt[3]{n}$, $n:=|R|$, and let $\alpha=(i_\alpha-1)m^2+(j_\alpha-1)m + k_\alpha$ the index of $\vecb{vk}$ in $R$. Define the sets $S=\{\sum_{i\in[m]}[\vecb{a}_{i,1,1}],\allowbreak\ldots,\sum_{i\in[m]}[\vecb{a}_{i,m,m}]\}$ and\\ $S'=\{\sum_{i\in[m]}\vecb{a}_{i,1,1}[vk_{i,1,1}],\allowbreak\ldots,\sum_{i\in[m]}\vecb{a}_{i,m,m}[vk_{i,m,m}]\}$.
-\item Let $[\vecb{x}]:=\sum_{i\in[m]}[\vecb{a}_{i,j_\alpha,k_\alpha}]$ and $[\vecb{y}]=\sum_{i\in[m]}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\vecb{x}]$ and $[\vecb{y}]$, and compute proofs $\pi_1$ and $\pi_2$ that they belong to $S$ and $S'$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]$'s and $[\vecb{y}]$'s position in $S$ and $S'$ respectively.
-\item Let $[\kappa_1]:=[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_m]:=[vk_{m,j_\alpha,k_\alpha}]$ and $[\vecb{z}_1]:=\allowbreak[\vecb{a}_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,[\vecb{z}_m]:=[\vecb{a}_{m,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\kappa_1],\ldots,[\kappa_m]$ and $[\vecb{z}_1],\ldots,[\vecb{z}_m]$, and GS proof $\pi_\kappa$ that $\sum_{i\in[m]}[\kappa_i][\vecb{z}_i]=[\vecb{y}][1]$ and a GS proof $\pi_{z}$ that $\sum_{i\in[m]}[\vecb{z}_i]=[\vecb{x}]$ and $[z_{2,i}][1]=[z_{1,i}][z_{1,i}]$ for each $i\in[m]$.
+\item Parse $R$ as $\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $m:=\sqrt[3]{n}$, $n:=|R|$, and let $\alpha=(i_\alpha-1)m^2+(j_\alpha-1)m + k_\alpha$ the index of $\vecb{vk}$ in $R$. Define the sets $S=\{\sum_{i=1}^{m}[\vecb{a}_{i,1,1}],\allowbreak\ldots,\sum_{i=1}^{m}[\vecb{a}_{i,m,m}]\}$ and\\ $S'=\{\sum_{i=1}^{m}\vecb{a}_{i,1,1}[vk_{i,1,1}],\allowbreak\ldots,\sum_{i=1}^{m}\vecb{a}_{i,m,m}[vk_{i,m,m}]\}$.
+\item Let $[\vecb{x}]:=\sum_{i=1}^{m}[\vecb{a}_{i,j_\alpha,k_\alpha}]$ and $[\vecb{y}]=\sum_{i=1}^{m}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\vecb{x}]$ and $[\vecb{y}]$, and compute proofs $\pi_1$ and $\pi_2$ that they belong to $S$ and $S'$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]$'s and $[\vecb{y}]$'s position in $S$ and $S'$ respectively.
+\item Let $[\kappa_1]:=[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_m]:=[vk_{m,j_\alpha,k_\alpha}]$ and $[\vecb{z}_1]:=\allowbreak[\vecb{a}_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,[\vecb{z}_m]:=[\vecb{a}_{m,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\kappa_1],\ldots,[\kappa_m]$ and $[\vecb{z}_1],\ldots,[\vecb{z}_m]$, and GS proof $\pi_\kappa$ that $\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=[\vecb{y}][1]$ and a GS proof $\pi_{z}$ that $\sum_{i=1}^{m}[\vecb{z}_i]=[\vecb{x}]$ and $[z_{2,i}][1]=[z_{1,i}][z_{1,i}]$ for each $1\leq i\leq m$.
 \item Compute a proof $\pi_3$ that $[vk]$ belongs to $S_3=\{[\kappa_1],\ldots,[\kappa_m]\}$.
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}],[\vecb{d}],\pi_1,\pi_2,\pi_3,\pi_\kappa,\pi_z)$. (GS proofs include commitments to variables).
 \end{enumerate}
@@ -17,9 +18,9 @@
 \begin{theorem}
 The scheme presented in this section is a ring signature scheme
 with perfect correctness, perfect anonymity and computational unforgeability under the
-$q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption, the $\lin{2}$ assumption, and the assumption
+$q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption, the $\mathrm{DLin}$ assumption, and the assumption
 that the one-time signature and the Boneh-Boyen signature are unforgeable.
-Concretely, for any adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3,\advB_4,\advB_5$ such that
+Concretely, for any PPT adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3,\advB_4,\advB_5$ such that
 \begin{align*}
 \adv(\advA)\leq &\adv_{\mathrm{DLin}}(\advB_1)+\adv_{q_\mathsf{gen}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)+\\
 &q_\mathsf{gen}(q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)),
@@ -27,7 +28,7 @@ Concretely, for any adversary $\advA$ against the unforgeability of the scheme, 
 where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
 \end{theorem}
 \begin{proof}
-Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\vecb{vk}$.
+Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\vecb{vk}$.
 
 We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''.
 
@@ -37,8 +38,8 @@ W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeabil
 \item[$\sfGame_1$:] This is game exactly as $\sfGame_0$ with the following differences: 
     \begin{itemize}
     \item The Groth-Sahai CRS is sampled together with its discrete logarithms from the perfectly binding distribution.
-    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$, and a random index $i^*$ is chosen from $[{q_\mathsf{gen}}]$.
-    \item On a query to $\mathsf{Corrupt}$ with argument $i$, if $i=i^*$ set $\mathsf{err_3}\gets 1$ and proceed as in $\sfGame_2$.
+    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$, and a random index $i^*$ is chosen from $\{1,\ldots, q_\mathsf{gen}\}$.
+    \item On a query to $\mathsf{Corrupt}$ with argument $i$, if $i=i^*$ set $\mathsf{err_3}\gets 1$ and proceed as in $\sfGame_0$.
     \item Let $(m,R,\sigma)$ the purported forgery output by $\advA$. If $[vk]$, the opening of commitment $[\vecb{c}]$ from $\sigma$, is not equal to $[vk_{i^*}]$,  set $\mathsf{err}_3\gets 1$. If $[vk]\notin R$, then set $\mathsf{err}_2=1$.
     \end{itemize}
 \item[$\sfGame_2$:] This is game exactly as $\sfGame_1$ except that, if $\mathsf{err}_2$ is set to 1, $\sfGame_2$ aborts.
@@ -62,30 +63,30 @@ Note that
 \end{align*}
 We proceed to bound this last probability.
 
-Consider an adversary $\advB_2$ against the ${q_\mathsf{gen}}$-permutation pairing assumption defined as follows. $\advB_2$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk],[\vecb{a}'_i],sk[\vecb{a}'_i]))$, where $[\vecb{a}'_i]$ is the $i$ th column of $[\matr{A}']$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\vecb{z}_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\vecb{z}_m])$, as part of $\pi_z$, $\advB_2$ extract $[\vecb{z}_1],\ldots,[\vecb{z}_m]$.  Let $j_\alpha,k_\alpha\in[m]$ the indices defined by $\pi_1$ and $\pi_2$, $\advB$ returns $([\vecb{z}_1],\ldots,[\vecb{z}_m],[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}])$, where $[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}]$ are the columns of $[\matr{A}']$ which are different from $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$.
+Consider an adversary $\advB_2$ against the ${q_\mathsf{gen}}$-permutation pairing assumption defined as follows. $\advB_2$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk],[\vecb{a}'_i],sk[\vecb{a}'_i]))$, where $[\vecb{a}'_i]$ is the $i$ th column of $[\matr{A}']$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\vecb{z}_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\vecb{z}_m])$, as part of $\pi_z$, $\advB_2$ extract $[\vecb{z}_1],\ldots,[\vecb{z}_m]$.  Let $1\leq j_\alpha,k_\alpha\leq m$ the indices defined by $\pi_1$ and $\pi_2$, $\advB$ returns $([\vecb{z}_1],\ldots,[\vecb{z}_m],[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}])$, where $[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}]$ are the columns of $[\matr{A}']$ which are different from $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$.
 
-Consider another adversary $\advB_3$ against the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption defined as follows. $\advB$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ embedding $[\matr{A}']$ in the user keys (in the same way as $\advB_2$). When $\advA$ outputs $\GS.\Com_{ck_\GS}([\kappa_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\kappa_m])$, as part of $\pi_\kappa$, $\advB_3$ extract $[\kappa_1],\ldots,[\kappa_m]$. $\advB_3$ attempts to extract a permutation $\pi$ such that  $[\vecb{z}_i]=[\vecb{a}'_{\pi(i),j_\alpha,k_\alpha}]$ for each $i\in[m]$. If there is no such permutation, $\advB_3$ aborts. Finally, $\advB_3$ returns $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])^\top\in\GG^{{q_\mathsf{gen}}}$.
+Consider another adversary $\advB_3$ against the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption defined as follows. $\advB$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ embedding $[\matr{A}']$ in the user keys in the same way as $\advB_2$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\kappa_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\kappa_m])$, as part of $\pi_\kappa$, $\advB_3$ extract $[\kappa_1],\ldots,[\kappa_m]$. $\advB_3$ attempts to extract a permutation $\pi$ such that  $[\vecb{z}_i]=[\vecb{a}'_{\pi(i),j_\alpha,k_\alpha}]$ for each $1\leq i\leq m$. If there is no such permutation, $\advB_3$ aborts. Finally, $\advB_3$ returns $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])^\top\in\GG^{{q_\mathsf{gen}}}$.
 
 Perfect soundness of proof $\pi_\kappa$  (recall that the Groth-Sahai CRS is perfectly binding)  implies that
 \begin{align*}
-&\sum_{i\in[m]}[\kappa_i][\vecb{z}_i]=[\vecb{y}].
+&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=[\vecb{y}].
 \end{align*}
 Perfect soundness of proof $\pi_z$ implies that
 \begin{align}
-&\sum_{i\in[m]}[\vecb{z}_i]=[\vecb{x}]\text{ and}\nonumber\\
-&[z_{i,2}][1]=[z_{i,1}][z_{i,1}] \text{ for all }i\in[m].\label{eq-rs-3}
+&\sum_{i=1}^{m}[\vecb{z}_i]=[\vecb{x}]\text{ and}\nonumber\\
+&[z_{i,2}][1]=[z_{i,1}][z_{i,1}] \text{ for all }1\leq i\leq m.\label{eq-rs-3}
 \end{align}
 Perfect soundness of proofs $\pi_1,\pi_2,\pi_3$ implies, respectively, that
 \begin{align}
-&\sum_{i\in[m]}[\kappa_i][\vecb{z}_i]=\sum_{i\in[m]}\vecb{a}'_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}],\label{eq-rs-1}\\
-&\sum_{i\in[m]}[\vecb{z}_i]=\sum_{i\in[m]}[\vecb{a}'_{i,j_\alpha,k_\alpha}], \label{eq-rs-2},
+&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=\sum_{i=1}^{m}\vecb{a}'_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}],\label{eq-rs-1}\\
+&\sum_{i=1}^{m}[\vecb{z}_i]=\sum_{i=1}^{m}[\vecb{a}'_{i,j_\alpha,k_\alpha}], \label{eq-rs-2},
 \end{align}
-where $j_\alpha,k_\alpha\in[m]$ are the indices defined in $\pi_1,\pi_2$, and that $[vk]=[\kappa_{i_\alpha}]$, for some $i_\alpha\in[m]$.
+where $1\leq j_\alpha,k_\alpha\leq m$ are the indices defined in $\pi_1,\pi_2$, and that $[vk]=[\kappa_{i_\alpha}]$, for some $1\leq i_\alpha\leq m$.
 
 Let $E$ the event where $[\vecb{z}_1],\ldots,[\vecb{z}_m]$ is a permutation of $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$, and assume that we are in the case $\neg E$.
 Equation (\ref{eq-rs-2}) and imply that
 $$
-\sum_{i\in[{q_\mathsf{gen}}-m]}[\tilde{\vecb{a}}_i]+\sum_{i\in[m]}[\vecb{z}_i] = \sum_{i\in[{q_\mathsf{gen}}]}[\vecb{a}'_i]
+\sum_{i=1}^{q_\mathsf{gen}-m}[\tilde{\vecb{a}}_i]+\sum_{i=1}^{m}[\vecb{z}_i] = \sum_{i=1}^{q_\mathsf{gen}}[\vecb{a}'_i]
 $$
 and, together with equation (\ref{eq-rs-3}), the fact that $[\tilde{a}_{i,2}][1]=[\tilde{a}_{i,1}][\tilde{a}_{i,1}]$, and that we assume $\neg E$, implies that 
 $\advB_2$ breaks the ${q_\mathsf{gen}}$-permutation pairing assumption. Therefore
@@ -93,9 +94,9 @@ $$\Pr[\sfGame_2=1|\mathsf{err}_2=1 \wedge\neg E]\leq\adv_{{q_\mathsf{gen}}\mbox{
 
 Assume now that we are in the case $E$. Equation (\ref{eq-rs-1}) implies that
 \begin{align*}
-\sum_{i\in[m]}(\kappa_i-vk_{\pi(i),j_\alpha,k_\alpha})\vecb{a}_{\pi(i),j_\alpha,k_\alpha}=0.
+\sum_{i=1}^{m}(\kappa_i-vk_{\pi(i),j_\alpha,k_\alpha})\vecb{a}_{\pi(i),j_\alpha,k_\alpha}=0.
 \end{align*}
-Since $[vk]=[\kappa_{i_\alpha}]\notin R$, then $[\kappa_{i_\alpha}]\neq vk_{i,j_\alpha,k_\alpha}$ for all $i\in[m]$. Therefore $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])\neq [\vecb{0}]$ and $\advB_3$ breaks the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\allowbreak \kermdh$ assumption. We conclude that
+Since $[vk]=[\kappa_{i_\alpha}]\notin R$, then $[\kappa_{i_\alpha}]\neq vk_{i,j_\alpha,k_\alpha}$ for all $1\leq i\leq m$. Therefore $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])\neq [\vecb{0}]$ and $\advB_3$ breaks the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\allowbreak \kermdh$ assumption. We conclude that
 $$\Pr[\sfGame_2=1|\mathsf{err}_2=1\wedge E]\leq\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)$$
 The lemma follows from the fact that
 \begin{align*}
@@ -134,9 +135,9 @@ $$
 \begin{proof}
 We construct adversaries $\advB_4$ and $\advB_5$ as follows.
 
-$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in[q_\mathsf{sig}]$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-time signature. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
+$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in\{1,\ldots, q_\mathsf{sig}\}$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-time signature. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
 
-$\advB_5$ receives $[vk]$ and simulates $\sfGame_3$ honestly but with the following differences. Let $i:=0$. $\advB_5$ computes $(sk_\mathsf{ot}^i,vk_\mathsf{ot}^i)\gets\mathsf{OT}.\mathsf{KeyGen}(gk)$, for each $i\in[q_\mathsf{sig}]$ and queries its signing oracle on $(vk_{\mathsf{ot}}^1,\ldots,vk_\mathsf{ot}^{q_{\mathsf{sig}}})$ obtaining $[\sigma_1],\ldots,[\sigma_{q_\mathsf{sig}}]$. On the $i^*$ th query of $\advA$ to the key generation algortihm, $\advB_5$ picks $\vecb{a}\gets\mathcal{Q}$ and outputs $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$. When $\advA$ queries the signing oracle on input $(i^*,m,R)$, $\advB_5$ computes an honest signature but replaces $vk_\mathsf{ot}$ with $vk_\mathsf{ot}^i$ and $[\sigma]$ with $[\sigma_i]$, and then adds 1 to $i$. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},[\vecb{c}],[\vecb{d}],\ldots))$, it extracts $[\sigma]$ from $[\vecb{d}]$ as its forgery for $vk_\mathsf{ot}$.
+$\advB_5$ receives $[vk]$ and simulates $\sfGame_3$ honestly but with the following differences. Let $i:=0$. $\advB_5$ computes $(sk_\mathsf{ot}^i,vk_\mathsf{ot}^i)\gets\mathsf{OT}.\mathsf{KeyGen}(gk)$, for each $1\leq i\leq q_\mathsf{sig}$ and queries its signing oracle on $(vk_{\mathsf{ot}}^1,\ldots,vk_\mathsf{ot}^{q_{\mathsf{sig}}})$ obtaining $[\sigma_1],\ldots,[\sigma_{q_\mathsf{sig}}]$. On the $i^*$ th query of $\advA$ to the key generation algortihm, $\advB_5$ picks $\vecb{a}\gets\mathcal{Q}$ and outputs $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$. When $\advA$ queries the signing oracle on input $(i^*,m,R)$, $\advB_5$ computes an honest signature but replaces $vk_\mathsf{ot}$ with $vk_\mathsf{ot}^i$ and $[\sigma]$ with $[\sigma_i]$, and then adds 1 to $i$. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},[\vecb{c}],[\vecb{d}],\ldots))$, it extracts $[\sigma]$ from $[\vecb{d}]$ as its forgery for $vk_\mathsf{ot}$.
 
 Let $E$ be the event where $vk_\mathsf{ot}$, from the purported forgery of $\advA$, has been previously output by $\Sign$. We have that
 $$

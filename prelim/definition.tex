@@ -14,7 +14,7 @@ signing key $sk$.
 $R = \{vk_1,\ldots,vk_n\}$. We require that $(vk, sk)$ is a valid key-pair output by $\KG$
 and that $vk \in R$.
 \item $\mathsf{Verify}_{\rho,R}(m, \sigma)$ verifies a purported signature $\sigma$ on a message $m$ with respect to
-the ring of public keys $R$.
+the ring of public keys $R$ and reference string $\rho$. It outputs 1 if $\sigma$ is a valid signature for $m$ with respect to $R$  and $\rho$, and 0 otherwise.
 \end{itemize}
 The quadruple $(\mathsf{CRSGen}, \KG, \mathsf{Sign}, \mathsf{Verify})$ is a ring signature with perfect
 anonymity if it has perfect correctness, computational unforgeability and perfect
@@ -23,12 +23,12 @@ anonymity as defined below.
 
 \begin{definition}[Perfect Correctness]
 We require that a user can sign any message on behalf of a ring where she is a member. A ring signature $(\mathsf{CRSGen},\allowbreak \KG, \mathsf{Sign}, \mathsf{Verify})$
-has perfect correctness if for all adversaries $\advA$ we have:
+has perfect correctness if for any unbounded adversary $\advA$ we have:
 $$
 \Pr\left[\begin{array}{l}
 gk\gets\G(1^\lambda);\rho\gets\mathsf{CRSGen}(gk);(vk,sk)\gets\KG(\rho);\\
 (m,R)\gets\advA(\rho,vk,sk);\sigma\gets\mathsf{Sign}_{\rho,sk}(m;R):\\
-\mathsf{Verify}_{\rho,R}(m,\sigma)\text{ or }vk\notin R
+\mathsf{Verify}_{\rho,R}(m,\sigma)=1\text{ or }vk\notin R
 \end{array}\right]=1
 $$
 \end{definition}

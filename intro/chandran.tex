@@ -5,7 +5,7 @@ Our scheme follows the ring signature of Chandran et al. Consider a symmetric bi
 	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[vk]$ using Groth-Sahai proofs.
 	\item[c)] Show that $[vk]\in R$.
 \end{itemize}
-The most costly part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c) which we describe below.
+The most costly part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
  
 The proof arranges the set of verification keys on a matrix of size $m\times m$, where $m:=\sqrt{n}$, as depicted below
 $$
@@ -16,7 +16,7 @@ $$
 [vk_{m,1}]  & \cdots & [vk_{m,m}],
 \end{pmatrix}
 $$
-where $vk_{i,j}:=vk_{(i-1)m+j}$ for $i,j\in[m]$.
+where $vk_{i,j}:=vk_{(i-1)m+j}$ for $1\leq i,j \leq m$.
 
 Let $[vk_\alpha]$ the verification key for which the prover wants to show that $[vk_\alpha]\in R$ and let $i_\alpha,j_\alpha$ such that $vk_\alpha = vk_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{V}]$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 
 \begin{enumerate}
