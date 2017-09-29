@@ -4,8 +4,11 @@
 %\def\input@path{{../}}
 %\makeatother
 %
+
 \input{common-packages}
 \input{preamble}
+
+\pagestyle{plain}
 
 \author{Alonso Gonz\'alez}
 \institute
@@ -16,30 +19,18 @@
 
 \title{A Ring Signature of size $\Theta(\sqrt[3]{n})$ without Random Oracles}
 \begin{document}
-
+	
 \maketitle
 \begin{abstract}
     \input{abstract}
 \end{abstract} 
 
 \section{Introduction}
-    \input{intro/introduction}
-    
-    \subsection{Chandran et al.'s Costruction}
-	
-         \input{intro/chandran} 
-    
-    \subsection{High Level Description of our Construction}
-        
-        \input{intro/high-level}
+    \input{intro/introduction} 
 
     \subsection{Discussion}
 
     	\input{intro/discussion}
-    
-    \subsection{Flawed or Weaker Ring Signatures}\label{sec:rs-flawed}
-    
-         \input{prelim/flawed}
 
 
 
@@ -59,8 +50,20 @@
     
             \input{prelim/bb-signatures}
 
-    \section{Our Construction}
+    \subsection{Flawed or Weaker Ring Signatures}\label{sec:rs-flawed}
     
+         \input{prelim/flawed}
+
+       \subsection{Chandran et al.'s Ring Signature}
+	
+         \input{intro/chandran}
+
+    \section{Our Construction}
+
+	%\subsection{High Level Description of our Construction}
+        
+        %\input{intro/high-level}
+    	
         \input{our-construction/construction}
 \bibliographystyle{abbrv}
 \bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}

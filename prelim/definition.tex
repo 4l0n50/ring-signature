@@ -37,15 +37,14 @@ $$
 A ring signature scheme $(\mathsf{CRSGen}, \KG, \mathsf{Sign}, \mathsf{Verify})$
 is unforgeable if it is infeasible to forge a ring
 signature on a message without controlling one of the members in the ring. Formally, it
-is unforgeable when for any non-uniform polynomial
-time adversaries $\advA$ we have that
+is unforgeable when for all PPT adversaries $\advA$ we have that
 $$
 \Pr\left[\begin{array}{l}
 gk\gets\G(1^\lambda);\rho\gets\mathsf{CRSGen}(gk);(m,R,\sigma)\gets\advA^{\mathsf{VKGen},\mathsf{Sign},\mathsf{Corrupt}}(\rho):\\
 \mathsf{Verify}_{\rho,R}(m,\sigma)=1
 \end{array}\right]
 $$
-is negligible in th security parameter, where
+is negligible in $\lambda$, where
 
 \begin{itemize}
 \item $\mathsf{VKGen}$ on query number $i$ selects randomness $w_i$, computes $(vk_i,sk_i):= \KG(\rho; w_i)$
