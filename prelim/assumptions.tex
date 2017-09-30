@@ -1,0 +1,58 @@
+We will use the permutation pairing assumption, introduced by Groth and Lu for constructing NIZK proofs of correcness of a shuffle.
+\begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
+Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
+$$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
+We say that the $m$-permutation pairing assumption holds relative to $\G_s$ if for any adversary $\advA$
+$$
+\Pr\left[
+\begin{array}{l}
+gk\gets\G_s(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};[\matr{Z}]\gets\advA(gk,[\matr{A}]):\\
+\mathrm{(i)} \sum_{i=1}^{m}[\vecb{z}_i]=\sum_{i=1}^{m}[\vecb{a}_i], \mathrm{(ii)}\ \forall 1\leq i\leq m\ [z_{2,i}][1]=[z_{1,i}][z_{1,i}],\\
+\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
+\end{array}
+\right],
+$$
+where $[\matr{Z}]=[(\vecb{z}_1,\ldots,\vecb{z}_m)], [\matr{A}]=[(\vecb{a}_1,\ldots,\vecb{a}_m)]\in\GG^{2\times m}$,
+is negligible in $\lambda$.
+\end{definition}
+Groth and Lu proved the hardness of the permutation pairing assumption is generic bilinear groups. 
+
+We recall the definition of the decisional linear assumption (in matrix notation) and the kernel matrix Diffie-Hellman assumption.
+
+\begin{definition}[Decisional Diffie-Hellman Assumption (DLin)]\label{def:dlin}
+ Let  $\gk 
+\gets \ggen_s(1^\lambda)$ and let
+$$
+\matr{A} :=
+\begin{pmatrix} 
+a_1 & 0     \\
+0     & a_2 \\
+1     &  1
+\end{pmatrix},
+\quad
+a_1,a_2\gets\mathbb{Z}_q.
+$$
+We say that the DLin assumption holds relative to $\ggen_s$ if for all PPT adversaries $\advD$
+$$
+\adv_{\mathrm{DLin},\ggen_s}(\advD) := |
+	\Pr[
+		\advD(
+			gk,
+			[\matr{A}],
+			[\matr{A}\vecb{w}])=1]
+	-\Pr[
+		\advD(
+		gk,
+		[\matr{A}],
+		[\vecb{z}])=1]|
+$$
+is negligible in $\lambda$, where the probability is taken over $gk\gets\ggen_s(1^\lambda)$, $a_1,a_2\gets\ZZ_q$, $\vecb{w}\gets\ZZ_q^2$, $[\vecb{z}]\gets\GG^3$, and the coin tosses of the adversary. 
+\end{definition}
+
+\begin{definition}[Kernel Diffie-Hellman Assumption in $\GG$ \cite{EPRINT:MorRafVil15}] Let  $\gk 
+\gets\ggen_s(1^\lambda)$ and $\dist_{\ell,k}$ a distribution over $\Z_q^{\ell\times k}$.
+The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG_\gamma}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
+$[\vecb{x}]^{\top}[\matr{A}]=[\vecb{0}]_T$. 
+\end{definition}
+
+We will be using the $Q_m^\top\mbox{-}\kermdh$ assumption, which was proven secure in the generic bilinear group model by Groth and Lu \cite{AC:GroLu07}.
