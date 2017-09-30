@@ -27,7 +27,7 @@
 %\end{pmatrix}
 %$$
 
-In our scheme the secret/verification keys of party $P$ is $(sk,\vecb{vk})$, where $\vecb{vk}=([vk],[\vecb{a}],\vecb{a}[vk])$, $(sk,[vk])$ are secret/verification keys of the Boneh-Boyen signature scheme, and $\vecb{a}\in\Z_q^2$ is chosen independently for each key from some distribution $\mathcal{Q}$ to be specified later. Suppose that $\vecb{vk}$ is the $\alpha$ th element in the ring $R=\{\vecb{vk}_{1},\ldots,\vecb{vk}_{n}\}$ and let $1\leq i_\alpha,j_\alpha,k_\alpha \leq m$ such that $\vecb{vk}_\alpha = \vecb{vk}_{i_\alpha,j_\alpha,k_\alpha}$, where $\vecb{vk}_{i,j,k}=\vecb{vk}_{(i-1)m^2+(j-1)m+k}$ for $1\leq  i,j,k\leq m$ and $m:=\sqrt[3]{n}$. Below we describe a $\Theta(\sqrt[3]{n})$ set-membership proof in $R$.
+In our scheme the secret/verification keys of party $P$ is $(sk,\vecb{vk})$, where $\vecb{vk}=([vk],[\vecb{a}],\vecb{a}[vk])$, $(sk,[vk])$ are secret/verification keys of the Boneh-Boyen signature scheme, and $\vecb{a}\in\Z_q^2$ is chosen independently for each key from some distribution $\mathcal{Q}$ to be specified later. Suppose that $\vecb{vk}$ is the $\alpha$ th element in the ring $R=\{\vecb{vk}_{1},\ldots,\vecb{vk}_{n}\}$ and let $1\leq i_\alpha,j_\alpha,k_\alpha \leq m$ such that $\vecb{vk}_\alpha = \vecb{vk}_{i_\alpha,j_\alpha,k_\alpha}$, where $\vecb{vk}_{i,j,k}=\vecb{vk}_{(i-1)m^2+(j-1)m+k}$ for $1\leq  i,j,k\leq m$ and $m:=\sqrt[3]{n}$. Below we describe a $\Theta(\sqrt[3]{n})$ set-mebership-proof in $R$.
 
 Consider the sets
 \begin{align*}
@@ -36,7 +36,7 @@ Consider the sets
 \end{align*}
 
 The prover commits to $[\vecb{x}]=[\vecb{s}_\mu]$ and $[\vecb{y}]=[\vecb{s}'_{\mu'}]$, for $\mu=\mu'=(j_\alpha-1)m+k_\alpha$, and shows, using (twice) the set-membership proof of Chandran et al., that $[\vecb{x}]\in S$ and that $[\vecb{y}]\in S'$.
-The prover also needs to assure that $\mu=\mu'$, which can be done reusing the commitment to $\mu$ (in fact to its representation as two unitary vectors of size $m$) used in the proof that $[\vecb{x}]\in S$ and in the proof that $[\vecb{y}]\in S'$. Since both sets are of size $n^{2/3}$, the two set membership proofs are of size $\Theta(\sqrt[3]{n})$.
+The prover also needs to assure that $\mu=\mu'$, which can be done reutilizing the commitment to $\mu$ (in fact to its representation as two unitary vectors of size $m$) used in the proof that $[\vecb{x}]\in S$ and in the proof that $[\vecb{y}]\in S'$. Since both sets are of size $n^{2/3}$, the two set membership proofs are of size $\Theta(\sqrt[3]{n})$.
  
 Now that the prover has committed to elements $[\vecb{x}]=\sum_{i=1}^{m}[\vecb{a}_{i,j_\alpha,k_\alpha}]$ and $[\vecb{y}]=\sum_{i=1}^{m}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]$, it additionally commits to $[\kappa_1]:=[vk_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,\allowbreak[\kappa_m]:=[vk_{m,j_\alpha,k_\alpha}]$ and $[\vecb{z}_1]:=[\vecb{a}_{1,j_\alpha,k_\alpha}],\ldots,[\vecb{z}_m]:=[\vecb{a}_{m,j_\alpha,k_\alpha}]$. The prover now gives a proof that
 \begin{equation}

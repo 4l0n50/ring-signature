@@ -1,17 +1,33 @@
-In the following consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme.
+In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme.
+
 \begin{description}
 \item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
+
 \item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk])\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]$ and then erase $\vecb{a}$. The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$.
-\item[$\mathsf{Sign}_{\rho,sk}(m,R)$:]
+
+\item[$\mathsf{Sign}_{\rho,sk}(m,R)$:] Let $\alpha=(\mu-1)m+\nu$ the index of the signer with respect to $R$.
 \begin{enumerate}
 \item Compute $(sk_\mathsf{ot},vk_\mathsf{ot})\gets\mathsf{OT}.\KG(gk)$ and $\sigma_\mathsf{ot}\gets\allowbreak\mathsf{OT}.\allowbreak\mathsf{Sign}_{sk_\mathsf{ot}}(m,R)$.
-\item Compute $[\vecb{c}]:=\GS.\Com_{ck}([vk];\vecb{r})$, $\vecb{r}\gets\Z_q^3$, $[\sigma]\gets\mathsf{BB}.\mathsf{Sign}_{sk}(vk_\mathsf{ot})$, $[\vecb{d}]:=\GS.\Com_{ck}([\sigma];\vecb{s})$, $\vecb{s}\gets\Z_q^3$, and a GS proof $\pi_\GS$ that $\mathsf{BB}.\mathsf{Ver}_{[vk]}(\allowbreak[\sigma],vk_\mathsf{ot})=1$ (which can be expressed as a set of pairing product equations).
-\item Parse $R$ as $\{\vecb{vk}_{1,1,1},\ldots,\vecb{vk}_{m,m,m}\}$, where $m:=\sqrt[3]{n}$, $n:=|R|$, and let $\alpha=(i_\alpha-1)m^2+(j_\alpha-1)m + k_\alpha$ the index of $\vecb{vk}$ in $R$. Define the sets $S=\{\sum_{i=1}^{m}[\vecb{a}_{i,1,1}],\allowbreak\ldots,\sum_{i=1}^{m}[\vecb{a}_{i,m,m}]\}$ and\\ $S'=\{\sum_{i=1}^{m}\vecb{a}_{i,1,1}[vk_{i,1,1}],\allowbreak\ldots,\sum_{i=1}^{m}\vecb{a}_{i,m,m}[vk_{i,m,m}]\}$.
-\item Let $[\vecb{x}]:=\sum_{i=1}^{m}[\vecb{a}_{i,j_\alpha,k_\alpha}]$ and $[\vecb{y}]=\sum_{i=1}^{m}\vecb{a}_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\vecb{x}]$ and $[\vecb{y}]$, and compute proofs $\pi_1$ and $\pi_2$ that they belong to $S$ and $S'$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]$'s and $[\vecb{y}]$'s position in $S$ and $S'$ respectively.
-\item Let $[\kappa_1]:=[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_m]:=[vk_{m,j_\alpha,k_\alpha}]$ and $[\vecb{z}_1]:=\allowbreak[\vecb{a}_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,[\vecb{z}_m]:=[\vecb{a}_{m,j_\alpha,k_\alpha}]$. Compute GS commitments to $[\kappa_1],\ldots,[\kappa_m]$ and $[\vecb{z}_1],\ldots,[\vecb{z}_m]$, and GS proof $\pi_\kappa$ that $\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=[\vecb{y}][1]$ and a GS proof $\pi_{z}$ that $\sum_{i=1}^{m}[\vecb{z}_i]=[\vecb{x}]$ and $[z_{2,i}][1]=[z_{1,i}][z_{1,i}]$ for each $1\leq i\leq m$.
-\item Compute a proof $\pi_3$ that $[vk]$ belongs to $S_3=\{[\kappa_1],\ldots,[\kappa_m]\}$.
-\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}],[\vecb{d}],\pi_1,\pi_2,\pi_3,\pi_\kappa,\pi_z)$. (GS proofs include commitments to variables).
+
+\item Compute $[\vecb{c}]:=\GS.\Com_{ck}([vk_\alpha];\vecb{r})$, $\vecb{r}\gets\Z_q^3$, $[\sigma]\gets\mathsf{BB}.\mathsf{Sign}_{sk}(vk_\mathsf{ot})$, $[\vecb{d}]:=\GS.\Com_{ck}([\sigma];\vecb{s})$, $\vecb{s}\gets\Z_q^3$, and a GS proof $\pi_\mathsf{BB}$ that $\mathsf{BB}.\mathsf{Ver}_{[vk]}(\allowbreak[\sigma],vk_\mathsf{ot})=1$.
+
+\item For $1\leq i \leq n^{2/3}$, let $[\vecb{\kappa}_i]=([vk_{i,1}],\ldots,[vk_{i,m}])^\top$, $A_i=\{[\vecb{a}_{i,1}],\allowbreak\ldots,\allowbreak[\vecb{a}_{i,m}]\}$, and $[\matr{A}_i]:=([\vecb{a}_{i,1}]\cat\cdots\cat[\vecb{a}_{i,m}])$ . Define the sets
+$H=\{h(A_1),\allowbreak\ldots,\allowbreak h(A_{n^{2/3}})\}$ and
+$G=\{
+	g_{[\matr{A}_1]}([\vecb{\kappa}_1])
+	\allowbreak\ldots,\allowbreak
+	g_{[\matr{A}_{n^{2/3}}]}([\vecb{\kappa}_{n^{2/3}}])\}$.
+
+\item Let $[\vecb{x}]:=h(A_\mu)$ and $[\vecb{y}]=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])$. Compute GS commitments to $[\vecb{x}]$ and $[\vecb{y}]$ and compute proofs $\pi_G$ and $\pi_H$ that they belong to $G$ and $H$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]$'s and $[\vecb{y}]$'s position in $H$ and $G$ respectively.
+
+\item Let
+$$[\kappa']:=([vk_\alpha],[vk_{\mu,1}],\ldots,[vk_{\alpha-1}],[vk_{\alpha+1}],\ldots,[vk_{\mu,m}])^\top$$ and
+$$[\matr{A}']:=([\vecb{a}_\alpha] \cat [\vecb{a}_{\mu,1}] \cat \cdots \cat [\vecb{a}_{\alpha-1}] \cat [\vecb{a}_{\alpha+1}]\cat\cdots\cat[\vecb{a}_{\mu,m}]).$$
+Compute GS commitments to all but the first element of $[\vecb{\kappa}']$ (note that $[\vecb{c}]$ is a commtiment to the first element of $[\vecb{\kappa}']$) and to each element of $[\matr{A}']$. Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']}([\vecb{\kappa}'])=[\vecb{y}]$, a GS proof $\pi_{h}$ that $h(A')=[\vecb{x}]$, were $A'$ is the set of $[\matr{A}']$'s columns, and a GS proof $\pi_{Q_m}$ that $A'\in Q_m$.
+
+\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}],[\vecb{d}],\pi_{\mathsf{BB}},\pi_G,\pi_H, \pi_g,\pi_h,\pi_{Q_m})$. (GS proofs include commitments to variables).
 \end{enumerate}
+
 \item[$\mathsf{Verify}_{\rho,R}(m,\grkb{\sigma})$:] Verify the validity of the one-time signature and of all the proofs. Return 0 if any of these checks fails and 1 otherwise.
 \end{description}
 
@@ -61,50 +77,52 @@ Note that
  \leq& \Pr[\sfGame_2=1] + \Pr[\sfGame_1=1|\err_2=0]\\
 \Longrightarrow  &|\Pr[\sfGame_2=1]-\Pr[\sfGame_1=1]|\leq \Pr[\sfGame_1=1|\err_2=1].
 \end{align*}
-We proceed to bound this last probability.
+We proceed to bound this last probability constructing two adversaries against collision resistance of $g$ and preimage resitance of $h$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_S$, 
 
-Consider an adversary $\advB_2$ against the ${q_\mathsf{gen}}$-permutation pairing assumption defined as follows. $\advB_2$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk],[\vecb{a}'_i],sk[\vecb{a}'_i]))$, where $[\vecb{a}'_i]$ is the $i$ th column of $[\matr{A}']$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\vecb{z}_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\vecb{z}_m])$, as part of $\pi_z$, $\advB_2$ extract $[\vecb{z}_1],\ldots,[\vecb{z}_m]$.  Let $1\leq j_\alpha,k_\alpha\leq m$ the indices defined by $\pi_1$ and $\pi_2$, $\advB$ returns $([\vecb{z}_1],\ldots,[\vecb{z}_m],[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}])$, where $[\tilde{\vecb{a}}_1],\ldots,[\tilde{\vecb{a}}_{{q_\mathsf{gen}}-m}]$ are the columns of $[\matr{A}']$ which are different from $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$.
+Consider an adversary $\advA_h$ that finds a second preimage of $h$ when $\mathcal{M}=Q_{q_\mathsf{gen}}$. $\advA_h$ receives as challenge $B\in Q_{q_\mathsf{gen}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk],[\vecb{b}_i],sk[\vecb{b}_i]))$, where $[\vecb{b}_i]$ is the $i$ th element of $B$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\vecb{a}'_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\vecb{a}'_m])$, $\advA_h$ extracts $A'=\{[\vecb{a}'_1],\ldots,[\vecb{a}'_m]\}$ and returns $A'\cup \bar{A}_\mu$, where $\bar{A}_\mu:= B\setminus A_\mu$.
 
-Consider another adversary $\advB_3$ against the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\kermdh$ assumption defined as follows. $\advB$ receives as challenge $[\matr{A}']\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ embedding $[\matr{A}']$ in the user keys in the same way as $\advB_2$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\kappa_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\kappa_m])$, as part of $\pi_\kappa$, $\advB_3$ extract $[\kappa_1],\ldots,[\kappa_m]$. $\advB_3$ attempts to extract a permutation $\pi$ such that  $[\vecb{z}_i]=[\vecb{a}'_{\pi(i),j_\alpha,k_\alpha}]$ for each $1\leq i\leq m$. If there is no such permutation, $\advB_3$ aborts. Finally, $\advB_3$ returns $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])^\top\in\GG^{{q_\mathsf{gen}}}$.
+Consider another adversary $\advA_g$ against the collision resitance of $g$ when $\mathcal{M}=\GG^{q_\mathsf{gen}}$. $\advB$ receives as challenge $[\matr{B}]\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ embedding $[\matr{B}]$ in the user keys in the same way as $\advA_h$. When $\advA$ outputs $[\vecb{c}],\allowbreak\GS.\Com_{ck_\GS}([\kappa'_2]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\kappa'_m])$, $\advA_g$ extracts $[vk],[\kappa'_2],\ldots,[\kappa'_m]$. W.l.o.g.~\allowbreak assume that $[\matr{B}]=[\matr{A}_\mu\cat\bar{\matr{A}}_\mu]$, where $[\bar{\matr{A}}_\mu]$ is some matrix whose rows are the elements of $\bar{A}_\mu$. $\advA_g$ attempts to extract a permutation matrix $\matr{P}$ such that  $[\matr{A}']=[\matr{A}_\mu]\matr{P}$. If there is no such permutation matrix, then $\advA_g$ aborts. Else,  $\advA_g$ returns
+$\pmatri{
+	{[\tilde{\vecb{\kappa}}]}\\
+	{[\vecb{0}]}},
+\pmatri{
+	{\matr{P}[\vecb{\kappa}']}\\
+	{[\vecb{0}]}}
+\in\GG^{q_\mathsf{gen}}$,
+where $[\kappa'_1]$ is the oppening of $[\vecb{c}]$.
 
-Perfect soundness of proof $\pi_\kappa$  (recall that the Groth-Sahai CRS is perfectly binding)  implies that
+Perfect soundness of proof $\pi_g$  (recall that the Groth-Sahai CRS is perfectly binding)  implies that
 \begin{align*}
-&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=[\vecb{y}].
+&g_{[\matr{A}']}([\vecb{\kappa}'])=[\vecb{y}]. %\label{eq-rs-1}
 \end{align*}
-Perfect soundness of proof $\pi_z$ implies that
-\begin{align}
-&\sum_{i=1}^{m}[\vecb{z}_i]=[\vecb{x}]\text{ and}\nonumber\\
-&[z_{i,2}][1]=[z_{i,1}][z_{i,1}] \text{ for all }1\leq i\leq m.\label{eq-rs-3}
-\end{align}
-Perfect soundness of proofs $\pi_1,\pi_2,\pi_3$ implies, respectively, that
-\begin{align}
-&\sum_{i=1}^{m}[\kappa_i][\vecb{z}_i]=\sum_{i=1}^{m}\vecb{a}'_{i,j_\alpha,k_\alpha}[vk_{i,j_\alpha,k_\alpha}],\label{eq-rs-1}\\
-&\sum_{i=1}^{m}[\vecb{z}_i]=\sum_{i=1}^{m}[\vecb{a}'_{i,j_\alpha,k_\alpha}], \label{eq-rs-2},
-\end{align}
-where $1\leq j_\alpha,k_\alpha\leq m$ are the indices defined in $\pi_1,\pi_2$, and that $[vk]=[\kappa_{i_\alpha}]$, for some $1\leq i_\alpha\leq m$.
-
-Let $E$ the event where $[\vecb{z}_1],\ldots,[\vecb{z}_m]$ is a permutation of $[\vecb{a}'_{1,j_\alpha,k_\alpha}],\allowbreak\ldots,\allowbreak[\vecb{a}'_{m,j_\alpha,k_\alpha}]$, and assume that we are in the case $\neg E$.
-Equation (\ref{eq-rs-2}) and imply that
-$$
-\sum_{i=1}^{q_\mathsf{gen}-m}[\tilde{\vecb{a}}_i]+\sum_{i=1}^{m}[\vecb{z}_i] = \sum_{i=1}^{q_\mathsf{gen}}[\vecb{a}'_i]
-$$
-and, together with equation (\ref{eq-rs-3}), the fact that $[\tilde{a}_{i,2}][1]=[\tilde{a}_{i,1}][\tilde{a}_{i,1}]$, and that we assume $\neg E$, implies that 
-$\advB_2$ breaks the ${q_\mathsf{gen}}$-permutation pairing assumption. Therefore
-$$\Pr[\sfGame_2=1|\mathsf{err}_2=1 \wedge\neg E]\leq\adv_{{q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2).$$
-
-Assume now that we are in the case $E$. Equation (\ref{eq-rs-1}) implies that
+Perfect soundness of proof $\pi_g$ and $\pi_{Q_m}$ implies that
 \begin{align*}
-\sum_{i=1}^{m}(\kappa_i-vk_{\pi(i),j_\alpha,k_\alpha})\vecb{a}_{\pi(i),j_\alpha,k_\alpha}=0.
+&h(A')=[\vecb{x}]\text{ and } A'\in Q_m.%\label{eq-rs-2}
 \end{align*}
-Since $[vk]=[\kappa_{i_\alpha}]\notin R$, then $[\kappa_{i_\alpha}]\neq vk_{i,j_\alpha,k_\alpha}$ for all $1\leq i\leq m$. Therefore $([0],\ldots,[0],\allowbreak [\kappa_{\pi^{-1}(1)}]-[vk_{1,j_\alpha,k_\alpha}],\ldots,[\kappa_{\pi^{-1}(m)}]-[vk_{m,j_\alpha,k_\alpha}],[0],\ldots,[0])\neq [\vecb{0}]$ and $\advB_3$ breaks the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\allowbreak \kermdh$ assumption. We conclude that
-$$\Pr[\sfGame_2=1|\mathsf{err}_2=1\wedge E]\leq\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)$$
-The lemma follows from the fact that
+Given perfect soundnes of proofs $\pi_G,\pi_H$, it holds that that
 \begin{align*}
-\Pr[\sfGame_1=1|\err_2=1]=&\Pr[\sfGame_1=1|\err_2=1\wedge\neg E]\Pr[\neg E]+\\
-&\Pr[\sfGame_1=1|\err_2=1\wedge{E}_1]\Pr[{E}_1]\\
-\leq & \Pr[\sfGame_1=1|\err_2=1\wedge\neg E]+\\
-&\Pr[\sfGame_1=1|\err_2=1\wedge{E}_1]\\
-\leq & \adv_{{q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)
+&g_{[\matr{A}']}([\vecb{\kappa}'])=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu]),%\label{eq-rs-3}
+\\
+&h(A')=h(A_\mu), %\label{eq-rs-4}.
+\end{align*}
+By Lemma \ref{lemma:hg} we get that either $A'\neq {A}_\mu$ is a second preimage for $h(A_\mu)$, thus $A'\cup\bar{A}_\mu\neq B$ and $\advA_h$ is successful, or there exists a permutation matrix $\matr{P}$, which is the one that $\advA_g$ searches, such that $g_{[\matr{A}_\mu]}(\matr{P}[\vecb{\kappa}'])=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])$. $\mathsf{err}_2=1$ implies that $[vk]=[\kappa'_1]\neq[\kappa_{\mu,i}]$, for all $1\leq i\leq m$, and thus $\matr{P}[\vecb{\kappa}']\neq [\vecb{\kappa}_\mu]$ and, since $[\matr{B}]=[\matr{A}_\mu\cat\bar{\matr{A}}_\mu]$,
+$$
+g_{[\matr{A}_\mu]}(\matr{P}[\vecb{\kappa}'])=
+g_{[\matr{B}]}\pmatri{
+	{\matr{P}[\vecb{\kappa}']}\\
+	{[\vecb{0}]}}
+=
+g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])
+=
+g_{[\matr{B}]}\pmatri{
+	{[\vecb{\kappa}_\mu]}\\
+	{[\vecb{0}]}}
+$$ 
+and $\advA_g$ is successful.
+
+As stated in Section \ref{sec:hash}, from $\advA_h$ we can construct an adversary $\advB_2$ that breaks the $q_\mathsf{gen}$-PPA assumption and from $\advA_g$ we can construct an adversary $\advB_3$ that breaks the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption, with the same advantages. We conclude that 
+\begin{align*}
+\Pr[\sfGame_1=1|\err_2=1] \leq & \adv_{{q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\kermdh}(\advB_3)
 \end{align*}
 \end{proof}
 
@@ -121,7 +139,7 @@ It holds that
 &=\Pr[\sfGame_2=1|\mathsf{err}_3=0]\Pr[\mathsf{err}_3=0]\\
 &=\Pr[\mathsf{err}_3=0|\sfGame_2=1]\Pr[\sfGame_2=1].
 \end{align*}
-The probability that $\mathsf{err}_3=0$ given $\sfGame_2=1$ is the probability that the ${q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[vk]=[vk_{i_\alpha}]$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i_\alpha$ is uniformly distributed over the ${q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[vk]=[vk_{i_\alpha}]$ is $1/({q_\mathsf{gen}}-{q_\mathsf{cor}})$, since $[vk]\in R$ (or otherwise $\sfGame_2$ would have aborted). Therefore
+The probability that $\mathsf{err}_3=0$ given $\sfGame_2=1$ is the probability that the ${q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[vk]=[vk_{i^*}]$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i^*$ is uniformly distributed over the ${q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[vk]=[vk_{i^*}]$ is $1/({q_\mathsf{gen}}-{q_\mathsf{cor}})$, since $[vk]\in R$ (or otherwise $\sfGame_2$ would have aborted). Therefore
 $$
 \Pr[\mathsf{err}_2=1|\sfGame_2=1]=\frac{{q_\mathsf{gen}}-1}{{q_\mathsf{gen}}}\frac{{q_\mathsf{gen}}-2}{{q_\mathsf{gen}}-1}\ldots\frac{{q_\mathsf{gen}}-{q_\mathsf{cor}}}{{q_\mathsf{gen}}-{q_\mathsf{cor}}+1}\frac{1}{{q_\mathsf{gen}}-{q_\mathsf{cor}}}=\frac{1}{{q_\mathsf{gen}}}.
 $$ 
