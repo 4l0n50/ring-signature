@@ -1,4 +1,4 @@
-We define a natural variant of the PPA assumption in asymmetric groups, which we call aPPA, and show its hardness in the generic group model
+We define a natural variant of the PPA assumption in asymmetric groups, which we call aPPA, and show that the hardness of the PPA in generic symmetric bilinear groups imply the hardness of aPPA in generic asymmetric bilinear groups. Given that Groth and Lu showed the generic hardness of PPA, we conlcude that aPPA is hard in generic asymmetric groups. 
 
 %\begin{definition}[PPA Assumption in Asymmetric Groups]
 %Let $\mathcal{Q}^{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
@@ -24,18 +24,26 @@ We say that the $m$-permutation pairing assumption ($m$-aPPA) holds relative to 
 $$
 \Pr\left[
 \begin{array}{l}
-	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};([\matr{Y}]_1,[\matr{Z}]_2)\gets\advA(gk,[\matr{A}]_1,[(a_{1,1},\ldots,a_{1,m})]_2):\\
-	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{y}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1,\\
-	\mathrm{(ii)}\ \forall 1\leq i\leq m\ [y_{1,i}]_1[1]_2=[1]_1[z_{1,i}]_2 \text{ and } [y_{2,i}]_1[1]_2=[y_{1,i}]_1[z_{i}]_2,\\
-	\text{ and }\matr{Y}\text{ is not a permutation of the columns of }\matr{A}
+	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};([\matr{Z}]_1,[\vecb{z}^*]_2)\gets\advA(gk,[\matr{A}]_1,[\vecb{a}^*]_2):\\
+	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{z}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1,\\
+	\mathrm{(ii)}\ \forall 1\leq i\leq m\ [z_{1,i}]_1[1]_2=[1]_1[z^*_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[z^*_{i}]_2,\\
+	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
 \end{array}
 \right],
 $$
-where $[\matr{Y}]=[(\vecb{y}_1,\ldots,\vecb{y}_m)]_1, [\matr{A}]_1=[(\vecb{a}_1,\ldots,\vecb{a}_m)]_1\in\GG_1^{2\times m}$ and $[\matr{Z}]_2=\allowbreak [(z_1,\ldots,\allowbreak z_m)]_2\in\GG_2^{1\times m}$, is negligible in $\lambda$.
+where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m]_1, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\vecb{z}^*]_2=\allowbreak[(z^*_1,\ldots,\allowbreak z^*_m)]_2\in\GG_2^{1\times m}$, and $\vecb{a}^*$ is the first row of $\matr{A}$, is negligible in $\lambda$.
 \end{definition}
 
-\subsection{Security of the aPPA Assumption in the Generic Group Model}
+\subsection{The $\mathcal{Q}_m^\top\mbox{-}\kermdh$ in Asymmetric groups}
+We define a natural variant of the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption in asymmetric groups, which we call $\mathcal{Q}_m^\top\mbox{-}\akermdh$. Similarly as before, we show $\mathcal{Q}_m^\top\mbox{-}\kermdh\Rightarrow \mathcal{Q}_m^\top\mbox{-}\akermdh$ in generic groups, and we conlcude that $\mathcal{Q}_m^\top\mbox{-}\akermdh$ is hard in generic asymmetric groups. 
 
+\begin{definition}[$\mathcal{Q}_m^\top\mbox{-}\akermdh$]
+Let  $\gk \gets\ggen_a(1^\lambda)$.
+The $\mathcal{Q}_m^\top\mbox{-}\akermdh$ in $\GG_1$ says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]_1,[\vecb{a}^*]_2$, where $\matrA \gets \mathcal{Q}_m$ and $\vecb{a}^*\in\Z_q^{1\times m}$ is the first row of $\matr{A}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
+$[\vecb{x}]^{\top}[\matr{A}]=[\vecb{0}]_T$. 
+\end{definition}
+
+\subsection{Security of the aPPA and $\mathcal{Q}_m^\top\mbox{-}\akermdh$ Assumption in the Generic Group Model.}
 The generic group model is an idealized model for analyzing the security of cryptographic assumptions or cryptographic schemes. A proof of security in the generic group model guarantees that no attacker that only uses the algebraic structure of the (bilinear) group, is successful in breaking the assumption/scheme. Conversely, for a generically secure assumption/scheme, a successful attack must exploit the structure of the (bilinear) group that is actually used in the protocol (e.g.~a Barreto-Naehring curve in the case of bilinear groups).  
 
 We use the natural generalization of Shoup's generic group model \cite{EC:Shoup97} to the asymmetric bilinear setting, as it was used for instance by Boneh et al.~\cite{EC:BonBoyGoh05}. In such a model an adversary can only access elements of $\GG_1,\GG_2$ or $\GG_T$ via a query to a group oracle, which gives him a randomized  encoding of the queried element. The group oracle must be consistent with the group operations (allowing to query for the encoding of constants in either group, for the encoding of the sum of previously queried elements in the same group and for the encoding of the product of pairs in $\GG_1\times \GG_2$).
@@ -83,10 +91,10 @@ Then $\advB$ appends $(P,\psi(s),2)$ to $L_\advB$. Finally $\advB$ answers $\adv
 
 At the onset of the simulation, $\advA$ will output as a solution to the challenge a pair
 $$
-\matr{Y}=\pmatri{y_{1,1}&\cdots&y_{1,m}\\y_{2,1}&\cdots&y_{2,m}},\matr{Z} = (z_1,\ldots,z_m)
+\matr{Z}=\pmatri{z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}},\vecb{z}^* = (z^*_1,\ldots,z*_m)
 $$
 such that 
-$(P_{i,j},y_{i,j},1),(Q_{i},z_i,2) \in L_\advA$ for all $1\leq i\leq n,j\in\{1,2\}$. If the challenge is successful it must also hold that
+$(P_{i,j},z_{i,j},1),(Q_{i},z^*_i,2) \in L_\advA$ for all $1\leq i\leq n,j\in\{1,2\}$. If the challenge is successful it must also hold that
 \begin{equation}ºº
 \xi_T(P_{1,i}\cdot 1)=\xi_T(1\cdot Q_i) \Longleftrightarrow P_{1,i}(a_{1,1},\ldots,a_{2,m})=Q_{i}(a_{1,1},\ldots,a_{2,m})
 \label{eq:lin}
@@ -97,7 +105,7 @@ and
 	&\Longleftrightarrow P_{2,i}(a_{1,1},\ldots,a_{2,m})=P_{1,i}(a_{1,1},\ldots,a_{2,m})\cdot Q_{i}(a_{1,1},\ldots,a_{2,m})
 	\label{eq:quad}
 \end{align}
-Since $a_{1,1},\ldots,a_{2,m}$ remains statistically hidden to the adversary, it must choose $P_{i,1}\equiv Q_i$ and $P_{2,i}\equiv P_{1,i}\cdot Q_i$ since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}) and (\ref{eq:quad}) only hold with negligible probability. We conclude that $P_{2,i}=P^2_{1,i}$ and thus $\advB$ might output $\matr{Y}$ which is a solution of the $m$-PPA assumption.
+Since $a_{1,1},\ldots,a_{2,m}$ remains statistically hidden to the adversary, it must choose $P_{i,1}\equiv Q_i$ and $P_{2,i}\equiv P_{1,i}\cdot Q_i$ since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}) and (\ref{eq:quad}) only hold with negligible probability. We conclude that $P_{2,i}=P^2_{1,i}$ and thus $\advB$ might output $\matr{Z}$ which is a solution of the $m$-PPA assumption.
 \end{proof}
 
 

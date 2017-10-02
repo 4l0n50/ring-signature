@@ -11,7 +11,7 @@ In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ defi
 
 \item Compute $[\vecb{c}]:=\GS.\Com_{ck}([vk_\alpha];\vecb{r})$, $\vecb{r}\gets\Z_q^3$, $[\sigma]\gets\mathsf{BB}.\mathsf{Sign}_{sk}(vk_\mathsf{ot})$, $[\vecb{d}]:=\GS.\Com_{ck}([\sigma];\vecb{s})$, $\vecb{s}\gets\Z_q^3$, and a GS proof $\pi_\mathsf{BB}$ that $\mathsf{BB}.\mathsf{Ver}_{[vk]}(\allowbreak[\sigma],vk_\mathsf{ot})=1$.
 
-\item For $1\leq i \leq n^{2/3}$, let $[\vecb{\kappa}_i]=([vk_{i,1}],\ldots,[vk_{i,m}])^\top$, $A_i=\{[\vecb{a}_{i,1}],\allowbreak\ldots,\allowbreak[\vecb{a}_{i,m}]\}$, and $[\matr{A}_i]:=([\vecb{a}_{i,1}]\cat\cdots\cat[\vecb{a}_{i,m}])$ . Define the sets
+\item For $1\leq i \leq n^{2/3}$, let $[\vecb{\kappa}_i]=([vk_{i,1}],\ldots,[vk_{i,m}])^\top$, $A_i=\{[\vecb{a}_{i,1}],\allowbreak\ldots,\allowbreak[\vecb{a}_{i,m}]\}$, and $[\matr{A}_i]:=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]$ . Define the sets
 $H=\{h(A_1),\allowbreak\ldots,\allowbreak h(A_{n^{2/3}})\}$ and
 $G=\{
 	g_{[\matr{A}_1]}([\vecb{\kappa}_1])
@@ -21,8 +21,8 @@ $G=\{
 \item Let $[\vecb{x}]:=h(A_\mu)$ and $[\vecb{y}]=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])$. Compute GS commitments to $[\vecb{x}]$ and $[\vecb{y}]$ and compute proofs $\pi_G$ and $\pi_H$ that they belong to $G$ and $H$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]$'s and $[\vecb{y}]$'s position in $H$ and $G$ respectively.
 
 \item Let
-$$[\kappa']:=([vk_\alpha],[vk_{\mu,1}],\ldots,[vk_{\alpha-1}],[vk_{\alpha+1}],\ldots,[vk_{\mu,m}])^\top$$ and
-$$[\matr{A}']:=([\vecb{a}_\alpha] \cat [\vecb{a}_{\mu,1}] \cat \cdots \cat [\vecb{a}_{\alpha-1}] \cat [\vecb{a}_{\alpha+1}]\cat\cdots\cat[\vecb{a}_{\mu,m}]).$$
+$$[\vecb{\kappa'}]:=([vk_\alpha],[vk_{\mu,1}],\ldots,[vk_{\alpha-1}],[vk_{\alpha+1}],\ldots,[vk_{\mu,m}])^\top\in\GG^m$$ and
+$$[\matr{A}']:=[\vecb{a}_\alpha \cat \vecb{a}_{\mu,1} \cat \cdots \cat \vecb{a}_{\alpha-1}\cat \vecb{a}_{\alpha+1}\cat\cdots\cat\vecb{a}_{\mu,m}]\in\GG^{2\times m}.$$
 Compute GS commitments to all but the first element of $[\vecb{\kappa}']$ (note that $[\vecb{c}]$ is a commtiment to the first element of $[\vecb{\kappa}']$) and to each element of $[\matr{A}']$. Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']}([\vecb{\kappa}'])=[\vecb{y}]$, a GS proof $\pi_{h}$ that $h(A')=[\vecb{x}]$, were $A'$ is the set of $[\matr{A}']$'s columns, and a GS proof $\pi_{Q_m}$ that $A'\in Q_m$.
 
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}],[\vecb{d}],\pi_{\mathsf{BB}},\pi_G,\pi_H, \pi_g,\pi_h,\pi_{Q_m})$. (GS proofs include commitments to variables).
@@ -77,13 +77,13 @@ Note that
  \leq& \Pr[\sfGame_2=1] + \Pr[\sfGame_1=1|\err_2=0]\\
 \Longrightarrow  &|\Pr[\sfGame_2=1]-\Pr[\sfGame_1=1]|\leq \Pr[\sfGame_1=1|\err_2=1].
 \end{align*}
-We proceed to bound this last probability constructing two adversaries against collision resistance of $g$ and preimage resitance of $h$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_S$, 
+We proceed to bound this last probability constructing two adversaries against collision resistance of $g$ and preimage resitance of $h$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_S$.
 
 Consider an adversary $\advA_h$ that finds a second preimage of $h$ when $\mathcal{M}=Q_{q_\mathsf{gen}}$. $\advA_h$ receives as challenge $B\in Q_{q_\mathsf{gen}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk],[\vecb{b}_i],sk[\vecb{b}_i]))$, where $[\vecb{b}_i]$ is the $i$ th element of $B$. When $\advA$ outputs $\GS.\Com_{ck_\GS}([\vecb{a}'_1]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\vecb{a}'_m])$, $\advA_h$ extracts $A'=\{[\vecb{a}'_1],\ldots,[\vecb{a}'_m]\}$ and returns $A'\cup \bar{A}_\mu$, where $\bar{A}_\mu:= B\setminus A_\mu$.
 
 Consider another adversary $\advA_g$ against the collision resitance of $g$ when $\mathcal{M}=\GG^{q_\mathsf{gen}}$. $\advB$ receives as challenge $[\matr{B}]\in\GG^{2\times {q_\mathsf{gen}}}$ and honestly simulates $\sfGame_1$ embedding $[\matr{B}]$ in the user keys in the same way as $\advA_h$. When $\advA$ outputs $[\vecb{c}],\allowbreak\GS.\Com_{ck_\GS}([\kappa'_2]),\ldots,\allowbreak\GS.\Com_{ck_\GS}([\kappa'_m])$, $\advA_g$ extracts $[vk],[\kappa'_2],\ldots,[\kappa'_m]$. W.l.o.g.~\allowbreak assume that $[\matr{B}]=[\matr{A}_\mu\cat\bar{\matr{A}}_\mu]$, where $[\bar{\matr{A}}_\mu]$ is some matrix whose rows are the elements of $\bar{A}_\mu$. $\advA_g$ attempts to extract a permutation matrix $\matr{P}$ such that  $[\matr{A}']=[\matr{A}_\mu]\matr{P}$. If there is no such permutation matrix, then $\advA_g$ aborts. Else,  $\advA_g$ returns
 $\pmatri{
-	{[\tilde{\vecb{\kappa}}]}\\
+	{[\vecb{\kappa}_\mu]}\\
 	{[\vecb{0}]}},
 \pmatri{
 	{\matr{P}[\vecb{\kappa}']}\\
@@ -153,7 +153,7 @@ $$
 \begin{proof}
 We construct adversaries $\advB_4$ and $\advB_5$ as follows.
 
-$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in\{1,\ldots, q_\mathsf{sig}\}$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-time signature. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
+$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in\{1,\ldots, q_\mathsf{sig}\}$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-timeverification key. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
 
 $\advB_5$ receives $[vk]$ and simulates $\sfGame_3$ honestly but with the following differences. Let $i:=0$. $\advB_5$ computes $(sk_\mathsf{ot}^i,vk_\mathsf{ot}^i)\gets\mathsf{OT}.\mathsf{KeyGen}(gk)$, for each $1\leq i\leq q_\mathsf{sig}$ and queries its signing oracle on $(vk_{\mathsf{ot}}^1,\ldots,vk_\mathsf{ot}^{q_{\mathsf{sig}}})$ obtaining $[\sigma_1],\ldots,[\sigma_{q_\mathsf{sig}}]$. On the $i^*$ th query of $\advA$ to the key generation algorithm, $\advB_5$ picks $\vecb{a}\gets\mathcal{Q}$ and outputs $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$. When $\advA$ queries the signing oracle on input $(i^*,m,R)$, $\advB_5$ computes an honest signature but replaces $vk_\mathsf{ot}$ with $vk_\mathsf{ot}^i$ and $[\sigma]$ with $[\sigma_i]$, and then adds 1 to $i$. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},[\vecb{c}],[\vecb{d}],\ldots))$, it extracts $[\sigma]$ from $[\vecb{d}]$ as its forgery for $vk_\mathsf{ot}$.
 

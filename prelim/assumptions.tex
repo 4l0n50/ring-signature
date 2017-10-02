@@ -1,4 +1,4 @@
-We will use the permutation pairing assumption, introduced by Groth and Lu for constructing NIZK proofs of correcness of a shuffle.
+We will use the permutation pairing assumption, introduced by Groth and Lu.
 \begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
 Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
@@ -12,7 +12,7 @@ gk\gets\G_s(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};[\matr{Z}]\gets\advA(gk,[\ma
 \end{array}
 \right],
 $$
-where $[\matr{Z}]=[(\vecb{z}_1,\ldots,\vecb{z}_m)], [\matr{A}]=[(\vecb{a}_1,\ldots,\vecb{a}_m)]\in\GG^{2\times m}$,
+where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m], [\matr{A}]=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]\in\GG^{2\times m}$,
 is negligible in $\lambda$.
 \end{definition}
 Groth and Lu proved the hardness of the permutation pairing assumption is generic bilinear groups. 
@@ -51,7 +51,7 @@ is negligible in $\lambda$, where the probability is taken over $gk\gets\ggen_s(
 
 \begin{definition}[Kernel Diffie-Hellman Assumption in $\GG$ \cite{EPRINT:MorRafVil15}] Let  $\gk 
 \gets\ggen_s(1^\lambda)$ and $\dist_{\ell,k}$ a distribution over $\Z_q^{\ell\times k}$.
-The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG_\gamma}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
+The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
 $[\vecb{x}]^{\top}[\matr{A}]=[\vecb{0}]_T$. 
 \end{definition}
 

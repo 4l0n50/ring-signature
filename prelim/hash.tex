@@ -1,4 +1,4 @@
-We recall the definition of a hash function and also a weaker notion from the work of Rogaway and Shrimption \cite{FSE:RogShr04}. For both defintions we consider functions Let $g,h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and $\KGen$ an algorithm which on input $1^\lambda$ randomly samples an element from $\mathcal{K}$
+We recall the definition of a hash function and also a weaker notion from the work of Rogaway and Shrimpton \cite{FSE:RogShr04}. For both defintions we consider functions $g,h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and an algorithm $\KGen$ which on input $1^\lambda$ randomly samples an element from $\mathcal{K}$
 
 \begin{definition}[Collision Resistance]\label{def:hash1}
  We say that $g$ is a hash-function family with collision resistance if for all PPT adversary $\advA$
@@ -16,27 +16,33 @@ $$
 is negligible in $\lambda$.
 \end{definition}
 
-We instantiate defintion \ref{def:hash1} with the function $h$ and \ref{def:hash2}  with $g_{[\matr{A}]}$ defined in the introduction. For both functions $\mathcal{Y}=\GG^2$. In the case of $g$, $\mathcal{M}=\GG^m$ and $\KGen$ picks a group description $gk\gets\ggen_s(1^\lambda)$ together with a matrix from $Q_m$, and the function is defined as
+We instantiate defintion \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. For both functions $\mathcal{Y}=\GG^2$. In the case of $g$, $\mathcal{M}=\GG^m$ and $\KGen$ picks a group description $gk\gets\ggen_s(1^\lambda)$ together with $[\matr{A}]\in\GG^{2\times m}$, where $\matr{A}\gets\mathcal{Q}_m$, and the function is defined as
 $$
-g_{[\matr{A}]}([\vecb{x}]):= [\matr{A}\vecb{x}]
+g_{[\matr{A}]}([\vecb{x}]):= [\matr{A}\vecb{x}].
 $$
-Given a collision $[\vecb{x}],[\vecb{x}']$ for $g$, then $([\vecb{x}]-[\vecb{x}]')\neq [\vecb{0}]$ is in the kernel of $[\matr{A} ]$. Therefore, is trivial to prove that for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{Col}_g}(\advA)=\adv_{\mathcal{Q}_m^\top\mbox{-}\kermdh}(\advB)$.
+Given a collision $[\vecb{x}],[\vecb{x}']$ for $g$, then $([\vecb{x}]-[\vecb{x}]')\neq [\vecb{0}]$ is in the kernel of $[\matr{A} ]$. Therefore, is trivial to prove that for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{Col}_g}(\advA)=\adv_{\mathcal{Q}_m^\top\mbox{-}\kermdh}(\advB)$, whenever $\matr{A}\gets\mathcal{Q}_m$.
 
  In the case of $h$, $\mathcal{M}=Q_m$ and $\KGen=\ggen_s$, and the function is defined as
 $$
-h(A):= \sum_{[\vecb{a}]\in A}[\vecb{a}]
+h(A):= \sum_{[\vecb{a}]\in A}[\vecb{a}].
 $$
-Given $A\gets Q$ and a second preimage $A'\in Q_m$ of $h(A)$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, given $[\matr{A}]$ the challenge of the $m$-PPA assumption, the any matrix $[\matr{A}']$ whose columns are the elements of $A'$ is not a permutation of $[\matr{A}']$ and break $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$.
+Given $A\gets Q_m$ and a second preimage $A'\in Q_m$ of $h(A)$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, given $[\matr{A}]$ the challenge of the $m$-PPA assumption, then any matrix $[\matr{A}']$ whose columns are the elements of $A'$ is not a permutation of $[\matr{A}']$ and break $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$.
 
-We prove a simple lemma already described in Section \ref{sec:tech-overview}.
+We note that given $A\in Q_m,[\matr{A}]\in\GG^{2\times m},[\vecb{x}]\in\GG^m$ and $[\vecb{y}]\in\GG^2$ one can express the staments $A\in Q_m$, $g_{[\matr{A}]}([\vecb{x}])=[\vecb{y}]$, and $h(A)=[\vecb{x}]$ as equations (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
+ \begin{align}
+&\sum_{i=1}^n e([a_{2,i}],[1])=e([a_{1,i}],[a_{1,i}]) \text{ for each } 1\leq i\leq m \label{eq:Q}\\
+&\sum_{j=1}^n e([a_{i,j}],[x_i]) = e([y_i],[1]) \text{ for each } i\in\{1,2\} \label{eq:g}\\
+&\sum_{[\vecb{a}]\in A} [a_i] = [y_i] \text{ for each } i\in\{1,2\}.\label{eq:h}
+\end{align}
+Thus, one can compute Groth-Sahai proofs of size $\Theta(m),\Theta(1)$, and $\Theta(1)$, respectively, for the satisfiability of each statement.
+
+Finally, we prove a simple lemma informally stated in Section \ref{sec:tech-overview}.
 \begin{lemma}\label{lemma:hg}
 Let $A\gets Q_m,A'\in Q_m,[\vecb{x}],[\vecb{x}']\in\GG^m$, and $[\matr{A}],[\matr{A}']$ the matrices whose columns are the elements of $A$ and $A'$, respectively. Then $h(A)=h(A')$ and $g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}']}([\vecb{x}'])$ implies that $A'$ is a second preimage of $h(A)$ or there exists a permutation matrix $\matr{P}$ such that $g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}]}([\matr{P}\vecb{x}'])$.
 \end{lemma}
 \begin{proof}
-If $A\neq A'$, then $A'$ is a second preimage of $h(A)$. Else, there is a permutation matrix $[\matr{P}]$ such that $[\matr{A}'] =[\matr{A}\matr{P}]$. Then
+If $A\neq A'$, then $A'$ is a second preimage of $h(A)$. Else, there is a permutation matrix $\matr{P}$ such that $[\matr{A}'] =[\matr{A}\matr{P}]$. Then
 $$
  g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}']}([\vecb{x}'])\Longleftrightarrow  g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}\matr{P}]}([\vecb{x}'])=g_{[\matr{A}]}([\matr{P}\vecb{x}']).
 $$
 \end{proof}
-
-Finally, we note that given $A\in Q_m,[\matr{A}]\in\GG^{2\times m},[\vecb{x}]\in\GG^m$ and $[\vecb{y}]\in\GG^2$ one can express the stament $g_{[\matr{A}]}([\vecb{x}])=[\vecb{y}]$ as a set of pairing product equations and $h(A)=[\vecb{y}]$ as a set of multiscalar multiplication equations. Thus, one can compute Groth sahai proofs of the satisfiability of both statements.
