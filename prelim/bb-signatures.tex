@@ -1,6 +1,8 @@
 Boneh and Boyen introduce a short signature -- each signature consists of only one group element -- which is secure against existential forgery under weak chosen message attacks without random oracles \cite{EC:BonBoy04a}.
 The verification of the validity of any signature-message pair can be written as a set of pairing product equations. Thereby, using Groth-Sahai proofs one can show the possession of a valid signature without revealing the actual signature.
 
+We construct our ring signature using Boneh-Boyen signatures, but we could replace the Boneh-Boyen signature scheme with any structure preserving signature scheme secure under milder assumptions (e.g.~\cite{EPRINT:JutRoy17}). We rather keep it simple and stick to Boneh-Boyen signature which, since the verification key is just one group element, simplifies the notation and reduces the size of the final signature.
+ 
 \begin{definition}[weak Existential Unforgeability (wUF-CMA)] We say that a signature scheme $\Sigma = (\mathsf{KGen},\mathsf{Sign},\mathsf{Ver})$ is wUF-CMA if for any PPT adversary $\advA$
 	$$
 	\Pr\left[\begin{array}{l}

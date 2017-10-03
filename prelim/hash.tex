@@ -1,4 +1,4 @@
-We recall the definition of a hash function and also a weaker notion from the work of Rogaway and Shrimpton \cite{FSE:RogShr04}. For both defintions we consider functions $g,h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and an algorithm $\KGen$ which on input $1^\lambda$ randomly samples an element from $\mathcal{K}$
+We recall the definition of a hash function and also a weaker notion from the work of Rogaway and Shrimpton \cite{FSE:RogShr04}. For both defintions we consider functions $g,h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and an algorithm $\KGen$ which on input $1^\lambda$ randomly samples an element from $\mathcal{K}$.
 
 \begin{definition}[Collision Resistance]\label{def:hash1}
  We say that $g$ is a hash-function family with collision resistance if for all PPT adversary $\advA$
@@ -11,7 +11,7 @@ is negligible in $\lambda$.
 \begin{definition}[Always Second-Preimage Resistance \cite{FSE:RogShr04}]\label{def:hash2}
  We say that $h$ is a hash-function family with always second-preimage resistance if for all PPT adversary $\advA$
 $$
-\adv_h^{\mathsf{aPre}}(\advA) := \Pr[k\gets\KGen(1^\lambda), x\gets\mathcal{M}, x'\gets A(k):h_k(x)=h_k(x')]
+\adv_h^{\mathsf{aPre}}(\advA) := \Pr[k\gets\KGen(1^\lambda), x\gets\mathcal{M}, x'\gets A(x):h_k(x)=h_k(x')]
 $$ 
 is negligible in $\lambda$.
 \end{definition}
@@ -26,12 +26,12 @@ Given a collision $[\vecb{x}],[\vecb{x}']$ for $g$, then $([\vecb{x}]-[\vecb{x}]
 $$
 h(A):= \sum_{[\vecb{a}]\in A}[\vecb{a}].
 $$
-Given $A\gets Q_m$ and a second preimage $A'\in Q_m$ of $h(A)$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, given $[\matr{A}]$ the challenge of the $m$-PPA assumption, then any matrix $[\matr{A}']$ whose columns are the elements of $A'$ is not a permutation of $[\matr{A}']$ and break $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$.
+Given $A\gets Q_m$ and a second preimage $A'\in Q_m$ of $h(A)$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, given $[\matr{A}]$ the challenge of the $m$-PPA assumption, then any matrix $[\matr{A}']$ whose columns are the elements of $A'$ is not a permutation of $[\matr{A}']$ and breaks $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$.
 
 We note that given $A\in Q_m,[\matr{A}]\in\GG^{2\times m},[\vecb{x}]\in\GG^m$ and $[\vecb{y}]\in\GG^2$ one can express the staments $A\in Q_m$, $g_{[\matr{A}]}([\vecb{x}])=[\vecb{y}]$, and $h(A)=[\vecb{x}]$ as equations (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
  \begin{align}
-&\sum_{i=1}^n e([a_{2,i}],[1])=e([a_{1,i}],[a_{1,i}]) \text{ for each } 1\leq i\leq m \label{eq:Q}\\
-&\sum_{j=1}^n e([a_{i,j}],[x_i]) = e([y_i],[1]) \text{ for each } i\in\{1,2\} \label{eq:g}\\
+&e([a_{2,i}],[1])=e([a_{1,i}],[a_{1,i}]) \text{ for each } 1\leq i\leq m \label{eq:Q}\\
+&\sum_{j=1}^m e([a_{i,j}],[x_i]) = e([y_i],[1]) \text{ for each } i\in\{1,2\} \label{eq:g}\\
 &\sum_{[\vecb{a}]\in A} [a_i] = [y_i] \text{ for each } i\in\{1,2\}.\label{eq:h}
 \end{align}
 Thus, one can compute Groth-Sahai proofs of size $\Theta(m),\Theta(1)$, and $\Theta(1)$, respectively, for the satisfiability of each statement.

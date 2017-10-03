@@ -1,11 +1,11 @@
 In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme.
 
 \begin{description}
-\item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
+\item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$ and define $ck:=\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
 
-\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk])\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]$ and then erase $\vecb{a}$. The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$.
+\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk])\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]$, $\vecb{a}[vk]$, and then erase $\vecb{a}$. The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk],[\vecb{a}],\vecb{a}[vk])$.
 
-\item[$\mathsf{Sign}_{\rho,sk}(m,R)$:] Let $\alpha=(\mu-1)m+\nu$ the index of the signer with respect to $R$.
+\item[$\mathsf{Sign}_{\rho,sk}(m,R)$:] Let $\alpha$ the index of the signer with respect to $R$.
 \begin{enumerate}
 \item Compute $(sk_\mathsf{ot},vk_\mathsf{ot})\gets\mathsf{OT}.\KG(gk)$ and $\sigma_\mathsf{ot}\gets\allowbreak\mathsf{OT}.\allowbreak\mathsf{Sign}_{sk_\mathsf{ot}}(m,R)$.
 
@@ -46,15 +46,15 @@ where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for
 \begin{proof}
 Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\vecb{vk}$.
 
-We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''.
+We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''. This is justified by the fact that the output of $\mathsf{VKGen}$ is independent of all previous outputs.
 
 W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeability follows from the indistinguishability of the following games
 \begin{itemize}
 \item[$\sfGame_0$:] This is the real unforgeability experiment. $\sfGame_0$ returns 1 if the adversary $\advA$ produces a valid forgery and 0 if not.
 \item[$\sfGame_1$:] This is game exactly as $\sfGame_0$ with the following differences: 
     \begin{itemize}
-    \item The Groth-Sahai CRS is sampled together with its discrete logarithms from the perfectly binding distribution.
-    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$, and a random index $i^*$ is chosen from $\{1,\ldots, q_\mathsf{gen}\}$.
+    \item The Groth-Sahai CRS is sampled together with its discrete logarithms from the perfectly binding distribution. Note that the discrete logarithms of the CRS allow to open the Groth-Sahai commitments.
+    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$ and a random index $i^*$ is chosen from $\{1,\ldots, q_\mathsf{gen}\}$.
     \item On a query to $\mathsf{Corrupt}$ with argument $i$, if $i=i^*$ set $\mathsf{err_3}\gets 1$ and proceed as in $\sfGame_0$.
     \item Let $(m,R,\sigma)$ the purported forgery output by $\advA$. If $[vk]$, the opening of commitment $[\vecb{c}]$ from $\sigma$, is not equal to $[vk_{i^*}]$,  set $\mathsf{err}_3\gets 1$. If $[vk]\notin R$, then set $\mathsf{err}_2=1$.
     \end{itemize}
@@ -101,9 +101,9 @@ Perfect soundness of proof $\pi_g$ and $\pi_{Q_m}$ implies that
 \end{align*}
 Given perfect soundnes of proofs $\pi_G,\pi_H$, it holds that that
 \begin{align*}
-&g_{[\matr{A}']}([\vecb{\kappa}'])=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu]),%\label{eq-rs-3}
+&g_{[\matr{A}']}([\vecb{\kappa}'])=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])%\label{eq-rs-3}
 \\
-&h(A')=h(A_\mu), %\label{eq-rs-4}.
+&h(A')=h(A_\mu). %\label{eq-rs-4}.
 \end{align*}
 By Lemma \ref{lemma:hg} we get that either $A'\neq {A}_\mu$ is a second preimage for $h(A_\mu)$, thus $A'\cup\bar{A}_\mu\neq B$ and $\advA_h$ is successful, or there exists a permutation matrix $\matr{P}$, which is the one that $\advA_g$ searches, such that $g_{[\matr{A}_\mu]}(\matr{P}[\vecb{\kappa}'])=g_{[\matr{A}_\mu]}([\vecb{\kappa}_\mu])$. $\mathsf{err}_2=1$ implies that $[vk]=[\kappa'_1]\neq[\kappa_{\mu,i}]$, for all $1\leq i\leq m$, and thus $\matr{P}[\vecb{\kappa}']\neq [\vecb{\kappa}_\mu]$ and, since $[\matr{B}]=[\matr{A}_\mu\cat\bar{\matr{A}}_\mu]$,
 $$

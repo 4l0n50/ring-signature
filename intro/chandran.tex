@@ -1,5 +1,5 @@
 %!TeX root=../main_ring_signature.tex
-Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,[vk])$ and a {one-time signature scheme}.\footnote{We could replace the Boneh-Boyen signature scheme with any structure preserving signature scheme secure under milder assumptions (e.g.~\cite{EPRINT:JutRoy17}). We rather keep it simple and stick to Boneh-Boyen signature which, since the verification key is just one group element, simplifies the notation and reduces the size of the final signature.} The signature of the message $m$ for a ring $R=\{[vk_1],\ldots,[vk_n]\}$ is computed as follows:
+Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,[vk])$ and a {one-time signature scheme}. The signature of the message $m$ for a ring $R=\{[vk_1],\ldots,[vk_n]\}$ is computed as follows:
 \begin{itemize}
 	\item[a)] Pick a one-time signature key $(sk_\mathsf{ot},vk_\mathsf{ot})$, sign $m$ with $sk_\mathsf{ot}$, and sign $vk_\mathsf{ot}$ with $sk$.
 	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[vk]$ using Groth-Sahai proofs.
