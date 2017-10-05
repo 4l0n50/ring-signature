@@ -27,7 +27,7 @@ and
 $$
 [\vecb{b}']_2 = [(b_\alpha, b_{\mu,1},\ldots,b_{\alpha-1},b_{\alpha+1},\ldots,b_{\mu,m})]_2
 $$
-Compute GS commitments to all but the first element of $[\vecb{\kappa}']_2$ (note that $[\vecb{c}]_2$ is a commtiment to the first element of $[\vecb{\kappa}']_2$) and to each element of $[\matr{A}']_1$ and $[\vecb{b}']_2$. Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']_1}([\vecb{\kappa}']_2)=[\vecb{y}]_2$, a GS proof $\pi_{h}$ that $h(A',B')=[\vecb{x}]_1$, were $A'$ is the set of $[\matr{A}']_1$'s columns, and a GS proof $\pi_{Q_m}$ that $(A',B')\in Q_m$.
+Compute GS commitments to all but the first element of $[\vecb{\kappa}']_2$ (note that $[\vecb{c}]_2$ is a commitment to the first element of $[\vecb{\kappa}']_2$) and to each element of $[\matr{A}']_1$ and $[\vecb{b}']_2$. Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']_1}([\vecb{\kappa}']_2)=[\vecb{y}]_2$, a GS proof $\pi_{h}$ that $h(A',B')=[\vecb{x}]_1$, were $A'$ is the set of $[\matr{A}']_1$'s columns, and a GS proof $\pi_{Q_m}$ that $(A',B')\in Q_m$.
 
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\pi_{\mathsf{BB}},\pi_G,\pi_H, \pi_g,\pi_h,\pi_{Q_m})$. (GS proofs include commitments to variables).
 \end{enumerate}

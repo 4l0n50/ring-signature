@@ -5,7 +5,7 @@ Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the f
 	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[vk]$ using Groth-Sahai proofs.
 	\item[c)] Show that $[vk]\in R$.
 \end{itemize}
-The most costly part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
+The most expensive part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
  
 The proof arranges the set of verification keys on a matrix of size $m\times m$, where $m:=\sqrt{n}$, as depicted below
 $$
@@ -32,4 +32,4 @@ Using Groth-Sahai proofs, the prover proves that
 \item $[\kappa_1]=\sum_{j=1}^m b_j [vk_{1,j}],\ldots,[\kappa_m]=\sum_{j=1}^m b_j[vk_{m,j}]$,\label{eq3}
 \item $[vk_\alpha]=\sum_{i=1}^m b'_i[\kappa_i]$.\label{eq4}
 \end{enumerate}
-Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} that $([\kappa_1],\ldots,[\kappa_m])^\top$ is a column of $[\matr{V}]$, and equation \ref{eq4} that $[vk_\alpha]$ is an element of $([\kappa_1],\ldots,[\kappa_m])$.
+Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1],\ldots,[\kappa_m])^\top$ is a column of $[\matr{V}]$, and equation \ref{eq4} proves that $[vk_\alpha]$ is an element of $([\kappa_1],\ldots,[\kappa_m])$.

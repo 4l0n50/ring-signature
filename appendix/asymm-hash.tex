@@ -1,4 +1,4 @@
-We instantiate defintion \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. In the case of $g$, $\mathcal{Y}=\GG_2^2$, $\mathcal{M}=\GG_2^m$ and $\KGen$ picks a group description $gk\gets\ggen_a(1^\lambda)$ together with $[\matr{A}]_1\in\GG^{2\times m}$, where $\matr{A}\gets\mathcal{Q}_m$, and the function is defined as
+We instantiate definition \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. In the case of $g$, $\mathcal{Y}=\GG_2^2$, $\mathcal{M}=\GG_2^m$ and $\KGen$ picks a group description $gk\gets\ggen_a(1^\lambda)$ together with $[\matr{A}]_1\in\GG^{2\times m}$, where $\matr{A}\gets\mathcal{Q}_m$, and the function is defined as
 $$
 g_{[\matr{A}]_1}([\vecb{x}]_2):= [\matr{A}\vecb{x}]_2.
 $$
@@ -20,7 +20,7 @@ h(A,B):= \sum_{[\vecb{a}]_1\in A}[\vecb{a}]_1.
 $$
 Given $(A,B)\gets Q_m$ and a second preimage $(A',B')\in Q_m$ of $h(A,B)$, it is trivial to construct an adversary breaking the $m$-aPPA assumption. Indeed, given $[\matr{A}]_1,[\vecb{b}]\in\GG_1^{2\times m}\times \GG_2^{1\times m}$ the challenge of the $m$-aPPA assumption, then any matrix $[\matr{A}']$ and any row vector $[\vecb{b}']$ whose columns are the elements of, respectively, $A'$ and $B$, breaks $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$.
 
-We note that given $(A,B)\in Q_m,[\matr{A}]_1\in\GG^{2\times m},[\vecb{b}]_2\in\GG^{1\times m},[\vecb{x}]_2\in\GG^m$ and $[\vecb{y}]_1\in\GG_1^2,[\vecb{z}]_2\in\GG_2^2$ one can express the staments $A\in Q_m$, $g_{[\matr{A}]_1}([\vecb{x}]_2)=[\vecb{z}]_2$, and $h(A)=[\vecb{y}]_1$ as equations (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
+We note that given $(A,B)\in Q_m,[\matr{A}]_1\in\GG^{2\times m},[\vecb{b}]_2\in\GG^{1\times m},[\vecb{x}]_2\in\GG^m$ and $[\vecb{y}]_1\in\GG_1^2,[\vecb{z}]_2\in\GG_2^2$ one can express the statements $A\in Q_m$, $g_{[\matr{A}]_1}([\vecb{x}]_2)=[\vecb{z}]_2$, and $h(A)=[\vecb{y}]_1$ as equations (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
  \begin{align}
 &\sum_{i=1}^n e([a_{2,i}]_1,[1]_2)=e([a_{1,i}]_1,[b_{i}]_2) \text{ and }\nonumber\\
 &e([a_{i,1}]_1,[1]_2)=e([1]_1,[b_i]_2) \text{ for each } 1\leq i\leq m \label{eq:Q}\\
