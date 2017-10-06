@@ -2,7 +2,7 @@ We write PPT as a shortcut for probabilistic polynomial time Turing machine.
 
 Let $\ggen_s$ be some probabilistic polynomial time algorithm which on input $1^{\lambda}$, where $\lambda$ is the security parameter, returns the \emph{group key} which is the description of a symmetric bilinear group $gk:=(q,\GG,\GG_T,e,\mathcal{P})$, where $\GG$
 and $\GG_T$ are groups of prime order $q$, the element $\mathcal{P}$ is a generator of 
-$\GG$, and $e:\GG\times\GG\to\GG_T$ is an efficiently computable and non-degenerated bilinear map.
+$\GG$, and $e:\GG\times\GG\to\GG_T$ is an efficiently computable and non-degenerated bilinear map. We will use additive notation for the group operation of both $\GG$ and $\GG_T$.
 
 Elements in $\GG$ are denoted implicitly as $[a]:=a \Pt$, where $a\in\Z_q$, and elements in $\GG_T$ are denoted as $[a]_T:=a\cdot e(\Pt,\Pt)$. 
 The pairing operation is written as a product $\cdot$, that is $[a] \cdot [b]=[a] [b]=e([a],[b])=[ab]_T$. Vectors and matrices are denoted in boldface. Given a matrix $\matr{T}=(t_{i,j})$, $[\matr{T}]$ is
