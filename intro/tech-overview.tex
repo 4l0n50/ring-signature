@@ -17,13 +17,13 @@ We consider also a family of collision resistant hash functions parameterized by
 g_{[\matr{A}]} : \Z_q^m &\to \GG^2\\
            [\vecb{x}] &\mapsto g_{[\matr{A}]}([\vecb{x}]) = [\matr{A}\vecb{x}]
 \end{align*}
-Although $g$ is not efficient computable, we might check whether $g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}]}([\vecb{x}'])$ using the pairing operation. Further, we will include public values of the form $[\vecb{a}_ix_i]$, where $[\vecb{a}_i]$ is a column of $[\matr{A}]$ and $[x_i]$ is an element of $[\vecb{x}]$, which render  $g_{[\matr{A}]}([\vecb{x}])$ efficiently computable.
+Although $g$ is not efficiently computable, we might check whether $g_{[\matr{A}]}([\vecb{x}])=g_{[\matr{A}]}([\vecb{x}'])$ using the pairing operation. Further, we will include public values of the form $[\vecb{a}_ix_i]$, where $[\vecb{a}_i]$ is a column of $[\matr{A}]$ and $[x_i]$ is an element of $[\vecb{x}]$, which render  $g_{[\matr{A}]}([\vecb{x}])$ efficiently computable.
 
 Finding collisions for $g_{[\matr{A}]}$ is as hard as finding a non-zero element in the kernel of $[\matr{A}]$, since
 $$
 g_{[\matr{A}]}([\vecb{x}]) = g_{[\matr{A}]}([\vecb{x}']) \Longleftrightarrow [\matr{A}(\vecb{x}-\vecb{x}')]=[0],
 $$
-which is in general a hard problem known as kernel matrix Diffie-Hellman (KerMDH) assumption~\cite{AC:MorRafVil16}. Depending on $\matr{A}$, the KerMDH assumption is a rather mild assumption which encompasses many other assumptions --- e.g.~simultaneous double pairing assumption (weaker than DLin) or flexible CDH assumption. If $A$ is randomly chosen from $Q_m$, then finding an element on the kernel of $[\matr{A}]$ was proven hard in generic bilinear groups by Groth and Lu \cite{AC:GroLu07} (although using a different terminology).
+which is in general a hard problem known as a kernel matrix Diffie-Hellman (KerMDH) assumption~\cite{AC:MorRafVil16}. Depending on $\matr{A}$, the KerMDH assumption is a rather mild assumption which encompasses many other assumptions --- e.g.~simultaneous double pairing assumption (weaker than DLin) or flexible CDH assumption. If $A$ is randomly chosen from $Q_m$, then finding an element on the kernel of $[\matr{A}]$ was proven hard in generic bilinear groups by Groth and Lu \cite{AC:GroLu07} (although using a different terminology).
 %The KerMDH assumption has found many applications such as constructing constant size QA-NIZK proofs of membership in the linear span of a matrix \cite{EC:LPJY14,EC:KilWee15}.
 
 
@@ -32,7 +32,7 @@ The following fact will be useful in what follows. Consider matrices $[\matr{A}]
 \subsubsection{High level description.}
 Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $[vk]\in\GG$ and belongs to the ring of verification keys $R=\{[vk_1],\ldots,[vk_n]\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of group elements (not only of verification keys).
 
-Our proof consists of two set-membership proofs in sets of size $\Theta(n^{2/3})$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
+Our proof consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
 We enlarge user's verification keys the by including $[\vecb{a}]\gets Q_1$ and $[\vecb{a}vk]=\vecb{a}[vk]$, where $[vk]$ is the verification key of a Boneh-Boyen signature. Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([vk_i],[\vecb{a}],[\vecb{a}_ivk_i])$. In spite of these differences with Chandran et al.'s verification key, our proof also shows that the opening of a Groth-Sahai commitment is a Boneh-Boyen verification key $[vk_i]$ and belongs to $\{[vk_1],\ldots,[vk_n]\}$.
 
 Our first step is to arrange the verification keys in $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. To do so we coin the following notation: for a sequence $\{s\}_{1\leq i \leq n}$ define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  The prover and the verifier arrange the elements of the verification keys into $[\vecb{\kappa}_1],\ldots, [\vecb{\kappa}_{n^{2/3}}]$, $A_1,\ldots, A_{n^{2/3}}$, and $[\matr{A}_1],\ldots, [\matr{A}_{n^{2/3}}]$ such that $[\vecb{\kappa}_i]:= ([vk_{i,1}],\ldots,[vk_{i,m}])^\top\in\GG^m, A_i:=\{[\vecb{a}_{i,1}],\ldots,[\vecb{a}_{i,m}]\}\in Q_m$ and $[\matr{A}_i]=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]\in\GG^{2\times m}$. They also define the sets
