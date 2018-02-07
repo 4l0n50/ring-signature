@@ -1,26 +1,58 @@
-\documentclass{llncs}
-
-%\makeatletter
-%\def\input@path{{../}}
-%\makeatother
-%
-
+\documentclass[a4paper,english]{lipics-v2016}
+%This is a template for producing LIPIcs articles. 
+%See lipics-manual.pdf for further information.
+%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
+%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
+% for section-numbered lemmas etc., use "numberwithinsect"
+ 
+\usepackage{microtype}%if unwanted, comment out or use option "draft"
 \input{common-packages}
 \input{preamble}
 
-\pagestyle{plain}
 
-%\author{Alonso Gonz\'alez}
-%\institute
-%{
-%	Ecole Normale Sup´\'erieure de Lyon, Laboratoire LIP (France)\\
-%	\email{alonso.gonzalez@ens-lyon.fr}
-%}
+%\graphicspath{{./graphics/}}%helpful if your graphic files are in another directory
 
-\title{A Ring Signature of size $\Theta(\sqrt[3]{n})$ without Random Oracles}
+\bibliographystyle{plainurl}% the recommended bibstyle
+
+% Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{A more efficeint Ring Signature without Random Oracles}
+\titlerunning{A more efficent Ring Signature} %optional, in case that the title is too long; the running title should fit into the top page column
+
+%% Please provide for each author the \author and \affil macro, even when authors have the same affiliation, i.e. for each author there needs to be the  \author and \affil macros
+\author[1]{Alonso Gonz\'alez}
+\affil[1]{Ecole Normale Sup\'erieure de Lyon, Laboratoire LIP (France)\\
+  \texttt{alonso.gonzalez@ens-lyon.fr}}
+\authorrunning{A.\,Gonz\'alez} %mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et. al.'
+
+\Copyright{Alonso Gonz\'alez}%mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
+
+\subjclass{Security and privacy - Public key (asymmetric) techniques}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
+\keywords{Ring Signatures, Bilinear Groups, Zero-Knowledge}% mandatory: Please provide 1-5 keywords
+% Author macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\EventEditors{Ioannis Chatzigiannakis, Christos Kaklamanis, Daniel Marx, and Don Sannella}
+\EventNoEds{4}
+\EventLongTitle{45th International Colloquium on Automata, Languages, and Programming (ICALP 2018)}
+\EventShortTitle{ICALP 2018}
+\EventAcronym{ICALP}
+\EventYear{2018}
+\EventDate{July 9--13, 2018}
+\EventLocation{Prague, Czech Republic}
+\EventLogo{eatcs}
+\SeriesVolume{80}
+\ArticleNo{}
+% Editor-only macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
 \begin{document}
-	
+
 \maketitle
+
 \begin{abstract}
     \input{abstract}
 \end{abstract} 
@@ -47,7 +79,7 @@
 
 	\input{prelim/assumptions}
         
-	\subsection{Groth-Sahai Proofs in the DLin Instantiation} \label{sec:gs-proofs}
+	\subsection{Groth-Sahai Proofs in the SXDH Instantiation} \label{sec:gs-proofs}
         
             \input{prelim/symm-gs}
 
@@ -79,14 +111,22 @@
         %\input{intro/high-level}
     	
         \input{our-construction/construction}
+%%
+%% Bibliography
+%%
 
-%\section{Acknowledgments}
-%Thanks to Carla R\`afols for some useful discussions and to Beno\^it Libert for helpful comments on a previous version of this work.
-\bibliographystyle{abbrv}
+%% Either use bibtex (recommended), 
+
 \bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}
 
-%\appendix
-%
+%% .. or use the thebibliography environment explicitely
+
+\appendix
+
+	\section{Security of the $m$-PPA assumption in Asymmetric Groups} \label{sec:aPPA}
+	
+		\input{appendix/asymm-ppa}
+
 %\section{Our construction in Asymmetric Groups}
 %
 %	\input{appendix/asymm}
@@ -94,9 +134,6 @@
 %	\subsection{Asymmetric Bilinear Groups}
 %		\input{appendix/asymm-groups}
 %
-%	\subsection{The Permutation Pairing Assumption in Asymmetric Groups} \label{sec:aPPA}
-%	
-%		\input{appendix/asymm-ppa}
 %
 %	\subsection{Our Hash Funtions in Asymmetric Groups}
 %		
@@ -113,4 +150,3 @@
 %		\input{appendix/asymm-rs}
 
 \end{document}
-

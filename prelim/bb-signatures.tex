@@ -1,3 +1,6 @@
+% !TEX root = ../main-ring-signature.tex
+
+
 Boneh and Boyen introduced a short signature --- each signature consists of only one group element --- which is secure against existential forgery under weak chosen message attacks without random oracles \cite{EC:BonBoy04a}.
 The verification of the validity of any signature-message pair can be written as a set of pairing product equations. Thereby, using Groth-Sahai proofs one can show the possession of a valid signature without revealing the actual signature.
 
@@ -6,7 +9,7 @@ We construct our ring signature using Boneh-Boyen signatures, but we could repla
 \begin{definition}[weak Existential Unforgeability (wUF-CMA)] We say that a signature scheme $\Sigma = (\mathsf{KGen},\mathsf{Sign},\mathsf{Ver})$ is wUF-CMA if for any PPT adversary $\advA$
 	$$
 	\Pr\left[\begin{array}{l}
-	gk \gets \ggen_s(1^\lambda), (m_1,\ldots,m_{q_\mathsf{sig}})\gets\advA(gk), (sk,vk)\gets\KGen(1^\lambda), \\
+	gk \gets \ggen_a(1^\lambda), (m_1,\ldots,m_{q_\mathsf{sig}})\gets\advA(gk), (sk,vk)\gets\KGen(1^\lambda), \\
 	(m,\sigma)\gets\advA(\Sign_{sk}(m_1),\ldots,\Sign_{sk}(m_{q_\mathsf{sig}})):\\
 	\Ver_{vk}(m,\sigma)=1 \text{ and } m\notin \{m_1,\ldots,m_{q_\mathsf{sig}}\}
 	\end{array}\right]
@@ -19,16 +22,16 @@ The Boneh-Boyen signature is proven wUF-CMA secure under the $m$-\emph{strong Di
 \begin{definition}[$m\mbox{-}SDH$ assumption]
 For any PPT adversary $\advA$
 $$
-\Pr\left[gk\gets\G_s(1^\lambda),x\gets\Z_q:\advA(gk,[x],[x^2],\ldots,[x^m])=(c,\left[\frac{1}{x+c}\right])\right]
+\Pr\left[gk\gets\G_a(1^\lambda),x\gets\Z_q:\advA(gk,[x]_{3-s},[x]_s,[x^2]_s,\ldots,[x^m]_s)=(c,\left[\frac{1}{x+c}\right]_s)\right]
 $$
 is negligible in $\lambda$.
 \end{definition}
 
-The Boneh-Boyen signature scheme is described below.
+Given $s\in\{1,2\}$, the Boneh-Boyen signature scheme is described below.
 
 \begin{description}
-\item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $vk\gets\Z_q$. The secret/public key pair is defined as $(sk,[vk]):=(vk,[vk])$.
-\item[$\mathsf{BB}.\Sign$:] Given a secret key $sk\in\Z_q$ and a message $m\in\Z_q$, output the signature $[\sigma]:=\left[\frac{1}{sk+m}\right]$. In the unlikely case that $sk+m=0$ we let $[\sigma]:=[0]$.
-\item[$\mathsf{BB}.\Ver$:] On input the verification key $[vk]$, a message $m\in\Z_q$, and a signature $[\sigma]$, verify that $[m+vk][\sigma]=[1]_T$.
+\item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $vk\gets\Z_q$. The secret/public key pair is defined as $(sk,[vk]):=(vk,[vk]_{3-s})$.
+\item[$\mathsf{BB}.\Sign$:] Given a secret key $sk\in\Z_q$ and a message $m\in\Z_q$, output the signature $[\sigma]_{s}:=\left[\frac{1}{sk+m}\right]_{s}$. In the unlikely case that $sk+m=0$ we let $[\sigma]_{s}:=[0]_{s}$.
+\item[$\mathsf{BB}.\Ver$:] On input the verification key $[vk]_{3-s}$, a message $m\in\Z_q$, and a signature $[\sigma]_{s}$, verify that $[m+vk]_{3-s}[\sigma]_{s}=[1]_T$.
 \end{description} 
 

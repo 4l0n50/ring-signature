@@ -1,3 +1,5 @@
+% !TEX root = ../main-ring-signature.tex
+
 The Groth Sahai (GS) proof system is a non-interactive witness indistinguishable proof system (and in some cases also zero-knowledge) for the language of quadratic equations over a bilinear group. The admissible equation types must be in the following form:
 \begin{equation}\label{gseq}
 \sum_{j=1}^{m_y} f(\alpha_j, \vary_j)+\sum_{i=1}^{m_x} f(\varx_i, \beta_i)+\sum_{i=1}^{m_x} \sum_{j=1}^{m_y}  f(\varx_i,\escQE_{i,j} \vary_j)=t,
@@ -11,9 +13,11 @@ of equation (\ref{gseq}) using the GS commitments, and then computes a proof tha
 GS proofs are perfectly sound when the CRS is sampled from the perfectly binding distribution, and perfectly witness-indistinguishable when sampled from the perfectly hiding distribution. Computational indistinguishability of  both distributions implies either perfect soundness and computational witness indistinguishability or computational soundness and perfect witness-indistinguishability.
 
 \subsubsection{Groth-Sahai Commitments.}
-Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the  DLin assumption, GS commitments are vectors in $\GG^3$ of the form
+Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_1$ or $\GG_2^2$ of the form
 \begin{align*}
-&\GS.\Com_{ck}([x];\vecb{r}):=\pmatri{{[0]}\\{[0]}\\{[x]}}+r_1[\vecb{u}_1]+{r}_2[\vecb{u}_2]+r_3[\vecb{u}_3]\\
-&\GS.\Com_{ck}(x;\vecb{r}):=x\left([\vecb{u}_1]+\pmatri{{[0]}\\{[0]}\\{[1]}}\right)+{r}_1[\vecb{u}_2]+r_2[\vecb{u}_3]
+&\GS.\Com_{ck_1}([x]_1;\vecb{r}):=\pmatri{{[0]_1}\\{[x]_1}}+r_1[\vecb{u}_1]_1+{r}_2[\vecb{u}_2]_1\\
+&\GS.\Com_{ck_1}(x;\vecb{r}):=x\left([\vecb{u}_1]_1+\pmatri{{[0]_1}\\{[1]_1}}\right)+{r}[\vecb{u}_2]_1\\
+& \GS.\Com_{ck_2}([x]_2;\vecb{r}):=\pmatri{{[0]_2}\\{[x]_2}}+r_1[\vecb{v}_1]_2+{r}_2[\vecb{v}_2]_2\\
+&\GS.\Com_{ck_2}(x;\vecb{r}):=x\left([\vecb{v}_1]_2+\pmatri{{[0]_2}\\{[1]_2}}\right)+{r}[\vecb{v}_2]_2
 \end{align*}
-where $ck:=[\vecb{u}_1\cat\vecb{u}_2\cat\vecb{u}_3]$, $(\vecb{u}_2\cat\vecb{u}_3)=\matr{A}$, and $\matr{A}$ is the DLin matrix from definition \ref{def:dlin}. The GS reference string is the commitment key $ck$  and $\vecb{u}_1:=w_1\vecb{u}_2+w_2\vecb{u}_3$ in the perfectly binding setting, and $\vecb{u}_1:=w_1\vecb{u}_2+w_2\vecb{u}_3-\vecb{e}_3$ in the perfectly hiding setting, for $w_1,w_2\gets\Z_q$.
+where $ck_1:=[\vecb{u}_1\cat\vecb{u}_2]_1,ck_2:=[\vecb{v}_1\cat\vecb{v}_2]_2$, and $\vecb{u}_2,\vecb{v}_2$ are sampled from the same distribution as $\matr{A}$, the matrix from definition \ref{def:dlin}. The GS reference string is formed by the commitment keys $ck_1,ck_2$  and $\vecb{u}_1:=w\vecb{u}_2\vecb{v}_1:=w'\vecb{v}_2$ in the perfectly binding setting, and $\vecb{u}_1:=w\vecb{u}_2-\vecb{e}_2,\vecb{v}_1:=w'\vecb{v}_2-\vecb{v}_2$ in the perfectly hiding setting, for $w,w'\gets\Z_q$.

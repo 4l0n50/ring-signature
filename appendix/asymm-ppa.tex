@@ -1,4 +1,6 @@
-We define a natural variant of the PPA assumption in asymmetric groups, which we call aPPA, and show that the hardness of the PPA in generic symmetric bilinear groups imply the hardness of aPPA in generic asymmetric bilinear groups. Given that Groth and Lu showed the generic hardness of PPA, we conclude that aPPA is hard in generic asymmetric groups. 
+% !TEX root = ../main-ring-signature.tex
+
+%We define a natural variant of the PPA assumption in asymmetric groups, which we call aPPA, and show that the hardness of the PPA in generic symmetric bilinear groups imply the hardness of aPPA in generic asymmetric bilinear groups. Given that Groth and Lu showed the generic hardness of PPA, we conclude that aPPA is hard in generic asymmetric groups. 
 
 %\begin{definition}[PPA Assumption in Asymmetric Groups]
 %Let $\mathcal{Q}^{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
@@ -17,95 +19,125 @@ We define a natural variant of the PPA assumption in asymmetric groups, which we
 %where $[\matr{Y}]=[(\vecb{y}_1,\ldots,\vecb{y}_m)]_1, [\matr{A}]_1=[(\vecb{a}_1,\ldots,\vecb{a}_m)]_1\in\GG_1^{2\times m}$ and $[\matr{Z}]_2=\allowbreak [(z_1,\ldots,\allowbreak z_m)]_2,[\matr{B}]_2=[(b_1,\ldots,b_m)]_2\in\GG_2^{1\times m}$, is negligible in $k$.
 %\end{definition}
 %
-\begin{definition}[PPA Assumption in Asymmetric Groups]
-Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
-$$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2}, x\gets\Z_q.$$
-We say that the $m$-permutation pairing assumption ($m$-aPPA) holds relative to $\G_a$ if for any adversary $\advA$
-$$
-\Pr\left[
-\begin{array}{l}
-	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};([\matr{Z}]_1,[\vecb{z}^*]_2)\gets\advA(gk,[\matr{A}]_1,[\vecb{a}^*]_2):\\
-	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{z}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1,\\
-	\mathrm{(ii)}\ \forall 1\leq i\leq m\ [z_{1,i}]_1[1]_2=[1]_1[z^*_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[z^*_{i}]_2,\\
-	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
-\end{array}
-\right],
-$$
-where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m]_1, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\vecb{z}^*]_2=\allowbreak[(z^*_1,\ldots,\allowbreak z^*_m)]_2\in\GG_2^{1\times m}$, and $\vecb{a}^*$ is the first row of $\matr{A}$, is negligible in $\lambda$.
-\end{definition}
-
-\subsection{The $\mathcal{Q}_m^\top\mbox{-}\kermdh$ in Asymmetric groups}
-We define a natural variant of the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption in asymmetric groups, which we call $\mathcal{Q}_m^\top\mbox{-}\akermdh$. Similarly as before, we show $\mathcal{Q}_m^\top\mbox{-}\kermdh\Rightarrow \mathcal{Q}_m^\top\mbox{-}\akermdh$ in generic groups, and we conclude that $\mathcal{Q}_m^\top\mbox{-}\akermdh$ is hard in generic asymmetric groups. 
-
-\begin{definition}[$\mathcal{Q}_m^\top\mbox{-}\akermdh$]
-Let  $\gk \gets\ggen_a(1^\lambda)$.
-The $\mathcal{Q}_m^\top\mbox{-}\akermdh$ in $\GG_1$ says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]_1,[\vecb{a}^*]_2$, where $\matrA \gets \mathcal{Q}_m$ and $\vecb{a}^*\in\Z_q^{1\times m}$ is the first row of $\matr{A}$, find $[\vecb{x}] \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
-$[\vecb{x}]^{\top}[\matr{A}]=[\vecb{0}]_T$. 
-\end{definition}
-
-\subsection{Security of the aPPA and $\mathcal{Q}_m^\top\mbox{-}\akermdh$ Assumption in the Generic Group Model.}
-The generic group model is an idealised model for analysing the security of cryptographic assumptions or cryptographic schemes. A proof of security in the generic group model guarantees that no attacker that only uses the algebraic structure of the (bilinear) group, is successful in breaking the assumption/scheme. Conversely, for a generically secure assumption/scheme, a successful attack must exploit the structure of the (bilinear) group that is actually used in the protocol (e.g.~a Barreto-Naehring curve in the case of bilinear groups).  
+%\begin{definition}[PPA Assumption in Asymmetric Groups]
+%Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of matrix distributions is defined in the natural way and 
+%$$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2}, x\gets\Z_q.$$
+%We say that the $m$-permutation pairing assumption ($m$-aPPA) holds relative to $\G_a$ if for any adversary $\advA$
+%$$
+%\Pr\left[
+%\begin{array}{l}
+%	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};([\matr{Z}]_1,[\underline{\vecb{z}}]_2)\gets\advA(gk,[\matr{A}]_1,[\underline{\vecb{a}}]_2):\\
+%	\mathrm{(i)} \sum_{i=1}^{m}[\vecb{z}_i]_1 = \sum_{i=1}^{m}[\vecb{a}_i]_1,\\
+%	\mathrm{(ii)}\ \forall 1\leq i\leq m\ [z_{1,i}]_1[1]_2=[1]_1[\underline{z}_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[\underline{z}_{i}]_2,\\
+%	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
+%\end{array}
+%\right],
+%$$
+%where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m]_1, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\underline{\vecb{z}}]_2=\allowbreak[(\underline{z}_1,\ldots,\allowbreak \underline{z}_m)]_2\in\GG_2^{1\times m}$, and $\underline{\vecb{a}}$ is the first row of $\matr{A}$, is negligible in $\lambda$.
+%\end{definition}
+%
+%\subsection{The $\mathcal{Q}_m^\top\mbox{-}\kermdh$ in Asymmetric groups} \label{sec:ker-gen-sec}
+%We define a natural variant of the $\mathcal{Q}_m^\top\mbox{-}\kermdh$ assumption in asymmetric groups, which we call $\mathcal{Q}_m^\top\mbox{-}\akermdh$. Similarly as before, we show $\mathcal{Q}_m^\top\mbox{-}\kermdh\Rightarrow \mathcal{Q}_m^\top\mbox{-}\akermdh$ in generic groups, and we conclude that $\mathcal{Q}_m^\top\mbox{-}\akermdh$ is hard in generic asymmetric groups. 
+%
+%\begin{definition}[$\mathcal{Q}_m^\top\mbox{-}\akermdh$]
+%Let  $\gk \gets\ggen_a(1^\lambda)$.
+%The $\mathcal{Q}_m^\top\mbox{-}\akermdh$ in $\GG_1$ says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]_1,[\underline{\vecb{a}}]_2$, where $\matrA \gets \mathcal{Q}_m$ and $\underline{\vecb{a}}\in\Z_q^{1\times m}$ is the first row of $\matr{A}$, find $[\vecb{x}]_2 \in \GG^{\ell}$, $\vecb{x} \neq \vecb{0}$, such that 
+%$[\vecb{x}]^{\top}_2[\matr{A}]_1=[\vecb{0}]_T$. 
+%\end{definition}
+%
+%\subsection{Security of the aPPA and $\mathcal{Q}_m^\top\mbox{-}\akermdh$ Assumption in the Generic Group Model.}\label{sec:aPPA-sec-proof}
+%The generic group model is an idealised model for analysing the security of cryptographic assumptions or cryptographic schemes. A proof of security in the generic group model guarantees that no attacker that only uses the algebraic structure of the (bilinear) group, is successful in breaking the assumption/scheme. Conversely, for a generically secure assumption/scheme, a successful attack must exploit the structure of the (bilinear) group that is actually used in the protocol (e.g.~a Barreto-Naehring curve in the case of bilinear groups).  
 
 We use the natural generalisation of Shoup's generic group model \cite{EC:Shoup97} to the asymmetric bilinear setting, as it was used for instance by Boneh et al.~\cite{EC:BonBoyGoh05}. In such a model an adversary can only access elements of $\GG_1,\GG_2$ or $\GG_T$ via a query to a group oracle, which gives him a randomised  encoding of the queried element. The group oracle must be consistent with the group operations (allowing to query for the encoding of constants in either group, for the encoding of the sum of previously queried elements in the same group and for the encoding of the product of pairs in $\GG_1\times \GG_2$).
 
 We prove the following theorem which states generic security of the $m$-aPPA assumption.
 
 \begin{theorem}
-	If the $m$-PPA assumption holds in generic symmetric bilinear groups, then the $m$-aPPA holds in generic asymmetric bilinear groups.
+	If the $m$-PPA assumption holds in generic symmetric bilinear groups, then the $m$-PPA holds in generic asymmetric bilinear groups.
 \end{theorem}
 \begin{proof}
 Suppose there is an adversary $\advA$  in the asymmetric generic bilinear group model against the $m$-PPA assumption.  We show how to construct an adversary $\advB$ against the  $m$-aPPA assumption in the symmetric generic group model. 
 
 
-Adversary $\advB$ has oracle access to the randomised encodings $\sigma: \Z_q \to \{0,1\}^n$, 
-and $\sigma_T: \Z_q \to \{0,1\}^n$. It receives as a challenge $\{ \sigma(a_{i,j}):1\leq i \leq m, j\in\{1,2\}\}$.
+Adversary $\advB$ has oracle access to the randomised encodings $[\cdot]: \Z_q \to \{0,1\}^n$, 
+and $[\cdot]_T: \Z_q \to \{0,1\}^n$. It receives as a challenge $\{ [a_{i,j}]):1\leq i \leq m, j\in\{1,2\}\}$.
 
 Adversary $\advB$ simulates the generic hardness game for $\advA$ as follows. It defines encodings  
 \begin{align*}
-	\xi_1: \Z_q \to \{0,1\}^n,\quad \xi_2: \Z_q \to \{0,1\}^n \text{ and }\xi_T: \Z_q \to \{0,1\}^n 
+	[\cdot]_1: \Z_q \to \{0,1\}^n,\quad [\cdot]_2: \Z_q \to \{0,1\}^n \text{ and }\widetilde{[\cdot]}_T: \Z_q \to \{0,1\}^n 
 \end{align*}
-as $\xi_1=\sigma, \xi_T=\sigma_T$ and $\xi_2$ a random encoding function. $\advB$ keeps a list $L_\advA$  with the values that have been queried by $\advA$ to the group oracle. The list is initialised as 
-$$L_\advA=\{  \{(A_{i,j},\xi_1(a_{i,j}),1),(A_{i,j},\xi_2(a_{i,j}),2):1\leq i \leq m, j \in \{1,2\}\},$$
-where $\xi_2(a_{i,j}) \in \{0,1\}^n$ are chosen uniformly at random conditioned on being pairwise distinct.  Adversary $\advB$ keeps another list $L_\advB$ with the queries 
-it makes to its own group oracle. The list $L_\advB$ is initialised as 
-$$L_\advB=\{(A_{i,j},\sigma(a_{i,j}),1):1\leq i \leq m, j \in \{1,2\}\}.$$
-$\advB$ keeps also partial function $\psi:\bits^n\to\bits^n$ initialised as
-$ \psi(\xi_1(a_{i,j}))=\xi_2(a_{i,j})$, for $1\leq i\leq m,j\in\{1,2\})\}$, and $\psi(s)=\perp$ for any other $s$.
-
-Each element in the list $L_\advA$ is a tuple $(P,s,\mu)$, where $P \in \Z_q[A_{1,1}, \ldots,A_{\ell,k}]$, $\mu \in \{1,2,T\}$ and $s=\xi_{\mu}(P_i(a_{1,1},\ldots,a_{\ell,k}))$. The polynomial $P$ is one of the following: 
-\begin{enumerate}[a)]
-	\item $P=A_{i,j}$, i.e. it is one of the initial values in the query list  
-$L_\advA$  or 
-	\item a constant polynomial or
-	\item $P=Q+R$ for some $(Q,t,\mu),(R,u,\mu) \in L_\advA$ or
-	\item $P=QR$ for some $(P,t,1),(R,u,2) \in L_\advA$, $\mu=T$.
-\end{enumerate}
-	For $L_\advB$ the same holds except that $\mu \in \{1,T\}$ and except that d) is changed to: d) $P=QR$ for some $(Q,t,1),(R,u,1) \in L_\advB$ and $\mu=T$. 
-
-Without loss of generality we can identify the queries of $\advA$ with 
-pairs $(P,\mu)$ meeting the restrictions described above. If $(P,s,\mu)\in L_\advA$, for some $s$, it replies with the same answer $s$.
-
-Else, when $\advB$ receives a (valid) query $(P,\mu)$, it forwards the query $(P,\nu)$ to its own group oracle who replies with $s$, where $\nu=\mu$, if $\mu\in\{1,T\}$, or $\nu=1$, if $\mu=2$. Then $(P,s,\nu)$ is appended to $L_\advB$ and to $L_\advA$. In the case $\mu\in\{1,2\}$, if $\psi(s)=\perp$ it chooses $t$ at random conditioned on being distinct from all other values in the image of $\psi$ and defines $\psi(s):=t$. 
-Then $\advB$ appends $(P,\psi(s),2)$ to $L_\advB$. Finally $\advB$ answers $\advA$'s query with $s$, if $\mu\in\{1,T\}$,  or $\psi(s)$, if $\mu=2$. 
-
+as $[\cdot]_1\equiv [\cdot]$, $\widetilde{[\cdot]}_T\equiv [\cdot]_T$ and $[\cdot]_2$ a random encoding function.
+%$\advB$ keeps a list $L_\advA$  with the values that have been queried by $\advA$ to the group oracle. The list is initialised as 
+%$$L_\advA=\{  \{(A_{i,j},\xi_1(a_{i,j}),1),(A_{i,j},\xi_2(a_{i,j}),2):1\leq i \leq m, j \in \{1,2\}\},$$
+%where $\xi_2(a_{i,j}) \in \{0,1\}^n$ are chosen uniformly at random conditioned on being pairwise distinct.  Adversary $\advB$ keeps another list $L_\advB$ with the queries 
+%it makes to its own group oracle. The list $L_\advB$ is initialised as 
+%$$L_\advB=\{(A_{i,j},\sigma(a_{i,j}),1):1\leq i \leq m, j \in \{1,2\}\}.$$
+%$\advB$ keeps also partial function $\psi:\bits^n\to\bits^n$ initialised as
+%$ \psi(\xi_1(a_{i,j}))=\xi_2(a_{i,j})$, for $1\leq i\leq m,j\in\{1,2\})\}$, and $\psi(s)=\perp$ for any other $s$.
+%
+%Each element in the list $L_\advA$ is a tuple $(P,s,\mu)$, where $P \in \Z_q[A_{1,1}, \ldots,A_{\ell,k}]$, $\mu \in \{1,2,T\}$ and $s=\xi_{\mu}(P_i(a_{1,1},\ldots,a_{\ell,k}))$. The polynomial $P$ is one of the following: 
+%\begin{enumerate}[a)]
+%	\item $P=A_{i,j}$, i.e. it is one of the initial values in the query list  
+%$L_\advA$  or 
+%	\item a constant polynomial or
+%	\item $P=Q+R$ for some $(Q,t,\mu),(R,u,\mu) \in L_\advA$ or
+%	\item $P=QR$ for some $(P,t,1),(R,u,2) \in L_\advA$, $\mu=T$.
+%\end{enumerate}
+%	For $L_\advB$ the same holds except that $\mu \in \{1,T\}$ and except that d) is changed to: d) $P=QR$ for some $(Q,t,1),(R,u,1) \in L_\advB$ and $\mu=T$. 
+%
+%Without loss of generality we can identify the queries of $\advA$ with 
+%pairs $(P,\mu)$ meeting the restrictions described above. If $(P,s,\mu)\in L_\advA$, for some $s$, it replies with the same answer $s$.
+%
+%Else, when $\advB$ receives a (valid) query $(P,\mu)$, it forwards the query $(P,\nu)$ to its own group oracle who replies with $s$, where $\nu=\mu$, if $\mu\in\{1,T\}$, or $\nu=1$, if $\mu=2$. Then $(P,s,\nu)$ is appended to $L_\advB$ and to $L_\advA$. In the case $\mu\in\{1,2\}$, if $\psi(s)=\perp$ it chooses $t$ at random conditioned on being distinct from all other values in the image of $\psi$ and defines $\psi(s):=t$. 
+%Then $\advB$ appends $(P,\psi(s),2)$ to $L_\advB$. Finally $\advB$ answers $\advA$'s query with $s$, if $\mu\in\{1,T\}$,  or $\psi(s)$, if $\mu=2$. 
 
 At the onset of the simulation, $\advA$ will output as a solution to the challenge a pair
 $$
-\matr{Z}=\pmatri{z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}},\vecb{z}^* = (z^*_1,\ldots,z*_m)
+\matr{Z}=\pmatri{z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}},\underline{\vecb{z}} = (\underline{z}_1,\ldots,\underline{z}_m)
 $$
-such that 
-$(P_{i,j},z_{i,j},1),(Q_{i},z^*_i,2) \in L_\advA$ for all $1\leq i\leq n,j\in\{1,2\}$. If the challenge is successful it must also hold that
-\begin{equation}ºº
-\xi_T(P_{1,i}\cdot 1)=\xi_T(1\cdot Q_i) \Longleftrightarrow P_{1,i}(a_{1,1},\ldots,a_{2,m})=Q_{i}(a_{1,1},\ldots,a_{2,m})
+such that they are, respectively, the result of applying the encoding functions $[\cdot]_1$ to polynomials $p_{1,1},\ldots,p_{2,m}\in\Z_q[A_{1,1},\ldots,\allowbreak A_{2,m}]$ evaluated on random $a_{1,1},\ldots,a_{2,m}\in\Z_q$, and the result of applying the encoding function $[\cdot]_2$ to polynomials $\underline{p}_{1},\ldots,\underline{p}_m\in\Z_q[\underline{A}_{1,1},\ldots,\underline{A}_{2,m}]$ evaluated on $\underline{a}_{1,1} = a_{1,1},\ldots,\underline{a}_{2,m} = a_{2,m}$.
+%$(P_{i,j},z_{i,j},1),(Q_{i},z^*_i,2) \in L_\advA$ for all $1\leq i\leq n,j\in\{1,2\}$.
+If the challenge is successful it must also hold that
+\begin{align}
+&[p_{1,i}(a_{1,1},\ldots,a_{2,m})]_1[1]_2 = [1]_1[\underline{p}_i(a_{1,1},\ldots,a_{2,m})]_2 \nonumber\\
+& \Longleftrightarrow 
+p_{1,i}(a_{1,1},\ldots,a_{2,m}) = \underline{p}_i(a_{1,1},\ldots,a_{2,m}) \text{ for each }1\leq i \leq m
 \label{eq:lin}
-\end{equation}
+\end{align}
 and
 \begin{align}
-	\xi_T(P_{2,1}\cdot 1) &=\xi_T(P_{1,i}Q_i) \nonumber\\
-	&\Longleftrightarrow P_{2,i}(a_{1,1},\ldots,a_{2,m})=P_{1,i}(a_{1,1},\ldots,a_{2,m})\cdot Q_{i}(a_{1,1},\ldots,a_{2,m})
+	&[p_{2,i}(a_{1,1},\ldots,a_{2,m})]_1[1]_2 = [p_{1,i}(a_{1,1},\ldots,a_{2,m})]_1[\underline{p}_i(a_{1,1},\ldots,a_{2,m})]_2 \nonumber\\
+	& \Longleftrightarrow 
+	p_{2,i}(a_{1,1},\ldots,a_{2,m}) = p_{1,i}(a_{1,1},\ldots,a_{2,m})\underline{p}_i(a_{1,1},\ldots,a_{2,m})
 	\label{eq:quad}
 \end{align}
-Since $a_{1,1},\ldots,a_{2,m}$ remains statistically hidden to the adversary, it must choose $P_{i,1}\equiv Q_i$ and $P_{2,i}\equiv P_{1,i}\cdot Q_i$ since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}) and (\ref{eq:quad}) only hold with negligible probability. We conclude that $P_{2,i}=P^2_{1,i}$ and thus $\advB$ might output $\matr{Z}$ which is a solution of the $m$-PPA assumption.
+since $[a]_1[b]_2 = [ab]_T = [c]_T$ iff $ab=c$.
+
+Given that $a_{1,1},\ldots,a_{2,m}$ remain statistically hidden to $\advA$, it must choose $p_{i,1}\equiv \underline{p}_i$ and $p_{2,i}\equiv p_{1,i}\cdot \underline{p}_i$ since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}) and (\ref{eq:quad}) only hold with negligible probability. We conclude that $p_{2,i}=p^2_{1,i}$ and thus $\advB$ might output $\matr{Z}$ which is a solution of the $m$-PPA assumption.
 \end{proof}
 
-
+%We also prove the following theorem which states the generic security of the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption in asymmetric groups.
+%
+%\begin{theorem}
+%If the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption holds in generic symmetric bilinear groups, then the $\mathcal{Q}^\top_m\mbox{-}\kermdh$  holds in generic asymmetric bilinear groups.
+%\end{theorem}
+%
+%\begin{proof}
+%Suppose there is an adversary $\advA$  in the asymmetric generic bilinear group model against the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption.  We show how to construct an adversary $\advB$ against the  $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption in the symmetric generic group model. 
+%
+%
+%Adversary $\advB$ has oracle access to the randomised encodings $[\cdot]: \Z_q \to \{0,1\}^n$, 
+%and $[\cdot]_T: \Z_q \to \{0,1\}^n$. It receives as a challenge $\{ [a_{i,j}]):1\leq i \leq m, j\in\{1,2\}\}$.
+%
+%Adversary $\advB$ simulates the generic hardness game for $\advA$ as follows. It defines encodings  
+%\begin{align*}
+%	[\cdot]_1: \Z_q \to \{0,1\}^n,\quad [\cdot]_2: \Z_q \to \{0,1\}^n \text{ and }\widetilde{[\cdot]}_T: \Z_q \to \{0,1\}^n 
+%\end{align*}
+%as $[\cdot]_1\equiv [\cdot]$, $\widetilde{[\cdot]}_T\equiv [\cdot]_T$ and $[\cdot]_2$ a random encoding function.
+%
+%At the onset of the simulation $\advA$ returns $\vecb{x} = (x_1,\ldots, x_m)^\top$, where $x_i = [p_i(\underline{a}_{1},\ldots,\underline{a}_{1})]_2$, $p_i\in\Z_q[\underline{A}_1,\ldots,\underline{A}_m]$, $a_{1,1},\ldots,a_{2,m}\gets\Z_q$, and $\underline{a}_{i} = a_{1,i}$. If $\advA$ breaks the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption, then
+%\begin{equation}
+%\sum_{j=1}^m [a_{i,j}]_1x_j = [0]_T \Longleftrightarrow  \sum_{j=1}^m a_{i,j} p_j(\underline{a}_{1},\ldots,\underline{a}_m) = 0, \text{ for }i=1,2. \label{eq:ker-g-sec}
+%\end{equation}
+%Given that $a_{1,1},\ldots,a_{2,m}$ remain statistically hidden to $\advA$, it must choose $p_i(\underline{A}_1,\ldots,\underline{A}_m)$ such that $\sum_{j=1}^m A_i p_i(\underline{A}_1,\ldots,\underline{A}_m) \equiv 0$ since otherwise, by the Schwartz-Zippel lemma, equation (\ref{eq:ker-g-sec}) only holds with negligible probability. In particular, it must also hold that $\sum_{j=1}^m A_i p_i(A_1,\ldots,A_m) \equiv 0$ and hence, if $\advB$ answers with $\vecb{x} = ([p_1(a_1,\ldots,a_m)],\ldots,[p_m(a_1,\allowbreak\ldots,a_m)])$, then $\advB$ also breaks $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption.
+%\end{proof}

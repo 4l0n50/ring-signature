@@ -1,9 +1,11 @@
+% !TEX root = ../main-ring-signature.tex
+
 We write PPT as a shortcut for probabilistic polynomial time Turing machine.
 
-Let $\ggen_s$ be some probabilistic polynomial time algorithm which on input $1^{\lambda}$, where $\lambda$ is the security parameter, returns the \emph{group key} which is the description of a symmetric bilinear group $gk:=(q,\GG,\GG_T,e,\mathcal{P})$, where $\GG$
-and $\GG_T$ are groups of prime order $q$, the element $\mathcal{P}$ is a generator of 
-$\GG$, and $e:\GG\times\GG\to\GG_T$ is an efficiently computable and non-degenerated bilinear map. We will use additive notation for the group operation of both $\GG$ and $\GG_T$.
+Let $\ggen_a$ be some probabilistic polynomial time algorithm which on input $1^{\lambda}$, where $\lambda$ is the security parameter, returns the \emph{group key} which is the description of an asymmetric bilinear group $gk:=(q,\GG_1,\GG_2,\GG_T,e,\mathcal{P}_1,\mathcal{P},\mathcal{P}_T=e(\mathcal{P}_1,\mathcal{P}_2),q)$, where $\GG_1$, $\GG_2$,
+and $\GG_T$ are groups of prime order $q$, the element $\mathcal{P}_s$ is a generator of 
+$\GG$, and $e:\GG\times\GG\to\GG_T$ is an efficiently computable and non-degenerated bilinear map. We will use additive notation for the group operation of all groups.
 
-Elements in $\GG$ are denoted implicitly as $[a]:=a \Pt$, where $a\in\Z_q$, and elements in $\GG_T$ are denoted as $[a]_T:=a\cdot e(\Pt,\Pt)$. 
-The pairing operation is written as a product $\cdot$, that is $[a] \cdot [b]=[a] [b]=e([a],[b])=[ab]_T$. Vectors and matrices are denoted in boldface. Given a matrix $\matr{T}=(t_{i,j})$, $[\matr{T}]$ is
-the natural embedding of $\matr{T}$ in $\GG$, that is, the matrix whose $(i,j)$th entry is $t_{i,j}\mathcal{P}$. Given a matrix $\matr{S}$ with the same number of rows as $\matr{T}$, we define $\matr{S}\cat\matr{T}$ as the concatenation of $\matr{S}$ and $\matr{T}$.
+Elements in $\GG_s$ are denoted implicitly as $[a]_s:=a \Pt_s$, where $a\in\Z_q$, $s\in\{1,2,T\}$. 
+The pairing operation is written as a product $\cdot$, that is $[a]_1 \cdot [b]_2 = [a]_1 [b]_2= [b]_2[a]_1=e([a]_1,[b]_2)=[ab]_T$. Vectors and matrices are denoted in boldface. Given a matrix $\matr{T}=(t_{i,j})$, $[\matr{T}]_s$ is
+the natural embedding of $\matr{T}$ in $\GG_s$, that is, the matrix whose $(i,j)$th entry is $t_{i,j}\mathcal{P}_s$. Given a matrix $\matr{S}$ with the same number of rows as $\matr{T}$, we define $\matr{S}\cat\matr{T}$ as the concatenation of $\matr{S}$ and $\matr{T}$.

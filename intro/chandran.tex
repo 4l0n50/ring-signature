@@ -1,35 +1,37 @@
-%!TeX root=../main_ring_signature.tex
-Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,[vk])$ and a {one-time signature scheme}. The signature of the message $m$ for a ring $R=\{[vk_1],\ldots,[vk_n]\}$ is computed as follows:
+% !TEX root = ../main-ring-signature.tex
+
+
+Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,[vk]_2)$ and a {one-time signature scheme}. The signature of the message $m$ for a ring $R=\{[vk_1]_2,\ldots,[vk_n]_2\}$ is computed as follows:
 \begin{itemize}
 	\item[a)] Pick a one-time signature key $(sk_\mathsf{ot},vk_\mathsf{ot})$, sign $m$ with $sk_\mathsf{ot}$, and sign $vk_\mathsf{ot}$ with $sk$.
-	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[vk]$ using Groth-Sahai proofs.
-	\item[c)] Show that $[vk]\in R$.
+	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[vk]_2$ using Groth-Sahai proofs.
+	\item[c)] Show that $[vk]_2\in R$.
 \end{itemize}
 The most expensive part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
  
 The proof arranges the set of verification keys on a matrix of size $m\times m$, where $m:=\sqrt{n}$, as depicted below
 $$
-[\matr{V}]:=
+[\matr{V}]_2:=
 \begin{pmatrix}
-[vk_{1,1}] & \cdots & [vk_{1,m}]\\
+[vk_{1,1}]_2 & \cdots & [vk_{1,m}]_2\\
 \vdots     & \ddots & \vdots \\
-[vk_{m,1}]  & \cdots & [vk_{m,m}],
+[vk_{m,1}]_2  & \cdots & [vk_{m,m}]_2,
 \end{pmatrix}
 $$
 where $vk_{i,j}:=vk_{(i-1)m+j}$ for $1\leq i,j \leq m$.
 
-Let $[vk_\alpha]$ the verification key for which the prover wants to show that $[vk_\alpha]\in R$ and let $i_\alpha,j_\alpha$ such that $vk_\alpha = vk_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{V}]$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 
+Let $[vk_\alpha]_2$ the verification key for which the prover wants to show that $[vk_\alpha]_2\in R$ and let $i_\alpha,j_\alpha$ such that $vk_\alpha = vk_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{V}]_2$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 
 \begin{enumerate}
 \item $b_1,\ldots,b_m\in\bits$ such that $b_j=1$ iff $j=j_\alpha$,
 \item $b'_1,\ldots,b'_m\in\bits$ such that $b'_i=1$ iff $i=i_\alpha$,
-\item $[\kappa_1]:=[vk_{1,j_\alpha}],\ldots,[\kappa_m]:=[vk_{m,j_\alpha}]$.
+\item $[\kappa_1]_2:=[vk_{1,j_\alpha}]_2,\ldots,[\kappa_m]_2:=[vk_{m,j_\alpha}]_2$.
 \end{enumerate}
 
 Using Groth-Sahai proofs, the prover proves that
 \begin{enumerate}[i.]
 \item $b_1(b_1-1)=0,\ldots,b_m(b_m-1)=0,b'_1(b'_m-1)=0,\ldots,b'_m(b'_m-1)=0$,\label{eq1}
 \item $\sum_{i=1}^m b_i =1$ and $\sum_{i=1}^m b'_i=1$,\label{eq2}
-\item $[\kappa_1]=\sum_{j=1}^m b_j [vk_{1,j}],\ldots,[\kappa_m]=\sum_{j=1}^m b_j[vk_{m,j}]$,\label{eq3}
-\item $[vk_\alpha]=\sum_{i=1}^m b'_i[\kappa_i]$.\label{eq4}
+\item $[\kappa_1]_2=\sum_{j=1}^m b_j [vk_{1,j}]_2,\ldots,[\kappa_m]_2=\sum_{j=1}^m b_j[vk_{m,j}]_2$,\label{eq3}
+\item $[vk_\alpha]_2=\sum_{i=1}^m b'_i[\kappa_i]_2$.\label{eq4}
 \end{enumerate}
-Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1],\ldots,[\kappa_m])^\top$ is a column of $[\matr{V}]$, and equation \ref{eq4} proves that $[vk_\alpha]$ is an element of $([\kappa_1],\ldots,[\kappa_m])$.
+Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1]_2,\ldots,[\kappa_m]_2)^\top$ is a column of $[\matr{V}]_2$, and equation \ref{eq4} proves that $[vk_\alpha]_2$ is an element of $([\kappa_1]_2,\ldots,[\kappa_m]_2)$.
