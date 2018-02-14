@@ -39,7 +39,7 @@ We note that given $A\in Q_m,[\matr{A}]_1\in\GG^{2\times m}_1,[\vecb{x}]_2\in\GG
 \end{align}
 Hence, one can compute Groth-Sahai proofs of size $\Theta(m),\Theta(1)$, and $\Theta(1)$, respectively, for the satisfiability of each statement.
 
-Finally, we prove a simple lemma informally stated in Section \ref{sec:tech-overview}.
+Finally, we prove a simple lemma that relates both functions
 \begin{lemma}\label{lemma:hg}
 Let $A\gets Q_m,A'\in Q_m,[\vecb{x}]_2,[\vecb{x}']_2\in\GG^m_2$, and $[\matr{A}]_1,[\matr{A}']_1$ the matrices whose columns are the first component of the elements of $A$ and $A'$, respectively. Then $h(A)=h(A')$ and $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}']_1}([\vecb{x}']_2)$ implies that $A'$ is a second preimage of $h(A)$ or there exists a permutation matrix $\matr{P}$ such that $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{x}']_2)$.
 \end{lemma}

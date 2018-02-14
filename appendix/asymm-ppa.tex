@@ -48,25 +48,34 @@
 %\subsection{Security of the aPPA and $\mathcal{Q}_m^\top\mbox{-}\akermdh$ Assumption in the Generic Group Model.}\label{sec:aPPA-sec-proof}
 %The generic group model is an idealised model for analysing the security of cryptographic assumptions or cryptographic schemes. A proof of security in the generic group model guarantees that no attacker that only uses the algebraic structure of the (bilinear) group, is successful in breaking the assumption/scheme. Conversely, for a generically secure assumption/scheme, a successful attack must exploit the structure of the (bilinear) group that is actually used in the protocol (e.g.~a Barreto-Naehring curve in the case of bilinear groups).  
 
-We use the natural generalisation of Shoup's generic group model \cite{EC:Shoup97} to the asymmetric bilinear setting, as it was used for instance by Boneh et al.~\cite{EC:BonBoyGoh05}. In such a model an adversary can only access elements of $\GG_1,\GG_2$ or $\GG_T$ via a query to a group oracle, which gives him a randomised  encoding of the queried element. The group oracle must be consistent with the group operations (allowing to query for the encoding of constants in either group, for the encoding of the sum of previously queried elements in the same group and for the encoding of the product of pairs in $\GG_1\times \GG_2$).
+We use the natural generalization of Shoup's generic group model \cite{EC:Shoup97} to the asymmetric bilinear setting, as it was used for instance by Boneh et al.~\cite{EC:BonBoyGoh05}. In such a model an adversary can only access elements of $\GG_1,\GG_2$ or $\GG_T$ via a query to a group oracle, which gives him a randomized  encoding of the queried element. The group oracle must be consistent with the group operations (allowing to query for the encoding of constants in either group, for the encoding of the sum of previously queried elements in the same group and for the encoding of the product of pairs in $\GG_1\times \GG_2$).
 
-We prove the following theorem which states generic security of the $m$-aPPA assumption.
+We prove the following theorem which states generic security of the $m$-PPA assumption.
 
 \begin{theorem}
-	If the $m$-PPA assumption holds in generic symmetric bilinear groups, then the $m$-PPA holds in generic asymmetric bilinear groups.
+	If the $m$-PPA assumption holds in generic symmetric bilinear groups, then the $(\ell,m)$-PPA holds in generic asymmetric bilinear groups.
 \end{theorem}
 \begin{proof}
-Suppose there is an adversary $\advA$  in the asymmetric generic bilinear group model against the $m$-PPA assumption.  We show how to construct an adversary $\advB$ against the  $m$-aPPA assumption in the symmetric generic group model. 
+Suppose there is an adversary $\advA$  in the asymmetric generic bilinear group model against the $m$-PPA assumption.  We show how to construct an adversary $\advB$ against the  $m$-PPA assumption in the symmetric generic group model. 
 
 
-Adversary $\advB$ has oracle access to the randomised encodings $[\cdot]: \Z_q \to \{0,1\}^n$, 
-and $[\cdot]_T: \Z_q \to \{0,1\}^n$. It receives as a challenge $\{ [a_{i,j}]):1\leq i \leq m, j\in\{1,2\}\}$.
+Adversary $\advB$ has oracle access to the randomized encodings $[\cdot]: \Z_q \to \mathcal{E}(\GG)$, 
+and $[\cdot]_T: \Z_q \to \mathcal{E}(\GG_T)$, where $\mathcal{E}(\GG),\mathcal{E}(\GG_T)$ is the set of all strings that encodes elements of $\GG,\GG_T$, respectively. It also has access to oracles $+ : \mathcal{E}(\GG)\times \mathcal{E}(\GG) \to \mathcal{E}(\GG)$, $+_T: \mathcal{E}(\GG_T)\times \mathcal{E}(\GG_T) \to \mathcal{E}(\GG_T)$, and $e:\mathcal{E}(\GG)\times\mathcal{E}(\GG)\to\mathcal{E}(\GG_T)$. At the beginning, $\advB$ receives as a challenge $\{ [a_{i}],[a_i^2]:1\leq i \leq m\}$.
 
 Adversary $\advB$ simulates the generic hardness game for $\advA$ as follows. It defines encodings  
 \begin{align*}
-	[\cdot]_1: \Z_q \to \{0,1\}^n,\quad [\cdot]_2: \Z_q \to \{0,1\}^n \text{ and }\widetilde{[\cdot]}_T: \Z_q \to \{0,1\}^n 
+	&\wenc{\cdot}_s: \Z_q \to \mathcal{E}(\GG_s)  \text{ and also oracles }
+	\tilde{+}_s : \mathcal{E}(\GG_s)\times\mathcal{E}(\GG_s),\quad \tilde{e}:\mathcal{E}(\GG_1)\times\mathcal{E}(\GG_2)\to\mathcal{E}(\GG_T)
 \end{align*}
-as $[\cdot]_1\equiv [\cdot]$, $\widetilde{[\cdot]}_T\equiv [\cdot]_T$ and $[\cdot]_2$ a random encoding function.
+where, $s\in\{1,2,T\}$ and $\wenc{\cdot}_s$ are random injective functions conditioned on satisfying the group laws, for which it suffices that for all $s\in\{1,2,T\}$:
+\begin{enumerate}
+\item $a\wenc{x}_s\tilde{+}_s b\wenc{y}_s = \wenc{ax+by}_s$.
+\item $\tilde{e}(\wenc{x}_1,\wenc{y}_2)=\wenc{xy}_T$
+\end{enumerate}
+As usual in the generic group model, we can assume that any call to $\tilde{+}_s$ and $\tilde{e}$ receives as arguments two polynomials $p\in\Z_q[X_1,\ldots,X_m], q\in\Z[Y_1,\ldots,Y_n]$, where $n$ and $m$ is the number of elements known by the adversary in $\GG_1,\GG_2,\GG_T$, as appropriate. Thereby, $p\tilde{+}_s q$ and $\tilde{e}(p,q)$ are randomly chosen from $\mathcal{E}(\GG_s)$ if $\wenc{p+q}_s$ was not previously queried, or equal to the same encoding answered previously. From this, is not hard to see that such $\wenc{\cdot}_s$ can be efficiently constructed keeping track of the elements that the adversary knows. 
+
+We abuse of notation and omit the $\tilde{\cdot}$ (``tilde'') for the simulated oracles, as long as we will no refer anymore to $\advB$'s oracles. Initially, $\advB$ picks $\tilde{a}_{i}\gets\Z_q$, for $1\leq i \leq m$, and runs $\advA$ on input $\{[\tilde{a}_{i}]_s,[\tilde{a}^2_{i}]_s:1\leq i\leq m, s\in\{1,2\}\}$.
+Whenever $\advA$ request $\tilde{a}_i$, $\advB$ forwards it.
 %$\advB$ keeps a list $L_\advA$  with the values that have been queried by $\advA$ to the group oracle. The list is initialised as 
 %$$L_\advA=\{  \{(A_{i,j},\xi_1(a_{i,j}),1),(A_{i,j},\xi_2(a_{i,j}),2):1\leq i \leq m, j \in \{1,2\}\},$$
 %where $\xi_2(a_{i,j}) \in \{0,1\}^n$ are chosen uniformly at random conditioned on being pairwise distinct.  Adversary $\advB$ keeps another list $L_\advB$ with the queries 
@@ -90,30 +99,50 @@ as $[\cdot]_1\equiv [\cdot]$, $\widetilde{[\cdot]}_T\equiv [\cdot]_T$ and $[\cdo
 %
 %Else, when $\advB$ receives a (valid) query $(P,\mu)$, it forwards the query $(P,\nu)$ to its own group oracle who replies with $s$, where $\nu=\mu$, if $\mu\in\{1,T\}$, or $\nu=1$, if $\mu=2$. Then $(P,s,\nu)$ is appended to $L_\advB$ and to $L_\advA$. In the case $\mu\in\{1,2\}$, if $\psi(s)=\perp$ it chooses $t$ at random conditioned on being distinct from all other values in the image of $\psi$ and defines $\psi(s):=t$. 
 %Then $\advB$ appends $(P,\psi(s),2)$ to $L_\advB$. Finally $\advB$ answers $\advA$'s query with $s$, if $\mu\in\{1,T\}$,  or $\psi(s)$, if $\mu=2$. 
-
-At the onset of the simulation, $\advA$ will output as a solution to the challenge a pair
+At the onset of the simulation, after $\advA$ has queried the discrete logs of $m-\ell$ elements, $\advA$ will output as a solution to the challenge a pair
 $$
-\matr{Z}=\pmatri{z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}},\underline{\vecb{z}} = (\underline{z}_1,\ldots,\underline{z}_m)
+\tilde{\matr{Z}}=\pmatri{\tilde{z}_{1,1}&\cdots&\tilde{z}_{1,\ell}\\\tilde{z}_{2,1}&\cdots&\tilde{z}_{2,\ell}},\tilde{\underline{\vecb{z}}} = (\tilde{\underline{z}}_1,\ldots,\tilde{\underline{z}}_\ell)
 $$
-such that they are, respectively, the result of applying the encoding functions $[\cdot]_1$ to polynomials $p_{1,1},\ldots,p_{2,m}\in\Z_q[A_{1,1},\ldots,\allowbreak A_{2,m}]$ evaluated on random $a_{1,1},\ldots,a_{2,m}\in\Z_q$, and the result of applying the encoding function $[\cdot]_2$ to polynomials $\underline{p}_{1},\ldots,\underline{p}_m\in\Z_q[\underline{A}_{1,1},\ldots,\underline{A}_{2,m}]$ evaluated on $\underline{a}_{1,1} = a_{1,1},\ldots,\underline{a}_{2,m} = a_{2,m}$.
+such that they are, respectively, the result of applying the encoding functions $[\cdot]_1$ to degree 2 polynomials $p_{1,1},\ldots,p_{2,\ell}\in\Z_q[A_{1},\ldots,\allowbreak A_{m}]$ evaluated on random $\tilde{a}_{1},\ldots,\tilde{a}_{\ell}\in\Z_q$, and the result of applying the encoding function $[\cdot]_2$ to  degree 2 polynomials $\underline{p}_{1},\ldots,\underline{p}_m\in\Z_q[\underline{A}_1,\ldots,\underline{A}_{m}]$ evaluated on $\underline{a}_{1} = \tilde{a}_{1},\ldots,\underline{a}_{\ell} = \tilde{a}_{\ell}$.
 %$(P_{i,j},z_{i,j},1),(Q_{i},z^*_i,2) \in L_\advA$ for all $1\leq i\leq n,j\in\{1,2\}$.
 If the challenge is successful it must also hold that
 \begin{align}
-&[p_{1,i}(a_{1,1},\ldots,a_{2,m})]_1[1]_2 = [1]_1[\underline{p}_i(a_{1,1},\ldots,a_{2,m})]_2 \nonumber\\
+&[p_{1,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_1[1]_2 = [1]_1[\underline{p}_i(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_2 \nonumber\\
 & \Longleftrightarrow 
-p_{1,i}(a_{1,1},\ldots,a_{2,m}) = \underline{p}_i(a_{1,1},\ldots,a_{2,m}) \text{ for each }1\leq i \leq m
-\label{eq:lin}
-\end{align}
-and
-\begin{align}
-	&[p_{2,i}(a_{1,1},\ldots,a_{2,m})]_1[1]_2 = [p_{1,i}(a_{1,1},\ldots,a_{2,m})]_1[\underline{p}_i(a_{1,1},\ldots,a_{2,m})]_2 \nonumber\\
+p_{1,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}) = \underline{p}_i(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}) \text{ for each }1\leq i \leq m,
+\label{eq:lin}\\
+	&[p_{2,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_1[1]_2 = [p_{i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_1[\underline{p}_i(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_2 \nonumber\\
 	& \Longleftrightarrow 
-	p_{2,i}(a_{1,1},\ldots,a_{2,m}) = p_{1,i}(a_{1,1},\ldots,a_{2,m})\underline{p}_i(a_{1,1},\ldots,a_{2,m})
-	\label{eq:quad}
+	p_{2,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}) = p_{1,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})\underline{p}_i(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}),
+	\label{eq:quad}\\
+	&\text{ and }
+	\sum_{i=1}^\ell [p_{1,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_1 = \sum_{i=1}^\ell [\tilde{a}_i]_1,\quad
+	\sum_{i=1}^\ell [p_{2,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell})]_1 = \sum_{i=1}^\ell [\tilde{a}^2_i]_1 \nonumber\\
+	&\Longleftrightarrow
+	\sum_{i=1}^\ell p_{1,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}) = \sum_{i=1}^\ell \tilde{a}_i,\quad
+	\sum_{i=1}^\ell p_{2,i}(\tilde{a}_{1},\ldots,\tilde{a}_{\ell}) = \sum_{i=1}^\ell \tilde{a}^2_i
+	\label{eq:sum}
 \end{align}
-since $[a]_1[b]_2 = [ab]_T = [c]_T$ iff $ab=c$.
+since $[a]_1[b]_2 = [ab]_T$ and $[c]_s =[d]_s$ iff $c=d$.
 
-Given that $a_{1,1},\ldots,a_{2,m}$ remain statistically hidden to $\advA$, it must choose $p_{i,1}\equiv \underline{p}_i$ and $p_{2,i}\equiv p_{1,i}\cdot \underline{p}_i$ since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}) and (\ref{eq:quad}) only hold with negligible probability. We conclude that $p_{2,i}=p^2_{1,i}$ and thus $\advB$ might output $\matr{Z}$ which is a solution of the $m$-PPA assumption.
+Given that $\tilde{a}_{1},\ldots,\tilde{a}_{m}$ remain statistically hidden to $\advA$, it must choose
+\begin{align*}
+&p_{i,1}\equiv \underline{p}_i, \quad p_{2,i}\equiv p_{1,i}\cdot \underline{p}_i,\text{ such that }\\
+&\sum_{i=1}^\ell p_{1,i} = \sum_{i=1}^\ell A_{i} \text{ and } \sum_{i=1}^\ell p_{2,i} = \sum_{i=1}^\ell = \sum_{i=1}^\ell A_{1,i}^2
+\end{align*}
+since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}), (\ref{eq:quad}) and (\ref{eq:sum}) only hold with negligible probability. We conclude that $p_{2,i}\equiv p^2_{1,i}$.
+
+Finally, $\advB$ computes its own response to its challenge. (\ref{eq:lin}), (\ref{eq:quad}) and (\ref{eq:sum}) imply equality for polynomials, they must hold for any assignment of the variables. In particular they hold when $A_{i,j}$ is assigned to $a_{i,j}$, the discrete logarithms of $\advB$'s challenge. Therefore, $\advB$ computes its own response as
+$$
+\matr{Z} = \begin{pmatrix}
+	z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}
+\end{pmatrix},
+$$
+where $z_{i,j} := [p_{i,j}(a_{1},\ldots,a_m)]$, for $i\in\{1,2\}$ and $1\leq j \leq \ell$, which can be computed from $\advB$'s challenge replacing each occurrence of $A_i$ with $[a_i]$, and each occurrence of $A_i^2$ with  $[a_i^2]$. For $\ell < j\leq m$ it defines $z_{1,j} = [a_j]$ and $z_{2,j} = [a_j^2]$. It holds that
+$$
+\sum_{j=1}^m z_{i,j} = \sum_{j=1}^\ell z_i + \sum_{j=\ell+1}^m z_i = \sum_{j=1}^\ell [a_j] + \sum_{j=\ell+1}^m [a_j] = \sum_{j=1}^m [a_j].
+$$
+Given, that $z_{2,j} = p_{2,j}(a_1,\ldots,a_\ell) = p_{1,j}^2(a_1,\ldots,a_\ell)$, $j\leq \ell$, and thus $e([z_{1,j}],[z_{1,j}]) = [p_{1,j}^2(a)]_T = e([z_{2,j}],[1])$, we conclude that  $\matr{Z}$ which is a solution of the $m$-PPA assumption.
 \end{proof}
 
 %We also prove the following theorem which states the generic security of the $\mathcal{Q}^\top_m\mbox{-}\kermdh$ assumption in asymmetric groups.

@@ -1,0 +1,55 @@
+Our main technical tool is a structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash function with \emph{always second-preimage resistance} (aSec in the terminology of Rogaway and Shrimpton \cite{FSE:RogShr04})
+\begin{align*}
+h : Q_m &\to \GG^2_1\\
+      A &\mapsto h(A) := \sum_{([\vecb{a}]_1,[\vecb{a}]_2)\in A} [\vecb{a}]_1,
+\end{align*}
+ where
+$
+Q_m:= \left\{A\subset\GG^2_1\times\GG_2^2:
+\begin{array}{l}
+ |A|=m \text{ and }\forall ([\vecb{a}]_1,[\vecb{b}]_2)\in A,\\
+\vecb{a}=(a_1,a_2)^\top\in\Z_q^2, \vecb{a}=\vecb{b}, \text{ and } a_2=a_1^2
+\end{array}\right\}.
+$
+\footnote{The reason for including $[\vecb{b}]_2$ in the preimages that it allows to verify whether of $A'\in Q_m$ or not, by checking if $e([a_1]_1,[1]_2)=e([1]_1,[{b}_1]_2)$ and $e([a_2]_1,[1]_2)=e([a_1]_1,[b_1]_2)$ for all $([\vecb{a}]_1,[\vecb{b}]_2)\in A'$. Otherwise, the statement ``$A'$ is a preimage of $h(A)$'' would be non-falsifiable. The second element of $[\vecb{b}]_2$, which still seems useless, will be crucial in the proof of security.} 
+That is, for a randomly chosen $A\in Q_m$, it is computationally infeasible to find a different $A'\in Q_m$ such that and $h(A)=h(A')$. On Section \ref{sec:hash} we show that the hardness of finding second preimages for $h$ is a direct consequence of the permutation pairing assumption.
+Each set $A\in Q_m$  can be associated to a matrix $[\matr{A}]_1\in \GG^{2\times m}_1$ whose columns are the first component of the elements of $A$. Such matrix $[\matr{A}]_1$ is unique up to a permutation of the rows, that is, given two matrices $[\matr{A}]_1,[\matr{A}']_1$ associated to $A$, there exists a permutation matrix $\matr{P}$ such that $[\matr{A}']_1 = [\matr{A}]_1\matr{P}$.
+
+We consider also a family of collision resistant hash functions parameterized by $[\matr{A}]_1\in\GG^{2\times m}_1$
+\begin{align*}
+g_{[\matr{A}]_1} : \GG^m_2 &\to \GG^2_1\\
+           [\vecb{x}]_2 &\mapsto g_{[\matr{A}]_1}([\vecb{x}]_2) = [\matr{A}\vecb{x}]_2
+\end{align*}
+Although $g$ is not efficiently computable, we might check whether $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}]_1}([\vecb{x}']_2)$ using the pairing operation. Further, we will include public values of the form $[\vecb{a}_ix_i]_2$, where $[\vecb{a}_i]_1$ is a column of $[\matr{A}]_1$ and $[x_i]_2$ is an element of $[\vecb{x}]_2$, which render  $g_{[\matr{A}]_1}([\vecb{x}]_2)$ efficiently computable.
+
+Finding collisions for $g_{[\matr{A}]_1}$ is as hard as finding a non-zero element in the kernel of $[\matr{A}]_1$, since
+$$
+g_{[\matr{A}]_1}([\vecb{x}]_2) = g_{[\matr{A}]_1}([\vecb{x}']_2) \Longleftrightarrow \matr{A}(\vecb{x}-\vecb{x}')=\vecb{0},
+$$
+which is in general a hard problem known as a kernel matrix Diffie-Hellman (KerMDH) assumption~\cite{AC:MorRafVil16}. Depending on $\matr{A}$, the KerMDH assumption is a rather mild assumption which encompasses many other assumptions --- e.g.~simultaneous double pairing assumption (weaker than DLin) or flexible CDH assumption. If $A$ is randomly chosen from $Q_m$, then finding an element on the kernel of $[\matr{A}]_1$ was proven hard in generic bilinear groups by Groth and Lu \cite{AC:GroLu07} (although using symmetric groups and a different terminology).
+%The KerMDH assumption has found many applications such as constructing constant size QA-NIZK proofs of membership in the linear span of a matrix \cite{EC:LPJY14,EC:KilWee15}.
+
+
+The following fact will be useful in what follows. Consider matrices $[\matr{A}]_1,[\matr{A}']_1\in\GG^{2\times m}_1$ associated to sets $A,A'\in Q_m$. Then $g_{[\matr{A}]_1}([\vecb{x}]_2) = g_{[\matr{A}']_1}([\vecb{x}']_2)$ and $A=A'$ implies that there is a permutation matrix $\matr{P}$ such that $[\vecb{x}]_2=\matr{P}[\vecb{x}']_2$ unless $[\vecb{x}]_2,\matr{P}[\vecb{x}']_2$ is a collision for $g_{[\matr{A}]_1}$.
+
+\subsubsection{High level description.}
+Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $[vk]_2\in\GG_2$ and belongs to the ring of verification keys $R=\{[vk_1]_2,\ldots,[vk_n]_2\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of group elements (not only of verification keys).
+
+Our proof consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
+We enlarge user's verification keys the by including $[\vecb{a}]_1,[\vecb{a}]_2$, where $\vecb{a}\gets\mathcal{Q}$, and $[\vecb{a}vk]_2=\vecb{a}[vk]_2$, where $[vk]_2$ is the verification key of a Boneh-Boyen signature. Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([vk_i]_2,[\vecb{a}]_1,[\vecb{a}]_2,[\vecb{a}_ivk_i]_2)$. In spite of these differences with Chandran et al.'s verification key, our proof also shows that the opening of a Groth-Sahai commitment is a Boneh-Boyen verification key $[vk_i]_2$ and belongs to $\{[vk_1]_2,\ldots,[vk_n]_2\}$.
+
+Our first step is to arrange the verification keys in $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. To do so we coin the following notation: for a sequence $\{s\}_{1\leq i \leq n}$ define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  The prover and the verifier arrange the elements of the verification keys into $[\vecb{\kappa}_1]_2,\ldots, [\vecb{\kappa}_{n^{2/3}}]_2$, $A_1,\ldots, A_{n^{2/3}}$, and $[\matr{A}_1]_1,\ldots, [\matr{A}_{n^{2/3}}]_1$ such that $[\vecb{\kappa}_i]_2:= ([vk_{i,1}]_2,\ldots,[vk_{i,m}]_2)^\top\in\GG^m, A_i:=\{[\vecb{a}_{i,1}]_1,\ldots,[\vecb{a}_{i,m}]_1\}\in Q_m$ and $[\matr{A}_i]_1=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]_1\in\GG^{2\times m}$. They also define the sets
+\begin{align*}
+&H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}\\
+&G:=\{g_{[\matr{A}_1]_1}([\vecb{\kappa}_1]_2),\allowbreak\ldots,g_{[\matr{A}_{n^{2/3}}]_1}([\vecb{\kappa}_{n^{2/3}}]_2)\},
+\end{align*}
+where $g_{[\matr{A}_i]_1}([\vecb{\kappa}_i]_2)$ is computed as $[\matr{A}_i\vecb{\kappa}_i]_2=\sum_{j=1}^m [\vecb{a}_{i,j}vk_{i,j}]_2$.
+
+The prover starts computing Groth-Sahai commitments to $[vk_\alpha]_2=[vk_{\mu,\nu}]_2$ and to $h(A_\mu)$, for some $1\leq \alpha \leq n$, and computes the first set-membership proof showing that $h(A_\mu)\in H$.
+The prover commits to each element of $A'=A_\mu$ such that the first committed element is $[\vecb{a}_\alpha]_1$ and the ones that follow are the other columns of $[\matr{A}_\mu]_1$ (preserving the order). Denote by $[\matr{A}']_1$ the matrix whose columns are the elements of $A'$ in the order defined before.  The prover shows using Groth-Sahai proofs that $A'\in Q_m$ and that $h(A')=h(A_\mu)$. From this part of the proof we know that, with all but negligible probability, $A'=A_\mu$.
+
+Next, the prover computes Groth-Sahai commitments to each element of the vector $[\vecb{\kappa}']_2$, whose first element is $[vk_\alpha]_2$ and the rest are the other verification keys in $[\vecb{\kappa}_\mu]_2$ (preserving the order), and commits also to $g_{[\matr{A_{\mu'}}]_1}([\vecb{\kappa}_{\mu'}]_2)$, where $\mu'=\mu$. The second set-membership proof shows that $g_{[\matr{A_{\mu'}}]_1}([\vecb{\kappa}_{\mu'}]_2)\in G$ and that $\mu'=\mu$. Finally, the prover gives a Groth-Sahai proof that $g_{[\matr{A}']_1}([\vecb{\kappa}']_2)=g_{[\matr{A_{\mu'}}]_1}([\vecb{\kappa}_{\mu'}]_2)$.
+
+Since $A'=A_\mu$, we conclude that $[\vecb{\kappa}']_1$ is a permutation of $[\vecb{\kappa}_\mu]_1$ and thus $[\kappa'_1]_2=[vk_\alpha]_2$ is in the ring of verification keys.
+
+
