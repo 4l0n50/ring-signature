@@ -117,7 +117,7 @@
 	
 		\input{appendix/asymm-ppa}
 
-	\section{Proof of Theorem \ref{theo:security}}
+	\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
 
 		\input{appendix/security-proof}
 
@@ -132,6 +132,13 @@
 	 \section{Flawed Ring Signatures\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
     
         	 \input{prelim/flawed}
+
+	\section{Efficiency Analysis}
+		In this section we calculate the proof size, in number of group elements, signer time, in number of exponentiations, and verifier time, in number of exponetiations, values which are shown in Table \ref{table:eff}. For simplicity, we ignore the influece of the one-time signature as it affects both schemes in the same way. Further, we note that one-time signatures can be constructed from symmetric-key primitives and thus, its costs are negligible in comparision to bilinear groups based primitives. We just remark that both schemes require a hash function $H:\mathcal{VK}_{\mathsf{ots}}\to\Z_q$, which hashes one-time verification keys into intergers modulo $q$.
+		\subsection{Chandran et al.'s Ring Signature}
+			\input{appendix/chandran-eff}
+		\subsection{Our Ring Signature}
+			\input{appendix/our-eff}
 
 %\section{Our construction in Asymmetric Groups}
 %

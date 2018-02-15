@@ -1,0 +1,45 @@
+% !TEX root = ../main-ring-signature.tex
+
+\begin{description}
+\item[Signature Size:] The number of elements of $\GG_1$ required  for the signature is
+\begin{itemize}
+\item 2 for commiting to the Boneh-Boyen signature,
+\item 4 for the proof that the Boneh-Boyen signature is correct,
+\item $4\sqrt{n}$ for commitments to $b_1,\ldots,b_m,b'_1,\ldots,b_m$,
+\item $8\sqrt{n}$ for proof i,
+\item $4$ for proof iv,
+\end{itemize}
+which adds up to $12\sqrt{n}+10$.
+
+The number of elements of $\GG_2$ required  for the signature is:
+\begin{itemize}
+\item 2 for commiting to the Boneh-Boyen verification key,
+\item 4 for the proof that the Boneh-Boyen signature is correct,
+\item $4\sqrt{n}$ for commitments to $b_1,\ldots,b_m,b'_1,\ldots,b_m$,
+\item $2\sqrt{n}$ for commtiments to $[\kappa_1]_2,\ldots,[\kappa_m]_2$,
+\item $8\sqrt{n}$ for proof i,
+\item $\sqrt{n}$ for proof iii,
+\item $2$ elements for proof iv,
+\end{itemize}
+which ads up to $15\sqrt{n}+8$. Additionally, it requires $\sqrt{n}$ elements of $\Z_q$.
+\item[Signature Time:] The number of exponentiations computed by the prover is:
+\begin{itemize}
+\item 1 for the Boneh-Boyen signature
+\item 8 for computing $[\vecb{c}]_2$ and $[\vecb{d}]_1$,
+\item 8 for proof that the Boneh-Boyen signature is correct,
+\item $16\sqrt{n}$ for commitments to $b_1,\ldots,b_m,b'_1,\ldots,b_m$,
+\item $4\sqrt{n}$ for commtiments to $[\kappa_1]_2,\ldots,[\kappa_m]_2$,
+\item $16\sqrt{n}$ for proof i,
+\item $\sqrt{n}$ for proof iii,
+\item $6$ for proof iii,
+\end{itemize}
+which ads up to $37\sqrt{n}+23$ exponentiations.
+\item[Verification Time:] The number of paring operations for verifiyng a signature is:
+\begin{itemize}
+\item 24 for verifying the proof that the Boneh-Boyen signature is correct,
+\item $48\sqrt{n}$ for proof i,
+\item $2n+4\sqrt{n}$ for proof iii,
+\item $8\sqrt{n} + 14$ fro proof iv,
+\end{itemize}
+which ads up to $2n + 60\sqrt{n}+38$ exponentiations.
+\end{description}

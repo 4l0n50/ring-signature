@@ -1,6 +1,6 @@
 % !TEX root = ../main-ring-signature.tex
 
-We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. We also allow the the verifier to interactively ask for the discrete logs of $m-\ell$ elements from the challenge, and we call this assumption $(\ell,m)$-PPA. Hence, the natural translation to asymmetric groups of the pairing product assumptions is the $(m,m)$-PPA (no queries for the adversary and thus non-interactive), which we simply call $m$-PPA.
+We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. We also allow the verifier to interactively ask for the discrete logs of $m-\ell$ elements from the challenge, and we call this assumption $(\ell,m)$-PPA. Hence, the natural translation to asymmetric groups of the pairing product assumptions is the $(m,m)$-PPA (no queries for the adversary and thus non-interactive), which we simply call $m$-PPA.
 \begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
 Let $\ell,m$ integers such that $2\leq \ell \leq m$, let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
@@ -67,7 +67,7 @@ The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\
 $[\vecb{x}]_{3-s}^{\top}[\matr{A}]_s=[\vecb{0}]_T$. 
 \end{definition}
 Although using a different notation, the $Q_m^\top\mbox{-}\kermdh$ in symmetric groups was introduced by Groth and Lu \cite{AC:GroLu07}.
-We will be using a natural translation of the $Q_m^\top\mbox{-}\kermdh$ assumption to asymmetric groups, where  $[\matr{A}]_s$ is also given in $\GG_{3-s}$.  Such assumption is a weaker variant of the $Q_m^\top\mbox{-}\skermdh$, introduced in \cite{AC:GonHevRaf15}, where the adversary might find an element in $\mathrm{Ker}(\matr{A})$ which is splitted between $\GG_1$ and $\GG_2$.
+We will be using a natural translation of the $Q_m^\top\mbox{-}\kermdh$ assumption to asymmetric groups, where  $[\matr{A}]_s$ is also given in $\GG_{3-s}$.  Such assumption is a weaker variant of a \emph{split} $\kermdh$ assumption, introduced in \cite{AC:GonHevRaf15}, where the adversary might find an element in $\mathrm{Ker}(\matr{A})$ which is splitted between $\GG_1$ and $\GG_2$.
 
 \begin{definition}[Split Kernel Diffie-Hellman Assumption \cite{AC:GonHevRaf15}] Let  $\gk 
 \gets\ggen_a(1^\lambda)$ and $\dist_{\ell,k}$ a distribution over $\Z_q^{\ell\times k}$.
