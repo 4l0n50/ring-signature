@@ -15,8 +15,8 @@
 \bibliographystyle{plainurl}% the recommended bibstyle
 
 % Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Efficient Ring Signatures under Milder Assumptions}
-\titlerunning{A more efficient Ring Signature} %optional, in case that the title is too long; the running title should fit into the top page column
+\title{An Efficient Ring Signature under Milder Assumptions}
+\titlerunning{An Efficient Ring Signature under Milder Assumptions} %optional, in case that the title is too long; the running title should fit into the top page column
 
 %% Please provide for each author the \author and \affil macro, even when authors have the same affiliation, i.e. for each author there needs to be the  \author and \affil macros
 \author[1]{Alonso Gonz\'alez}
@@ -137,7 +137,7 @@
     
         	 \input{prelim/flawed}
 
-	\section{Efficiency Analysis}
+	\section{Efficiency Analysis} \label{sec:eff-analysis}
 		In this section we calculate the proof size, in number of group elements, signer time, in number of exponentiations, and verifier time, in number of exponentiations, values which are shown in Table \ref{table:eff}. For simplicity, we ignore the influence of the one-time signature as it affects both schemes in the same way. Further, we note that one-time signatures can be constructed from symmetric-key primitives and thus, its costs are negligible in comparison to bilinear groups based primitives. We just remark that both schemes require a hash function $H:\mathcal{VK}_{\mathsf{ots}}\to\Z_q$, which hashes one-time verification keys into integers modulo $q$.
 		\subsection{Chandran et al.'s Ring Signature}
 			\input{appendix/chandran-eff}
