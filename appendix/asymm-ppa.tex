@@ -128,11 +128,11 @@ since $[a]_1[b]_2 = [ab]_T$ and $[c]_s =[d]_s$ iff $c=d$.
 Given that $\tilde{a}_{1},\ldots,\tilde{a}_{m}$ remain statistically hidden to $\advA$, it must choose
 \begin{align*}
 &p_{i,1}\equiv \underline{p}_i, \quad p_{2,i}\equiv p_{1,i}\cdot \underline{p}_i,\text{ such that }\\
-&\sum_{i=1}^\ell p_{1,i} = \sum_{i=1}^\ell A_{i} \text{ and } \sum_{i=1}^\ell p_{2,i} = \sum_{i=1}^\ell A_{1,i}^2
+&\sum_{i=1}^\ell p_{1,i} = \sum_{i=1}^\ell A_{i} \text{ and } \sum_{i=1}^\ell p_{2,i} = \sum_{i=1}^\ell A_{i}^2
 \end{align*}
 since otherwise, by the Schwartz-Zippel lemma, equations (\ref{eq:lin}), (\ref{eq:quad}) and (\ref{eq:sum}) only hold with negligible probability. We conclude that $p_{2,i}\equiv p^2_{1,i}$.
 
-Finally, $\advB$ computes its own response to its challenge. (\ref{eq:lin}), (\ref{eq:quad}) and (\ref{eq:sum}) imply equality for polynomials, they must hold for any assignment of the variables. In particular they hold when $A_{i,j}$ is assigned to $a_{i,j}$, the discrete logarithms of $\advB$'s challenge. Therefore, $\advB$ computes its own response as
+Finally, $\advB$ computes its own response to its challenge. Since equations (\ref{eq:lin}), (\ref{eq:quad}) and (\ref{eq:sum}) imply equality for polynomials, they must hold for any assignment of the variables. In particular they hold when $A_{i}$ is assigned to $a_{i}$, the discrete logarithms of $\advB$'s challenge. Therefore, $\advB$ computes its own response as
 $$
 \matr{Z} = \begin{pmatrix}
 	z_{1,1}&\cdots&z_{1,m}\\z_{2,1}&\cdots&z_{2,m}

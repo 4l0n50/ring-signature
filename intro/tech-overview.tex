@@ -1,12 +1,11 @@
 % !TEX root = ../main-ring-signature.tex
 
-To give a more clear understanding our contributions, it will be illustrative to see what is the main difficulty of constructing a ring signature on bilinear groups. Most schemes have followed the following approach. Given a ring of users defined by the set of their public keys and a message: a) sign the message, b) prove in zero-knowledge knowledge of a signature which can be verified using some committed/randomized verification key, and then c) prove in zero-knowledge that this verification key belongs to the set of public keys in the ring.  The most expensive part is c) and we call it a \emph{set membership proof}.
+To give a more clear understanding our contributions, it will be illustrative to see what is the main difficulty when constructing a ring signature on bilinear groups. Most schemes have followed the following approach. Given a ring of users defined by the set of their public keys and a message: a) sign the message, b) prove in zero-knowledge knowledge of a signature which can be verified using some committed/randomized verification key, and then c) prove in zero-knowledge that this verification key belongs to the set of public keys in the ring.  The most expensive part is c) and is sometimes called a \emph{set-membership proof}.
 
-In the case of a ring signature, a set membership has the following additional property: \emph{all the verification keys forming the ring are honestly generated}. 
-Indeed, since the set membership is only used to guarantee unforgeability, it makes no sense to guarantee unforgeability when members of the ring are controlled by the adversary.
+In the case of a ring signature, a set-membership has the following additional property: \emph{all the verification keys forming the ring are honestly generated}. 
+Indeed, since the set-membership proof is only used to guarantee unforgeability, it makes no sense to guarantee unforgeability when members of the ring are controlled by the adversary.
 It turns out that all the schemes we are aware of, in particular Chandran et al.'s, obviate this property, meaning that their set membership proofs are for adversarially chosen verification keys.
-
-The main question explored in this work is the following:
+We ask the following natural question.
 \begin{displayquote}
 Can we construct more efficient set membership proofs (without random oracles nor non-falsifiable assumptions) when verification keys are sampled from a specific distribution?
 \end{displayquote}
@@ -22,8 +21,8 @@ We construct a set membership proof where a prover wants to convince a verifier 
 &H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}.
 \end{align*}
 
-We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this last proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
+We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this last proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
 
 Another nice property of our hash function is that its inputs are sets (or equivalently, is invariant under permutations of the input). Hence, we can sort the commitments of the $\sqrt[3]{n}$ verification keys in $A_\mu$ so that the first commitment is $c$. We conclude that $A'=A_\mu$, unless we break second-preimage resistance of $h$, and thus $a$, the opening of $c$, belongs to $\{\vecb{a}_1,\ldots,\vecb{a}_n\}$.
 
-However, as stated before, $\vecb{a}$ is only a fragment of the actual verification key. In fact, the verification key will contain $\vecb{a}$ and $vk$, the verification key of a (normal) signature scheme, together with an additional value that links $\vecb{a}$ and $vk$. With the help of another collision-resistant and structure preserving hash function we will be able to link $\vecb{a}$ and $vk$. We postpone further details to Section \ref{sec:high-level}.
+In our ring signature, the verification key will contain $\vecb{a}$ and $vk$, the verification key of a (normal) signature scheme. With the help of another collision-resistant and structure preserving hash function that relates $\vecb{a}$ and $vk$ we will also prove that $vk\in\{vk_1,\ldots,vk_n\}$. We postpone further details to Section \ref{sec:high-level}.

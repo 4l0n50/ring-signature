@@ -1,7 +1,7 @@
 % !TEX root = ../main-ring-signature.tex
 
 We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. We formalize a much stronger assumption where the adversary may interactively ask for the discrete logs of $m-\ell$ elements from the challenge, and we call this assumption $(\ell,m)$-PPA.
-Our natural non-interactive translation of the permutation pairing assumption becomes the non-interactive $(m,m)$-PPA assumption, which we simply call $m$-PPA, where the adversary hast no access to the discrete logs of the challenge.
+Our natural non-interactive translation of the permutation pairing assumption becomes the non-interactive $(m,m)$-PPA assumption, which we simply call $m$-PPA, where the adversay hast no access to the discrete logs of the challenge.
 \begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
 Let $\ell,m$ integers such that $2\leq \ell \leq m$, let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$

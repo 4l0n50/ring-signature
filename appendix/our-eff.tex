@@ -3,9 +3,9 @@
 \begin{description}
 \item[Signature Size:] The number of elements of $\GG_1$ required  for the signature is
 \begin{itemize}
-\item 2 for commiting to the Boneh-Boyen signature,
+\item 2 for committing to the Boneh-Boyen signature,
 \item 4 for the proof that the Boneh-Boyen signature is correct,
-\item 4 for commtiment to $[\vecb{x}]_1$,
+\item 4 for commitment to $[\vecb{x}]_1$,
 \item $12\sqrt[3]{n} + 16$ for membership in $H$ and $G$,
 \item $4\sqrt[3]{n}$ for commitments to $A'$.
 \item $8\sqrt[3]{n}$ for proof  $\pi_{Q_m}$,
@@ -16,9 +16,9 @@ which adds up to $24\sqrt[3]{n} + 36$.
 
 The number of elements of $\GG_2$ required  for the signature is:
 \begin{itemize}
-\item 2 for commiting to the Boneh-Boyen verification key,
+\item 2 for committing to the Boneh-Boyen verification key,
 \item 4 for the proof that the Boneh-Boyen signature is correct,
-\item 4 for commtiment to $[\vecb{y}]_2$,
+\item 4 for commitment to $[\vecb{y}]_2$,
 \item $24\sqrt[3]{n} + 8$ for membership in $H$ and $G$,
 \item $2\sqrt[3]{n}-2$ for commitments to $[\vecb{\kappa}']_2$.
 \item $8\sqrt[3]{n}$ for proof  $\pi_{Q_m}$,
@@ -38,7 +38,7 @@ which adds up to $34\sqrt[3]{n} + 24$. Additionally, it requires $\sqrt[3]{n}$ e
 \item $16$,
 \end{itemize}
 which ads up to $80\sqrt[3]{n}+71$.
-\item[Verification Time:] The number of paring operations for verifiyng a signature is:
+\item[Verification Time:] The number of paring operations for verifying a signature is:
 \begin{itemize}
 \item 24 for verifying the proof that the Boneh-Boyen signature is correct,
 \item $8n^{2/3} + 96\sqrt[3]{n} + 56$ for membership in $H$ and $G$,

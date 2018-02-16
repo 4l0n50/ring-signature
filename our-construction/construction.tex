@@ -5,7 +5,7 @@ In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ defi
 \begin{description}
 \item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$ and define $(ck_1,ck_2):=\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
 
-\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1$, $[\vecb{a}]_2$ and then erase $\vecb{a}$ (but if nto erased we prove security under the $(\ell,m)$-PPA). The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$.
+\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1$, $[\vecb{a}]_2$ and then erase $\vecb{a}$ (but if not erased we prove security under the $(\ell,m)$-PPA). The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$.
 
 \item[$\mathsf{Sign}_{\rho,sk}(m,R)$:] Let $\alpha$ the index of the signer with respect to $R$.
 \begin{enumerate}
