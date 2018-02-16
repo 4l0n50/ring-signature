@@ -24,7 +24,7 @@ We say that the $(\ell,m)$-permutation pairing assumption holds relative to $\G_
 \right],
 $$\end{small}
 where $I:=\{1,\ldots, m\}\setminus \{i_1,\ldots, i_{m-\ell} \}$, $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_\ell]_1\in\GG_1^{2\times \ell}, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\underline{\vecb{z}}]_2=\allowbreak[(\underline{z}_1,\ldots,\allowbreak \underline{z}_\ell)]_2\in\GG_2^{1\times \ell}$,
-$\matr{A}_I\in \Z_q^{2\times \ell}$ is the matrix whose columns $\vecb{a}_i$ for each $i\in I$ (in some fixed order),
+$\matr{A}_I\in \Z_q^{2\times \ell}$ is the matrix whose columns are $\vecb{a}_i$, $i\in I$ (in some fixed order),
  is negligible in $\lambda$.
 \end{definition}
 Groth and Lu proved the hardness of the PPA in generic symmetric bilinear groups \cite{AC:GroLu07}. In Appendix \ref{sec:aPPA} we show that the $(\ell,m)$-PPA in generic asymmetric groups is as hard as the PPA in generic symmetric groups. It follows that the $m$-PPA is also generically hard.
@@ -55,7 +55,7 @@ We say that the Symmetric eXternal Diffie-Hellman (SXDH) assumption holds if the
 We recall a family of assumptions which are weaker than the so called \emph{Matrix Diffie-Hellman} assumptions (a generalization of the DDH and DLin assumptions introduced by Escala et al.~\cite{C:EHKRV13}).
 \begin{definition}[Kernel Diffie-Hellman Assumption in $\GG_s$ \cite{AC:MorRafVil16}] Let  $\gk 
 \gets\ggen_a(1^\lambda)$ and $\dist_{\ell,k}$ a distribution over $\Z_q^{\ell\times k}$.
-The Kernel Diffie-Hellman assumption in $\GG$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]_s$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}]_{3-s} \in \GG^{\ell}_{3-s}$, $\vecb{x} \neq \vecb{0}$, such that 
+The Kernel Diffie-Hellman assumption in $\GG_s$ ($\dist_{\ell,k}\mbox{-}\kermdh_{\GG_s}$) says that every PPT Algorithm has negligible advantage in the following  game: given $[\matr{A}]_s$, where $\matrA \gets \dist_{\ell,k}$, find $[\vecb{x}]_{3-s} \in \GG^{\ell}_{3-s}$, $\vecb{x} \neq \vecb{0}$, such that 
 $[\vecb{x}]_{3-s}^{\top}[\matr{A}]_s=[\vecb{0}]_T$. 
 \end{definition}
 Although using a different notation, the $Q_m^\top\mbox{-}\kermdh$ in symmetric groups was introduced by Groth and Lu \cite{AC:GroLu07}.

@@ -12,7 +12,7 @@ A natural question is if this technique can be applied once again. That is, to c
 %		([
 %			\vecb{\kappa}_{n^{3/4}}
 %])\}$,
-and then prove that it belong to $H$ using our set membership proof of size $\Theta(\sqrt[3]{n})$. Since $|H|=n^{3/4}$, the proof will be of size $\Theta(\sqrt[3]{n^{3/4}})=\Theta(\sqrt[4]{n})$. However, this is not possible since the $\Theta(\sqrt[3]{n})$ proof is not a set-membership proof for arbitrary sets and in fact it doesn't work for elements in the image of $h$. Going a step forward, the proof works for elements of the form $(a\cP_s,a^2\cP_s)$, where $a$ is an integer and $\cP_s$ is a generator of one of the base groups of a bilinear group. On the other hand, the image of $h$ contains elements of the form $\sum_{i=1}^m (a_i\cP_s,a_i^2\cP_s)$ for which we do not know how to construct a function like $h$ and thus, we do not how to construct a set membership proof of size $\Theta(\sqrt[3]{n})$.
+and then prove that it belongs to $H$ using our set membership proof of size $\Theta(\sqrt[3]{n})$. Since $|H|=n^{3/4}$, the proof will be of size $\Theta(\sqrt[3]{n^{3/4}})=\Theta(\sqrt[4]{n})$. However, this is not possible since the $\Theta(\sqrt[3]{n})$ proof is not a set-membership proof for arbitrary sets and in fact it doesn't work for elements in the image of $h$. Going a step forward, the proof works for elements of the form $(a\cP_s,a^2\cP_s)$, where $a$ is an integer and $\cP_s$ is a generator of one of the base groups of a bilinear group. On the other hand, the image of $h$ contains elements of the form $\sum_{i=1}^m (a_i\cP_s,a_i^2\cP_s)$ for which we do not know how to construct a function like $h$ and thus, we do not how to construct a set membership proof of size $\Theta(\sqrt[3]{n})$.
 
 
 \subsubsection{Erasures.}
@@ -23,6 +23,6 @@ In the security proof we need to embed a random preimage $A=\{\vecb{a}_1,\ldots,
 %If we use Gonzalez et al.'s techniques we would have to show that for all $\vecb{a}'\in A',$ $\vecb{a}'\in A_ \mu$. However, we can't do this since $A_\mu$ is unknown to the verifier. Instead, it seems that we are using stronger properties of the permutation pairing assumption. We use $h(A_\mu)$ as a constant-size computationally binding commitment of the set $A_\mu$, i.e.~invariant under permutations of the input, which is also structure preserving, i.e.~$A_\mu\subset\GG^2_1$ and $h(A_\mu)\in\GG_1$. It is an interesting open problem to construct $h$ from standard assumptions (e.g.~DDH, DLin).
 
 \subsubsection{Relation to \cite{AC:GonHevRaf15}.}
-Our construction is similar to the set membership proof of Gonzalez et al.~{\cite[Appendix D.2]{AC:GonHevRaf15}. However, the proof system from \cite{AC:GonHevRaf15} does not suffice for constructing a ring signature because there the CRS is fixed to a specific set and thus, the resulting ring signature will be fixed to a specific ring. 
+Our construction is similar to the set membership proof of Gonzalez et al.~{\cite[Appendix D.2]{AC:GonHevRaf15}. However, the proof system from \cite{AC:GonHevRaf15} does not suffice for constructing a ring signature because there, the CRS is fixed to a specific set and thus the resulting ring signature will be fixed to a specific ring. 
 
 

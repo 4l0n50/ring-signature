@@ -7,12 +7,12 @@ Indeed, since the set-membership proof is only used to guarantee unforgeability,
 It turns out that all the schemes we are aware of, in particular Chandran et al.'s, obviate this property, meaning that their set membership proofs are for adversarially chosen verification keys.
 We ask the following natural question.
 \begin{displayquote}
-Can we construct more efficient set membership proofs (without random oracles nor non-falsifiable assumptions) when verification keys are sampled from a specific distribution?
+Can we construct more efficient set membership proofs (without random oracles or non-falsifiable assumptions) when verification keys are sampled from a known distribution?
 \end{displayquote}
-We answer this question in the affirmative and we construct a $\Theta(\sqrt[3]{n})$ set membership proof when the verification keys are honestly sampled. In contrast, Chandran et al.'s is of size $\Theta(\sqrt{n})$ but it makes no assumption on the verification keys distribution.
+We answer this question in the affirmative and we construct a $\Theta(\sqrt[3]{n})$ set membership proof when the verification keys are honestly sampled. In contrast, Chandran et al.'s proof is of size $\Theta(\sqrt{n})$ but it makes no assumption on the verification keys distribution.
 
 Our main technical tool is a structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash function with \emph{always second-preimage resistance} (aSec in the terminology of Rogaway and Shrimpton \cite{FSE:RogShr04}). That is, given $A$ in the domain of $h$, is hard to find $A'\neq A$ such that $h(A')=h(A)$ {\bf whenever $A$ is randomly sampled from the domain}.
-Our function $h$ takes as input $A$, a set of verification keys (in fact, a fragment of each verification key), and returns a constant size digest which is simply $h(A):= \sum_{\vecb{a} \in A} \vecb{a}$. Thereby, whenever $h$ is applied to a set of honestly sampled verification keys, $A$ is indeed random and hence is infeasible to compute a second-preimage.
+Our function $h$ takes as input $A$, a set of verification keys (in fact, a fragment of each verification key), and returns a constant size digest which is simply $h(A)= \sum_{\vecb{a} \in A} \vecb{a}$. Thereby, whenever $h$ is applied to a set of honestly sampled verification keys, $A$ is indeed random and hence is infeasible to compute a second preimage.
 
 \subsubsection{High level description}
 We construct a set membership proof where a prover wants to convince a verifier that some commitment $c$ opens to $\vecb{a}$ and $\vecb{a}\in\{\vecb{a}_1,\ldots,\vecb{a}_n\}$. To do so, we arrange the $n$ elements of the ring into $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. We coin the following notation: for a ring $\{\vecb{a}_i:1\leq i \leq n\}$ define $\vecb{a}_{\mu,\nu}:=\vecb{a}_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  Let
@@ -21,8 +21,8 @@ We construct a set membership proof where a prover wants to convince a verifier 
 H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}.
 \end{align*}
 
-We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this last proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
+We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
 
 Another nice property of our hash function is that its inputs are sets (or equivalently, is invariant under permutations of the input). Hence, we can sort the commitments of the $\sqrt[3]{n}$ verification keys in $A_\mu$ so that the first commitment is $c$. We conclude that $A'=A_\mu$, unless we break second-preimage resistance of $h$, and thus $a$, the opening of $c$, belongs to $\{\vecb{a}_1,\ldots,\vecb{a}_n\}$.
 
-In our ring signature, the verification key will contain $\vecb{a}$ and $vk$, the verification key of a (normal) signature scheme. With the help of another collision-resistant and structure preserving hash function that relates $\vecb{a}$ and $vk$ we will also prove that $vk\in\{vk_1,\ldots,vk_n\}$. We postpone further details to Section \ref{sec:high-level}.
+In our ring signature, the verification key will contain $\vecb{a}$ and $vk$, where $vk$ the verification key of a (normal) signature scheme. With the help of another collision-resistant and structure preserving hash function that relates $\vecb{a}$ and $vk$ we will also prove that $vk\in\{vk_1,\ldots,vk_n\}$. We postpone further details to Section \ref{sec:high-level}.
