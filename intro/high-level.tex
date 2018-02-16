@@ -37,8 +37,7 @@ We enlarge user's verification keys the by including $[\vecb{a}]_1,[\vecb{a}]_2$
 
 Our first step is to arrange the verification keys in $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. To do so we coin the following notation: for a sequence $\{s\}_{1\leq i \leq n}$ define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  The prover and the verifier arrange the elements of the verification keys into $[\vecb{\kappa}_1]_2,\ldots, [\vecb{\kappa}_{n^{2/3}}]_2$, $A_1,\ldots, A_{n^{2/3}}$, and $[\matr{A}_1]_1,\ldots, [\matr{A}_{n^{2/3}}]_1$ such that $[\vecb{\kappa}_i]_2:= ([vk_{i,1}]_2,\ldots,[vk_{i,m}]_2)^\top\in\GG^m_2, A_i:=\{[\vecb{a}_{i,1}]_1,\ldots,[\vecb{a}_{i,m}]_1\}\in Q_m$ and $[\matr{A}_i]_1=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]_1\in\GG^{2\times m}_1$. They also define the sets
 \begin{align*}
-&H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}\\
-&G:=\{g_{[\matr{A}_1]_1}([\vecb{\kappa}_1]_2),\allowbreak\ldots,g_{[\matr{A}_{n^{2/3}}]_1}([\vecb{\kappa}_{n^{2/3}}]_2)\},
+&H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\},\quad G:=\{g_{[\matr{A}_1]_1}([\vecb{\kappa}_1]_2),\allowbreak\ldots,g_{[\matr{A}_{n^{2/3}}]_1}([\vecb{\kappa}_{n^{2/3}}]_2)\},
 \end{align*}
 where $g_{[\matr{A}_i]_1}([\vecb{\kappa}_i]_2)$ is computed as $[\matr{A}_i\vecb{\kappa}_i]_2=\sum_{j=1}^m [\vecb{a}_{i,j}vk_{i,j}]_2$.
 

@@ -17,8 +17,8 @@ Our function $h$ takes as input $A$, a set of verification keys (in fact, a frag
 \subsubsection{High level description}
 We construct a set membership proof where a prover wants to convince a verifier that some commitment $c$ opens to $\vecb{a}$ and $\vecb{a}\in\{\vecb{a}_1,\ldots,\vecb{a}_n\}$. To do so, we arrange the $n$ elements of the ring into $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. We coin the following notation: for a ring $\{\vecb{a}_i:1\leq i \leq n\}$ define $\vecb{a}_{\mu,\nu}:=\vecb{a}_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  Let
 \begin{align*}
-& A_1 := \{\vecb{a}_{1,1},\ldots,\vecb{a}_{1,m}\},\ldots, A_{n^{2/3}} := \{\vecb{a}_{n^{2/3},1},\ldots,\vecb{a}_{n^{2/3},m}\}\\
-&H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}.
+& A_1 := \{\vecb{a}_{1,1},\ldots,\vecb{a}_{1,m}\},\ldots, A_{n^{2/3}} := \{\vecb{a}_{n^{2/3},1},\ldots,\vecb{a}_{n^{2/3},m}\},\,
+H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}.
 \end{align*}
 
 We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this last proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.

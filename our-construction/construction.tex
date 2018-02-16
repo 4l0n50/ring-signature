@@ -23,11 +23,10 @@ $G=\{
 \item Let $[\vecb{x}]_1:=h(A_\mu)$ and $[\vecb{y}]_2=g_{[\matr{A}_\mu]_1}([\vecb{\kappa}_\mu]_2)$. Compute GS commitments to $[\vecb{x}]_1$ and $[\vecb{y}]_2$ and compute proofs $\pi_G$ and $\pi_H$ that they belong to $G$ and $H$, respectively. It is also proven that they appear in the same positions reusing the commitments to $b_1,\ldots,b_{m}$ and $b'_1,\ldots,b'_{m}$, used in the set-membership proof of Chandran et al., which define $[\vecb{x}]_1$'s and $[\vecb{y}]_2$'s position in $H$ and $G$ respectively.
 
 \item Let
-\begin{align*}
-&[\vecb{\kappa'}]_2:=([vk_\alpha]_2,[vk_{\mu,1}]_2,\ldots,[vk_{\alpha-1}]_2,[vk_{\alpha+1}]_2,\ldots,[vk_{\mu,m}]_2)^\top\in\GG^m_2,\\
-&[\matr{A}']_1:=[\vecb{a}_\alpha \cat \vecb{a}_{\mu,1} \cat \cdots \cat \vecb{a}_{\alpha-1}\cat \vecb{a}_{\alpha+1}\cat\cdots\cat\vecb{a}_{\mu,m}]_1\in\GG^{2\times m}_1\text{ and}\\
-&A'=\{([\vecb{a}_{\mu,1}]_1,[\vecb{a}_{\mu,1}]_2),\ldots,([\vecb{a}_{\mu,1}]_1,[\vecb{a}_{\mu,1}]_2)\}.
-\end{align*}
+$
+[\vecb{\kappa'}]_2:=([vk_\alpha]_2,[vk_{\mu,1}]_2,\ldots,[vk_{\alpha-1}]_2,[vk_{\alpha+1}]_2,\ldots,[vk_{\mu,m}]_2)^\top\in\GG^m_2$, 
+$[\matr{A}']_1:=[\vecb{a}_\alpha \cat \vecb{a}_{\mu,1} \cat \cdots \cat \vecb{a}_{\alpha-1}\cat \vecb{a}_{\alpha+1}\cat\cdots\cat\vecb{a}_{\mu,m}]_1\in\GG^{2\times m}_1$ and
+$A'=\{([\vecb{a}_{\mu,1}]_1,[\vecb{a}_{\mu,1}]_2),\ldots,([\vecb{a}_{\mu,1}]_1,\allowbreak [\vecb{a}_{\mu,1}]_2)\}$.
 Compute GS commitments to all but the first element of $[\vecb{\kappa}']_2$ (note that $[\vecb{c}]_2$ is a commitment to the first element of $[\vecb{\kappa}']_2$). Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']_1}([\vecb{\kappa}']_2)=[\vecb{y}]_2$, a GS proof $\pi_{h}$ that $h(A')=[\vecb{x}]_1$, and a GS proof $\pi_{Q_m}$ that $A'\in Q_m$.
 
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\pi_{\mathsf{BB}},\pi_G,\pi_H, \pi_g,\pi_h,\pi_{Q_m})$. (GS proofs include commitments to variables).

@@ -33,16 +33,7 @@ We recall also the definition of the Decisional Diffie-Hellman assumption (in ma
 
 \begin{definition}[Decisional Diffie-Hellman (DDH) in $\GG_s$]\label{def:dlin}
  Let  $\gk 
-\gets \ggen_a(1^\lambda)$ and let
-$$
-\matr{A} :=
-\begin{pmatrix} 
-a     \\
-1
-\end{pmatrix},
-\quad
-a\gets\mathbb{Z}_q.
-$$
+\gets \ggen_a(1^\lambda)$ and let $\matr{A} := (a,1)^\top$, $a\gets\mathbb{Z}_q$.
 We say that the DDH assumption holds relative to $\ggen_a$ if for all PPT adversaries $\advD$
 $$
 \adv_{\mathrm{DDH},\ggen_s}(\advD) := |
