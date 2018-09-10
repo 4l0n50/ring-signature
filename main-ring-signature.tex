@@ -1,47 +1,44 @@
-\documentclass[a4paper,english]{lipics-v2016}
-%This is a template for producing LIPIcs articles. 
-%See lipics-manual.pdf for further information.
-%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
-%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
-% for section-numbered lemmas etc., use "numberwithinsect"
- 
-\usepackage{microtype}%if unwanted, comment out or use option "draft"
+
+\documentclass{llncs}
+
+\pagestyle{plain}
+
 \input{common-packages}
 \input{preamble}
 
 
 %\graphicspath{{./graphics/}}%helpful if your graphic files are in another directory
 
-\bibliographystyle{plainurl}% the recommended bibstyle
+%\bibliographystyle{plainurl}% the recommended bibstyle
 
 % Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{An Efficient Ring Signature under Milder Assumptions}
-\titlerunning{An Efficient Ring Signature under Milder Assumptions} %optional, in case that the title is too long; the running title should fit into the top page column
+\title{An Efficient Ring Signature without Random Oracles}
+%\titlerunning{An Efficient Ring Signature in the Standard Model} %optional, in case that the title is too long; the running title should fit into the top page column
 
 %% Please provide for each author the \author and \affil macro, even when authors have the same affiliation, i.e. for each author there needs to be the  \author and \affil macros
-\author[1]{Alonso Gonz\'alez}
-\affil[1]{Ecole Normale Sup\'erieure de Lyon, Laboratoire LIP (France)\\
-  \texttt{alonso.gonzalez@ens-lyon.fr}}
-\authorrunning{A.\,Gonz\'alez} %mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et. al.'
+%\author[1]{Alonso Gonz\'alez}
+%\affil[1]{Ecole Normale Sup\'erieure de Lyon, Laboratoire LIP (France)\\
+ % \texttt{alonso.gonzalez@ens-lyon.fr}}
+%\authorrunning{A.\,Gonz\'alez} %mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et. al.'
 
-\Copyright{Alonso Gonz\'alez}%mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
+%\Copyright{Alonso Gonz\'alez}%mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
 
-\subjclass{Security and privacy - Public key (asymmetric) techniques}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
-\keywords{Ring Signatures, Bilinear Groups, Set-Membership Proofs, Non-Interactive Zero-Knowledge}% mandatory: Please provide 1-5 keywords
+%\subjclass{Security and privacy - Public key (asymmetric) techniques}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
+%\keywords{Ring Signatures, Bilinear Groups, Set-Membership Proofs, Non-Interactive Zero-Knowledge}% mandatory: Please provide 1-5 keywords
 % Author macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\EventEditors{Ioannis Chatzigiannakis, Christos Kaklamanis, Daniel Marx, and Don Sannella}
-\EventNoEds{4}
-\EventLongTitle{45th International Colloquium on Automata, Languages, and Programming (ICALP 2018)}
-\EventShortTitle{ICALP 2018}
-\EventAcronym{ICALP}
-\EventYear{2018}
-\EventDate{July 9--13, 2018}
-\EventLocation{Prague, Czech Republic}
-\EventLogo{eatcs}
-\SeriesVolume{80}
-\ArticleNo{}
+%\EventEditors{Ioannis Chatzigiannakis, Christos Kaklamanis, Daniel Marx, and Don Sannella}
+%\EventNoEds{4}
+%\EventLongTitle{45th International Colloquium on Automata, Languages, and Programming (ICALP 2018)}
+%\EventShortTitle{ICALP 2018}
+%\EventAcronym{ICALP}
+%\EventYear{2018}
+%\EventDate{July 9--13, 2018}
+%\EventLocation{Prague, Czech Republic}
+%\EventLogo{eatcs}
+%\SeriesVolume{80}
+%\ArticleNo{}
 % Editor-only macros::end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -83,6 +80,14 @@
     
             		\input{prelim/definition}
 
+	\subsection{Groth-Sahai Proofs in the SXDH Instantiation} \label{sec:gs-proofs}
+
+		\input{prelim/symm-gs}
+
+	\subsection{Boneh-Boyen Signatures} \label{sec:bbs}
+    
+            \input{prelim/bb-signatures}
+
       	\subsection{Chandran et al.'s Ring Signature}
 	
        		\input{intro/chandran}
@@ -90,6 +95,10 @@
 	\subsection{Hash Functions} \label{sec:hash}
 
 		\input{prelim/hash}
+
+	\subsection{The Ring Signatures of Bose et al.~and of Gritti et al.\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
+    
+        	 \input{prelim/flawed}
 
     \section{Our Construction} \label{sec:oc}
 
@@ -105,12 +114,17 @@
     	
 	\subsection{Our Ring Signature}\label{sec:our-construction}
         	\input{our-construction/construction} 
+	\input{appendix/security-proof}
+
+	\section{Conclusions}
+
+		\input{conclusions/conclusions}
 %%
 %% Bibliography
 %%
 
 %% Either use bibtex (recommended), 
-
+\bibliographystyle{abbrv}
 \bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}
 
 %% .. or use the thebibliography environment explicitely
@@ -121,21 +135,9 @@
 	
 		\input{appendix/asymm-ppa}
 
-	\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
+	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
 
-		\input{appendix/security-proof}
-
-	\section{Groth-Sahai Proofs in the SXDH Instantiation} \label{sec:gs-proofs}
-
-		\input{prelim/symm-gs}
-
-	\section{Boneh-Boyen Signatures} \label{sec:bbs}
-    
-            \input{prelim/bb-signatures}
-
-	 \section{The Ring Signatures of Bose et al.~and of Gritti et al.\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
-    
-        	 \input{prelim/flawed}
+%\input{appendix/security-proof}
 
 	\section{Efficiency Analysis} \label{sec:eff-analysis}
 		In this section we calculate the proof size, in number of group elements, signer time, in number of exponentiations, and verifier time, in number of exponentiations, values which are shown in Table \ref{table:eff}. For simplicity, we ignore the influence of the one-time signature as it affects both schemes in the same way. Further, we note that one-time signatures can be constructed from symmetric-key primitives and thus, its costs are negligible in comparison to bilinear groups based primitives. We just remark that both schemes require a hash function $H:\mathcal{VK}_{\mathsf{ots}}\to\Z_q$, which hashes one-time verification keys into integers modulo $q$.

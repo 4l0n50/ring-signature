@@ -1,0 +1,7 @@
+% !TEX root = ../main-ring-signature.tex
+
+We presented a novel pairing based ring signature scheme which asymptotically outperforms the state of the art if one is not willing to use non-falsifiable assumptions nor random oracles. We based the security of our construction on the hardness of the permutation paring assumption.
+
+An interesting question is whether one may get rid of the permutation paring assumption, proving security under a constant-size assumption falsifiable assumption --- in contrast to the permutation pairing assumption which is parame\-tri\-zed by some value defined at runtime (also known as a $q$-assumption). On the other hand, our construction may seen as a feasibility result: using stronger (but still falsifiable) assumptions it is possible to construct asymptotically more efficient ring signatures. Hence, one may come up with another (falsifiable) assumption which allow to construct more efficient schemes. Even a strong interactive assumption may be a good deal if it enables the construction of constant-size ring signatures, since for now the only alternative is Malavolta's construction based on non-falsifiable assumptions \cite{AC:MalSch17}.
+
+Another desirable improvement is to get rid of the erasures assumption when proving unforgeability. We proved that this is true under an interactive generalization of the permutation pairing assumption. It is interesting if this is also possible without interactive assumptions. 
