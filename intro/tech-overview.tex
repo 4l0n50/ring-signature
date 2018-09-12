@@ -11,7 +11,7 @@ Can we construct more efficient set membership proofs (without random oracles or
 \end{displayquote}
 We answer this question in the affirmative and we construct a $\Theta(\sqrt[3]{n})$ set membership proof when the verification keys are honestly sampled. In contrast, Chandran et al.'s proof is of size $\Theta(\sqrt{n})$ but it makes no assumption on the verification keys distribution.
 
-Our main technical tool is a structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash function with \emph{always second-preimage resistance} (aSec in the terminology of Rogaway and Shrimpton \cite{FSE:RogShr04}). That is, given $A$ in the domain of $h$, is hard to find $A'\neq A$ such that $h(A')=h(A)$ {\bf whenever $A$ is randomly sampled from the domain}.
+Our main technical tool is a structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash function with \emph{always second-preimage resistance} (aSec in the terminology of Rogaway and Shrimpton \cite{FSE:RogShr04}). That is, given $A$ in the domain of $h$, is hard to find $A'\neq A$ such that $h(A')=h(A)$ {\bf whenever $A$ is randomly sampled from some known distribution}.
 Our function $h$ takes as input $A$, a set of verification keys (in fact, a fragment of each verification key), and returns a constant size digest which is simply $h(A)= \sum_{\vecb{a} \in A} \vecb{a}$. Thereby, whenever $h$ is applied to a set of honestly sampled verification keys, $A$ is indeed random and hence is infeasible to compute a second preimage.
 
 \subsubsection{High level description.}

@@ -1,24 +1,36 @@
 % !TEX root = ../main-ring-signature.tex
 
-We instantiate definition \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. For  $h$, $\mathcal{M}=Q_m$, $\mathcal{Y}=[m]$, $\KGen$ returns the description of an asymmetric group plus ElGamal encryption keys $[\vecb{u}]_1$  and $[\vecb{v}]_2$ together with the decryption keys, respectively, $\vecb{k},\vecb{k}'$ 
+We instantiate definition \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. For  $h$, $\mathcal{M}=\mathcal{Q}_m$, $\mathcal{Y}=[m]$, $\KGen$ returns the description of an asymmetric group plus ElGamal encryption keys $[\vecb{u}]_1$  and $[\vecb{v}]_2$ together with the decryption keys, respectively, $\vecb{k},\vecb{k}'$ 
 \begin{align*}
-&h(A):= \vecb{k}^\top\sum_{([\vecb{a}]_1,[\vecb{b}]_2)\in A}\vecb{a},\\
+&h([\matr{A}]_1,[\matr{B}]_2):= \sum_{i=1}^m[\vecb{a}_i]_1,\\
 &\mathcal{Q}_m := \left\{
 \begin{array}{c}
 ([\matr{A}]_1,[\matr{B}]_2) \in \GG_1^{2\times m}\times\GG_2^{2\times m}:
-\exists b_i \in\bits,r,s\in\Z_q\text{ s.t. }\\
-{[\vecb{a}_i]_1 = \left[\pmatri{0\\b_i}+r\vecb{u}\right]_1, [\vecb{b}_i]_2 = \left[\pmatri{0\\b_i}+s\vecb{v}\right]_2},
-\end{array}\right\}, \text{ and}\\
-&Q_m := \{A : \exists ([\matr{A}]_1,[\matr{B}]_2)\in\mathcal{Q}_m\text{ s.t. } A' = \cup_{i=1}^m([\vecb{a}_i]_1,[\vecb{b}_i]_2)\},
+\exists \vecb{b} \in\bits^m,\vecb{r},\vecb{s}\in\Z_q^m\text{ s.t. }\\
+{\matr{A} = \pmatri{0\\\vecb{b}^\top}+\vecb{u}\vecb{r}^\top, \matr{B} = \pmatri{0\\\vecb{b}^\top}+\vecb{v}\vecb{s}^\top},
+\end{array}\right\}.\\
 \end{align*}
- where $A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m),\matr{B}=(\vecb{b}_1\cat\ldots\cat\vecb{b}_m)$.
+Note that, if $A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m),\matr{B}=(\vecb{b}_1\cat\ldots\cat\vecb{b}_m)$, then $[\vecb{a}_i]$ and $[\vecb{b}_i]$ are, respectively, ElGamal encryptions $\Enc_{[\vecb{u}]_1}(b_i;r_i)$ and $\Enc_{[\vecb{v}]_2}(b_i;s_i)$.
 
-It might seem odd to define $Q_m$ as sets  of vectors in both groups while $h$ only require elements in one group. However, this will be crucial in the security proof of our ring signature, where we need to compute $[vk \vecb{b}]_2$, for some $vk\in\Z_q$,
-from  $[\vecb{b}]_2$ without knowledge of its discrete logarithm. For simplicity, we may just write $h(A)$ for $A\subseteq \GG_1^2$ (which is still well defined).
+It might seem odd to define $\mathcal{Q}_m$ as a set of pairs of matrices in both groups while $h$ only require elements in one group. However, this will be crucial in the security proof of our ring signature, where we need to compute $[vk \vecb{b}]_2$, for some $vk\in\Z_q$,
+from  $[\vecb{b}]_2$ without knowledge of its discrete logarithm. For simplicity, we may just write $h([\matr{A}]_1)$ for $[\matr{A}]_1\in \GG_1^{2\times m}$ (which is still well defined).
 
-Although is hard to compute $h$, is easy to show that $h(A)=h(A')$ whenever elements of $A'$ are re-randomizations of the elements of $A$. That is, for each $\vecb{a}'\in A'$ there exists a unique  $\vecb{a}\in A$ and $\delta\in\Z_q$ such that $\vecb{a}' = \vecb{a}+\delta\vecb{u}$. Given all the random coins used for rerandomization, the statement $h(A)=h(A')$ can be proved using Groth-Sahai.
+%Although is hard to compute $h$, is easy to show that $h(A)=h(A')$ whenever elements of $A'$ are re-randomizations of the elements of $A$. That is, for each $\vecb{a}'\in A'$ there exists a unique  $\vecb{a}\in A$ and $\delta\in\Z_q$ such that $\vecb{a}' = \vecb{a}+\delta\vecb{u}$. Given all the random coins used for rerandomization, the statement $h(A)=h(A')$ can be proved using Groth-Sahai.
 
-Note that the function $h$ is actually the hamming weight of $b_1,\ldots,b_m$ and hence is imposible to find collisions.
+Note that the function $h$ outputs an encryption of the hamming weight of $b_1,\ldots,b_m$. Although is possible to find collisions, two matrices are a collision if they encrypt bitstrings with the same hamming weight or equivalently, the decryptions are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
+$$
+\matr{A}' \equiv_\vecb{u} \matr{A} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{A}' = \matr{A}\matr{P} + \vecb{u}\vecb{\delta}^\top,
+$$
+where $\mathcal{S}_m\subset \bits^{m\times m}$ is the set of permutation matrices of size $m\times m$.
+
+Indeed, let $\matr{A}=\smallpmatrix{0\\\vecb{b}^\top}+\vecb{u}\vecb{r}^\top,\matr{A}'=\smallpmatrix{0\\{\vecb{b}'}^\top}+\vecb{u}\vecb{\delta}^\top$ such that $h([\matr{A}]_1)=h([\matr{A}']_1)$. Since $\vecb{b}$ and $\vecb{b}'$ have the same hamming weigh, then there exists a permutation matrix $\matr{P}$ such that $\vecb{b}^\top\matr{P} = {\vecb{b}'}^\top$ and hence
+\begin{align*}
+\matr{A}' &= \pmatri{0\\\vecb{b}^\top\matr{P}} + \vecb{u}\vecb{\delta} + \vecb{u}\vecb{r}^\top\matr{P} - \vecb{u}\vecb{r}^\top\matr{P}\\
+&=
+ \left(\pmatri{0\\\vecb{b}^\top} + \vecb{u}\vecb{r}^\top \right)\matr{P} + \vecb{u}(\vecb{\delta}^\top-\vecb{r}^\top\matr{P})\\
+ &=
+ \matr{A}\matr{P} + \vecb{u}\tilde{\vecb{\delta}}^\top
+\end{align*}
 %Given a second preimage $h$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, Let $[\matr{A}]_1,[\matr{A}]_2$ the challenge of the $m$-PPA assumption and let $A$ the set of columns of $[\matr{A}]_1$ and $[\matr{A}]_2$, which is clearly uniformly distributed in $Q_m$. Then given any $A'\in Q_m$ such that $A'\neq A$ and $h(A)=h(A')$, it holds that $[\matr{A}']_1$, the matrix whose columns are the first components of the elements of $A'$, is not a permutation of $[\matr{A}]_1$ and hence breaks $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$. 
 
 In the case of $g$, $\mathcal{M}=\GG^m_2$, $\mathcal{Y}=\GG_2^2$, and $\KGen$ picks a group description $gk\gets\ggen_a(1^\lambda)$ together with $[\matr{A}]_1$ such that
