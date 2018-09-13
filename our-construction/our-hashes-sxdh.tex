@@ -43,12 +43,18 @@ $$
 g_{\matr{A}}(\vecb{x}):= \vecb{k}^\top\matr{A}\vecb{x}=\vecb{\beta}^\top\vecb{x}.
 $$
 Although not efficiently computable, in our ring signature we provide additional elements wich enable to prove that 
- $g_{\matr{A}}(\vecb{x}) = g_{\matr{A}}(\vecb{x}')$, for an honestly sampled $[\vecb{x}]_2$ --- which in our ring signature correspond to honestly sampled verification key and we can't use its discrete logarithm ---  and any $[\vecb{x}']_2$ sampled by the adversary.
-First, we sample another matrix $\matr{B}\gets\mathcal{Q}_m^\vecb{\beta}$, i.e.~encrypts the same $\vecb{\beta}$ as $\matr{A}$, an provide proofs that $\beta_i[x_i]_2=[x_i\beta'_i]_2$, where $\beta_i'$ is the decryption of $\vecb{b}_i$.
- The Groth-Sahai proof for the previous equation consists of two vectors
-$$[\vecb{\pi}_i]_1 = \delta_i[\vecb{u}]_1\in\GG_1^2,\ [\vecb{\theta}_i]_2=\in\GG_2^2$$ satisfying the following verification equation
+ $g_{\matr{A}}(\vecb{x}) = g_{\matr{A}}(\vecb{x}')$ while keeping computationally hard to find collisions for an honestly sampled $[\vecb{x}]_2$ --- which in our ring signature correspond to honestly sampled verification key and we can't use its discrete logarithm ---  and any $[\vecb{x}']_2$ sampled by the adversary.
+We provide Groth-Sahai proofs that $\beta_i[x_i]_2=[x_i\beta_i]_2$, which consists of two vectors
+$$
+[\vecb{\pi}_i]_1 = \pmatri{0\\{[t]_1}}+\delta_i[\vecb{u}]_1\in\GG_1^2,\ [\vecb{\theta}_i]_2=\pmatri{0\\{[x_i]_2}}-\delta[\vecb{v}]_2\in\GG_2^2
+$$
+plus commitment
+$$
+[\vecb{d}_i]_2 = \pmatri{0\\ [\beta_ix_i]_2} + t_i[\vecb{v}]_2, t_i\gets\Z_q,
+$$
+satisfying the following verification equation
 $$ 
-[\vecb{a}_i]_1([0]_2, {[x_i]_2})-\pmatri{[0]_1\\{[1]_1}}[(\vecb{b}_ix_i)^\top]_2 =[\vecb{\pi}_i]_1[\vecb{v}^\top]_2+[\vecb{u}]_1[\vecb{\theta}^\top_i]_2.
+[\vecb{a}_i]_1([0]_2, {[x_i]_2})-\pmatri{[0]_1\\{[1]_1}}[d^\top_i]_2 =[\vecb{\pi}_i]_1[\vecb{v}^\top]_2+[\vecb{u}]_1[\vecb{\theta}^\top_i]_2.
 $$
 A proof that $g_\matr{A}(\vecb{\beta}) = g_\matr{A}(\vecb{\beta}')$ can be derived from the addition of the previous proof plus re-randomization for keeping the proof zero-knowledge. That is
 $$
