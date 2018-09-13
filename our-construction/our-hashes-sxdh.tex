@@ -2,59 +2,55 @@
 
 We instantiate definitions \ref{def:hash1} and \ref{def:hash2}  with, respectively, the functions $g$ and $h$ as defined as follows.
 
-\paragraph{The function $h$.} Consider $\mathcal{M}=\mathcal{Q}_m$, $\mathcal{Y}=[m]$, $\KGen$ returns the description of an asymmetric group plus ElGamal encryption keys $[\vecb{u}]_1$  and $[\vecb{v}]_2$ together with the decryption keys, respectively, $\vecb{k},\vecb{k}'$, and
+\paragraph{The function $h$.} The algorithm $\KGen$ returns the description of an asymmetric group plus ElGamal encryption keys $[\vecb{u}]_1$  and $[\vecb{v}]_2$. Let $\mathcal{M}=\mathcal{Q}_m$, $\mathcal{Y}=[0,m]$, and $\vecb{\beta}\in\bits^m$, and define
 \begin{align*}
-&h([\matr{A}]_1,[\matr{B}]_2):= \sum_{i=1}^m[\vecb{a}_i]_1,\\
-&\mathcal{Q}_m^\vecb{b} := \left\{
+&\mathcal{Q}_m^\vecb{\beta} := \left\{
 \begin{array}{c}
-([\matr{A}]_1,[\matr{B}]_2) \in \GG_1^{2\times m}\times\GG_2^{2\times m}:
-\exists \vecb{b} \in\bits^m,\vecb{r},\vecb{s}\in\Z_q^m\text{ s.t. }\\
-{\matr{A} = \pmatri{0\\\vecb{b}^\top}+\vecb{u}\vecb{r}^\top,
-\matr{B} = \pmatri{0\\\vecb{b}^\top}+\vecb{v}\vecb{s}^\top},
-\text{ and }\sum_{i=0}^m b_i = w
-\end{array}\right\},\\
-&\mathcal{Q}_m = \cup_{\vecb{b}\in\bits^m} \mathcal{Q}_m^\vecb{b}.
+\matr{A} \in \Z_q^{2\times m}:
+\exists \vecb{r}\in\Z_q^m\text{ s.t. }
+{\matr{A} = \pmatri{0\\\vecb{\beta}^\top}+\vecb{u}\vecb{r}^\top
+%\matr{B} = \pmatri{0\\\vecb{\beta}^\top}+\vecb{v}\vecb{s}^\top
+}
+\end{array}\right\},
+\ \mathcal{Q}_m := \cup_{\vecb{\beta}\in\bits^m} \mathcal{Q}_m^\vecb{\beta},\\
+&\text{and } h(\matr{A}):= \sum_{i=1}^m\vecb{a}_i,
 \end{align*}
-Note that, if $A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m),\matr{B}=(\vecb{b}_1\cat\ldots\cat\vecb{b}_m)$, then $[\vecb{a}_i]$ and $[\vecb{b}_i]$ are, respectively, ElGamal encryptions $\Enc_{[\vecb{u}]_1}(b_i;r_i)$ and $\Enc_{[\vecb{v}]_2}(b_i;s_i)$.
 
-It might seem odd to define $\mathcal{Q}_m$ as a set of pairs of matrices in both groups while $h$ only require elements in one group. However, this will be crucial in the security proof of our ring signature, where we need to compute $[vk \vecb{b}]_2$, for some $vk\in\Z_q$,
-from  $[\vecb{b}]_2$ without knowledge of its discrete logarithm. For simplicity, we may just write $h([\matr{A}]_1)$ for $[\matr{A}]_1\in \GG_1^{2\times m}$ (which is still well defined).
+Note that, if $A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m)\in\mathcal{Q}_m$, then $[\vecb{a}_i]_1$ is an ElGamal encryption $\Enc_{[\vecb{u}]_1}(\beta_i;r_i)$.
+
+%It might seem odd to define $\mathcal{Q}_m$ as a set of pairs of matrices in both groups while $h$ only require elements in one group. However, this will be crucial in the security proof of our ring signature, where we need to compute $[vk \vecb{\beta}]_2$, for some $vk\in\Z_q$,
+%from  $[\vecb{\beta}]_2$ without knowledge of its discrete logarithm. For simplicity, we may just write $h([\matr{A}]_1)$ for $[\matr{A}]_1\in \GG_1^{2\times m}$ (which is still well defined).
 
 %Although is hard to compute $h$, is easy to show that $h(A)=h(A')$ whenever elements of $A'$ are re-randomizations of the elements of $A$. That is, for each $\vecb{a}'\in A'$ there exists a unique  $\vecb{a}\in A$ and $\delta\in\Z_q$ such that $\vecb{a}' = \vecb{a}+\delta\vecb{u}$. Given all the random coins used for rerandomization, the statement $h(A)=h(A')$ can be proved using Groth-Sahai.
 
-Note that the function $h$ outputs an encryption of the hamming weight of $\vecb{b}$. Although is possible to find collisions, two matrices form a collision if they encrypt bitstrings with the same hamming weight or equivalently, the decryptions are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
+Note that $[h(\matr{A})]_1$ outputs an encryption of the hamming weight of $\vecb{\beta}$. Although is possible to find collisions, two matrices form a collision if they encrypt bitstrings with the same hamming weight or equivalently, the decryptions are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
 $$
 \matr{A}' \equiv_\vecb{u} \matr{A} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{A}' = \matr{A}\matr{P} + \vecb{u}\vecb{\delta}^\top,
 $$
 where $\mathcal{S}_m\subset \bits^{m\times m}$ is the set of permutation matrices of size $m$.
 
-Indeed, let $\matr{A}=\smallpmatrix{0\\\vecb{b}^\top}+\vecb{u}\vecb{r}^\top,\matr{A}'=\smallpmatrix{0\\{\vecb{b}'}^\top}+\vecb{u}\vecb{\delta}^\top$ such that $h([\matr{A}]_1)=h([\matr{A}']_1)$. Since $\vecb{b}$ and $\vecb{b}'$ have the same hamming weigh there exists a permutation matrix $\matr{P}$ such that $\vecb{b}^\top\matr{P} = {\vecb{b}'}^\top$ and hence
+Lets see that is in fact impossible to find collisions $\matr{A},\matr{A}'\in\mathcal{Q}_m$ such that $\matr{A}\not\equiv_\vecb{u}\matr{A}'$ and $h(\matr{A})=h(\matr{A}')$. Assume that $\matr{A}=\smallpmatrix{0\\\vecb{\beta}^\top}+\vecb{u}\vecb{r}^\top,\matr{A}'=\smallpmatrix{0\\{\vecb{\beta}'}^\top}+\vecb{u}\vecb{\delta}^\top$. Since $\vecb{\beta}$ and $\vecb{\beta}'$ have the same hamming weigh there exists a permutation matrix $\matr{P}$ such that $\vecb{\beta}^\top\matr{P} = {\vecb{\beta}'}^\top$, and hence
 \begin{align*}
-\matr{A}' &= \pmatri{0\\\vecb{b}^\top\matr{P}} + \vecb{u}\vecb{\delta} + \vecb{u}\vecb{r}^\top\matr{P} - \vecb{u}\vecb{r}^\top\matr{P}\\
+\matr{A}' &= \pmatri{0\\\vecb{\beta}^\top\matr{P}} + \vecb{u}\vecb{\delta} + \vecb{u}\vecb{r}^\top\matr{P} - \vecb{u}\vecb{r}^\top\matr{P}\\
 &=
- \left(\pmatri{0\\\vecb{b}^\top} + \vecb{u}\vecb{r}^\top \right)\matr{P} + \vecb{u}(\vecb{\delta}^\top-\vecb{r}^\top\matr{P})\\
+ \left(\pmatri{0\\\vecb{\beta}^\top} + \vecb{u}\vecb{r}^\top \right)\matr{P} + \vecb{u}(\vecb{\delta}^\top-\vecb{r}^\top\matr{P})\\
  &=
- \matr{A}\matr{P} + \vecb{u}\tilde{\vecb{\delta}}^\top
+ \matr{A}\matr{P} + \vecb{u}\tilde{\vecb{\delta}}^\top.
 \end{align*}
-%Given a second preimage $h$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, Let $[\matr{A}]_1,[\matr{A}]_2$ the challenge of the $m$-PPA assumption and let $A$ the set of columns of $[\matr{A}]_1$ and $[\matr{A}]_2$, which is clearly uniformly distributed in $Q_m$. Then given any $A'\in Q_m$ such that $A'\neq A$ and $h(A)=h(A')$, it holds that $[\matr{A}']_1$, the matrix whose columns are the first components of the elements of $A'$, is not a permutation of $[\matr{A}]_1$ and hence breaks $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$. 
 
-\paragraph{The function $g$.} Consider $\mathcal{M}=\GG^m_2$, $\mathcal{Y}=\GG_2^2$, and $\KGen$ receives a bitstring $\vecb{b}\in\bits^m$ together with a and picks a group key $gk$ and outputs $[\matr{A}]_1,[\matr{B}]_2\gets\mathcal{Q}_m^\vecb{b}$. The function is defined as
+\paragraph{The function $g$.} Consider $\mathcal{M}=\GG^m_2$, $\mathcal{Y}=\GG_2^2$, and $\KGen$ receives a bitstring $\vecb{\beta}\in\bits^m$ together with a and picks a group key $gk$ and samples ElGamal encryption key $\vecb{u}$ together with its decryption key $\vecb{k}\in\Z_q^2$, samples $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$, and outputs $[\matr{A}]_1$. The function $g$ is defined as
 $$
-g_{[\matr{A}]_1}([\vecb{x}]_2):= \vecb{k}^\top\matr{A}\vecb{x}=(\matr{B}\vecb{x})^\top\vecb{k}=\sum_{i=1}^m b_ix_i.
+g_{\matr{A}}(\vecb{x}):= \vecb{k}^\top\matr{A}\vecb{x}=\vecb{\beta}^\top\vecb{x}.
 $$
-Although not efficiently computable, one can prove that 
- $g_{[\matr{A}]_1}([\vecb{x}]_2) = g_{[\matr{A}]_1}([\vecb{x}']_2)$
- using the homomorphic properties of
- Groth-Sahai proofs. If we additionally provide proofs that $b_ix_i=x_ib'_i$, where $b_i'$ is the decryption of $\vecb{b}_i$, from which it migth be computed a proof that
-$$
-[g_\matr{A}(\vecb{x})]_1-g=\sum_{i=1}^m b_ix_i.
-$$
-
-Note that in asymmetric groups the order of multiplicads in te expressions $b_ix_i$ and $x_ib'_i$ is relevant since it imply that commitments (or encryption) to $b_i$ and $b'_i$ live, respectively, in $\GG_1$ and $\GG_2$. The Groth-Sahai proof that two commitments in different groups open to the same value is obtained equivalently as a proofs $[\vecb{\pi}_i]_1,[\vecb{\theta}_i]_2$ such that
+Although not efficiently computable, in our ring signature we provide additional elements wich enable to prove that 
+ $g_{\matr{A}}(\vecb{x}) = g_{\matr{A}}(\vecb{x}')$, for an honestly sampled $[\vecb{x}]_2$ --- which in our ring signature correspond to honestly sampled verification key and we can't use its discrete logarithm ---  and any $[\vecb{x}']_2$ sampled by the adversary.
+First, we sample another matrix $\matr{B}\gets\mathcal{Q}_m^\vecb{\beta}$, i.e.~encrypts the same $\vecb{\beta}$ as $\matr{A}$, an provide proofs that $\beta_i[x_i]_2=[x_i\beta'_i]_2$, where $\beta_i'$ is the decryption of $\vecb{b}_i$.
+ The Groth-Sahai proof for the previous equation consists of two vectors
+$$[\vecb{\pi}_i]_1 = \delta_i[\vecb{u}]_1\in\GG_1^2,\ [\vecb{\theta}_i]_2=\in\GG_2^2$$ satisfying the following verification equation
 $$ 
-[\vecb{a}_ix_i]_1[\vecb{v}^\top]_2-[\vecb{u}]_1[(\vecb{b}_ix_i)^\top]_2 =[\vecb{\pi}_i]_1[\vecb{v}^\top]_2+[\vecb{u}]_1[\vecb{\theta}^\top_i]_2.
+[\vecb{a}_i]_1([0]_2, {[x_i]_2})-\pmatri{[0]_1\\{[1]_1}}[(\vecb{b}_ix_i)^\top]_2 =[\vecb{\pi}_i]_1[\vecb{v}^\top]_2+[\vecb{u}]_1[\vecb{\theta}^\top_i]_2.
 $$
-A proof that $g_\matr{A}(\vecb{x}) = g_\matr{A}(\vecb{x}')$ can be derived from the addition of the previous proof plus re-randomization for keeping the proof zero-knowledge. That is
+A proof that $g_\matr{A}(\vecb{\beta}) = g_\matr{A}(\vecb{\beta}')$ can be derived from the addition of the previous proof plus re-randomization for keeping the proof zero-knowledge. That is
 $$
 [\vecb{\pi}]_1 := \sum_{i=1}^m [\vecb{\pi}_i]_1+\delta[\vecb{u}]_1
 \text{ and }
@@ -62,16 +58,31 @@ $$
 $$
 such that
 $$
-\left(\sum_{i=1}^m [\vecb{a}_ix_i]_1\right)[\vecb{v}^\top]-[\vecb{u}]_1\left(\sum_{i=1}^m[\vecb{b}_ix_i]_2\right)^\top =
+\left(\sum_{i=1}^m [\vecb{a}_i]([0]_1,[x_i]_1)\right)-\pmatri{{[0]_1}\\{[1]_1}}\left(\sum_{i=1}^m[\vecb{\beta}_ix_i]_2\right)^\top =
 [\vecb{\pi}]_1[\vecb{v}^\top]_2 + [\vecb{u}_1][\vecb{\theta}_i^\top]_2
-$$ Consequetly, in our scheme we will publish  $[\vecb{b}_ix_i]_2$ and the proofs $[\vecb{\pi}_i]_1,[\vecb{\theta}_i]_2$ which will render possible to prove $g_\matr{A}(\vecb{x})=g_\matr{A}(\vecb{x}')$.
+$$ Consequetly, in our scheme we will publish  $[\vecb{\beta}_ix_i]_2$ and the proofs $[\vecb{\pi}_i]_1,[\vecb{\theta}_i]_2$ which will render possible to prove $g_\matr{A}(\vecb{\beta})=g_\matr{A}(\vecb{\beta}')$.
 
-Given a collision $[\vecb{x}]_2,[\vecb{x}']_2$ for $g$, then $([\vecb{x}]_2-[\vecb{x}]'_2)\neq [\vecb{0}]$ is in the kernel of $[\matr{A}]_1$. Therefore, is trivial to prove that for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{Col}_g}(\advA)=\adv_{\mathcal{Q}_m^\top\mbox{-}\skermdh}(\advB)$, whenever $\matr{A}\gets\mathcal{Q}_m$.
+ Using the homomorphic properties of Groth-Sahai proofs it migth be derived a proof that
+$$
+[\matr{A}]_1([0]_2, [\vecb{x}']_2) - \pmatri{{[0]_1}\\{[1]_1}}[\vecb{x}^\top\matr{B}^\top]_2=[\vecb{\theta}]_1[\vecb{v}^\top_2]-[\vecb{u}]_1[\vecb{\pi}^\top]_2.
+$$
+If we multiply the previous equation by $\vecb{k}^\top$ on the left and by $\vecb{k}'$ on the right, we get that
+\begin{align*}
+\vecb{k}^\top[\matr{A}]_1([0]_2, [\vecb{x}']_2)\vecb{k}' - \vecb{k}^\top\pmatri{{[0]_1}\\{[1]_1}}[\vecb{x}^\top\matr{B}^\top]_2\vecb{k}'
+&=
+\vecb{k}^\top[\vecb{\theta}]_1[\vecb{v}^\top_2]\vecb{k}'-\vecb{k}^\top[\vecb{u}]_1[\vecb{\pi}^\top]_2\vecb{k}'\\
+[\vecb{k}^\top\matr{A}\vecb{x}']_T(0, 1)\vecb{k}' - \vecb{k}^\top\pmatri{0\\1}[\vecb{x}^\top\matr{B}^\top\vecb{k}']_T
+&=0\\
+[g_\vecb{\matr{A}}(\vecb{x}')]_T - [g_\matr{A}(\vecb{x})]_T &= 0.
+\end{align*}
+Note that the previous idendity follows from the fact that $g_{\matr{B}}(\vecb{x}) = {\vecb{k}'}^\top\matr{B}\vecb{x}=\vecb{\beta}^\top\vecb{x}=g_\matr{A}(\vecb{x})$ and that $\vecb{k},\vecb{k}'$ are decryption keys and thus $\vecb{k}^\top\vecb{u}=\vecb{v}^\top\vecb{k}'=0$ and $\vecb{k}^\top\smallpmatrix{0\\1}=(0,1)\vecb{k}'=1$.
 
-We note that given $A\in Q_m,[\matr{A}]_1\in\GG^{2\times m}_1,[\vecb{x}]_2\in\GG^m_2$, $[\vecb{y}]_1\in\GG_2^2$ and $[\vecb{y}']_1\in\GG^1_2$ one can express the statements $A\in Q_m$, $g_{[\matr{A}]_1}([\vecb{x}]_2)=[\vecb{y}]_2$, and $h(A)=[\vecb{y}']_1$ as (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
+Given a collision $[\vecb{\beta}]_2,[\vecb{\beta}']_2$ for $g$, then $([\vecb{\beta}]_2-[\vecb{\beta}]'_2)\neq [\vecb{0}]$ is in the kernel of $[\matr{A}]_1$. Therefore, is trivial to prove that for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{Col}_g}(\advA)=\adv_{\mathcal{Q}_m^\top\mbox{-}\skermdh}(\advB)$, whenever $\matr{A}\gets\mathcal{Q}_m$.
+
+We note that given $A\in Q_m,[\matr{A}]_1\in\GG^{2\times m}_1,[\vecb{\beta}]_2\in\GG^m_2$, $[\vecb{y}]_1\in\GG_2^2$ and $[\vecb{y}']_1\in\GG^1_2$ one can express the statements $A\in Q_m$, $g_{[\matr{A}]_1}([\vecb{\beta}]_2)=[\vecb{y}]_2$, and $h(A)=[\vecb{y}']_1$ as (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
  \begin{align}
 &e([a_{1}]_1,[1]_2) = e([1]_1,[{b}_1]_2)\text{ and }e([a_{2}]_1,[1]_2)=e([a_{1}]_1,[b_1]_2)
-\text{ for each }([\vecb{a}]_1,[\vecb{b}]_2)\in A \label{eq:Q}\\
+\text{ for each }([\vecb{a}]_1,[\vecb{\beta}]_2)\in A \label{eq:Q}\\
 &\sum_{j=1}^m e([a_{i,j}]_1,[x_i]_1) = e([1]_1,[y_i]_2) \text{ for each } i\in\{1,2\} \label{eq:g}\\
 &\sum_{([\vecb{a}]_1,[\vecb{a}]_2)\in A} [a_i]_1 = [y'_i]_1 \text{ for each } i\in\{1,2\}.\label{eq:h}
 \end{align}
@@ -79,11 +90,11 @@ Hence, one can compute Groth-Sahai proofs of size $\Theta(m),\Theta(1)$, and $\T
 
 Finally, we prove a simple lemma that relates both functions
 \begin{lemma}\label{lemma:hg}
-Let $A\gets Q_m,A'\in Q_m,[\vecb{x}]_2,[\vecb{x}']_2\in\GG^m_2$, and $[\matr{A}]_1,[\matr{A}']_1$ the matrices whose columns are the first component of the elements of $A$ and $A'$, respectively. Then $h(A)=h(A')$ and $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}']_1}([\vecb{x}']_2)$ implies that $A'$ is a second preimage of $h(A)$ or there exists a permutation matrix $\matr{P}$ such that $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{x}']_2)$.
+Let $A\gets Q_m,A'\in Q_m,[\vecb{\beta}]_2,[\vecb{\beta}']_2\in\GG^m_2$, and $[\matr{A}]_1,[\matr{A}']_1$ the matrices whose columns are the first component of the elements of $A$ and $A'$, respectively. Then $h(A)=h(A')$ and $g_{[\matr{A}]_1}([\vecb{\beta}]_2)=g_{[\matr{A}']_1}([\vecb{\beta}']_2)$ implies that $A'$ is a second preimage of $h(A)$ or there exists a permutation matrix $\matr{P}$ such that $g_{[\matr{A}]_1}([\vecb{\beta}]_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{\beta}']_2)$.
 \end{lemma}
 \begin{proof}
 If $A\neq A'$, then $A'$ is a second preimage of $h(A)$. Else, there is a permutation matrix $\matr{P}$ such that $[\matr{A}']_1 =[\matr{A}\matr{P}]_1$. Then
 $$
- g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}']_1}([\vecb{x}']_2)\Longleftrightarrow  g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}\matr{P}]_1}([\vecb{x}']_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{x}']_2).
+ g_{[\matr{A}]_1}([\vecb{\beta}]_2)=g_{[\matr{A}']_1}([\vecb{\beta}']_2)\Longleftrightarrow  g_{[\matr{A}]_1}([\vecb{\beta}]_2)=g_{[\matr{A}\matr{P}]_1}([\vecb{\beta}']_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{\beta}']_2).
 $$
 \end{proof}
