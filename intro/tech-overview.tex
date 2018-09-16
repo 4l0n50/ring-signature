@@ -2,7 +2,7 @@
 
 To give a more clear understanding our contributions, it will be illustrative to see what is the main difficulty when constructing a ring signature on bilinear groups. Most schemes have followed the following approach. Given a ring of users defined by the set of their public keys and a message: a) sign the message, b) prove in zero-knowledge knowledge of a signature which can be verified using some committed/randomized verification key, and then c) prove in zero-knowledge that this verification key belongs to the set of public keys in the ring.  The most expensive part is c) and is sometimes called a \emph{set-membership proof}.
 
-In the case of a ring signature, a set-membership has the following additional property: \emph{all the verification keys forming the ring are honestly generated}. 
+We observe that in the case of ring signatures \emph{all the verification keys forming the ring are honestly generated}. 
 Indeed, it only makes sense to guarantee unforgeability when all the members of the ring are honest (otherwise the adversary knows at least one secret key) and thus the set-membership proof might assume that all verification keys were honestly generated.
 It turns out that all the schemes we are aware of, in particular Chandran et al.'s, obviate this property, meaning that their set-membership proofs are for adversarially chosen verification keys.
 We ask the following natural question.
