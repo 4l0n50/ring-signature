@@ -102,19 +102,15 @@
 
     \section{Our Construction} \label{sec:oc}
 
-	\subsection{Our hash functions from the SXDH assumption}
-
-		\input{our-construction/our-hashes-sxdh}
-
 	\subsection{Our hash functions}
 
-		\input{our-construction/our-hashes}
+		\input{our-construction/our-hashes-sxdh}
 
 	\input{our-construction/hash}
 	
 	\subsection{High Level Description of our Construction} \label{sec:high-level}
         
-        		\input{intro/high-level}
+        		\input{intro/high-level-sxdh}
     	
 	\subsection{Our Ring Signature}\label{sec:our-construction}
         	\input{our-construction/construction} 
@@ -138,6 +134,11 @@
 	\section{Security of the $m$-PPA assumption in Asymmetric Groups} \label{sec:aPPA}
 	
 		\input{appendix/asymm-ppa}
+		
+		\subsection{Our hash functions from the PPA assumption}
+
+		\input{our-construction/our-hashes}
+
 
 	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
 
