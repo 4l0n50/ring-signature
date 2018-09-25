@@ -2,7 +2,7 @@
 
 We instantiate definitions \ref{def:hash1} and \ref{def:hash2}  with, respectively, the functions $g$ and $h$ defined in this section. Although neither $h$ and $g$ are efficiently computable, it is easy to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in the reference string $\sigma$. Further, $\sigma$ is computed in a distributed fashion $\sigma = (\sigma_0,\sigma_1,\ldots,\sigma_n)$, such that $\sigma_i$ is computed only from $\sigma_0$ and hence, if $j\neq i$, then $\sigma_i$ and $\sigma_j$ are independent conditioned on $\sigma_0$. In our ring signature, $\sigma_0$ is the global reference string and $\sigma_i$ is the verification key of the $i$-th party.
    
-Function $h$ is unconditionally collision resistant, under a relaxation of the notion of equality of purported collisions, while the latter function is collision resistant under the SXDH assumption.
+Function $h$ is unconditionally collision resistant, under a relaxation of the notion of equality of purported collision. Note that unconventionality implies that collision resistance holds with respect to any auxiliary information (in particular $\sigma$). Function $g$ is collision resistant under the SXDH assumption even when the adversary is given $\sigma$.
 
 %We additionally show how to compute zero-knowledge proofs of membership in the message space of $h$ and of satisfiability of $g_k(x)=g_k(x')$.
 %We obtain shorter proofs replacing some commitments by ElGamal encryptions as done in \cite{PKC:EscGro14}. Although the security of this shorter proofs is shown in \cite{PKC:EscGro14}, for completeness we include in Appendix XXX the security proofs of our instantiations of the general framwork described in \cite{PKC:EscGro14}.
@@ -76,7 +76,7 @@ These proofs satisfy the following verification equations
 &[\vecb{a}]_1([\vecb{v}_1]_2-[\vecb{b}]_2)^\top = [\vecb{u}_2]_1[\vecb{\theta}^\top]_2+[\vecb{\pi}]_1[\vecb{v}^\top_2]_2\text{ and } \label{eq:Qm-memb-verif1} \\
 &[\vecb{a}]_1[\vecb{v}_1^\top]_2-[\vecb{u}_1]_1[\vecb{b}^\top]_2 = [\vecb{u}_2]_1[\vecb{\xi}^\top]_2 + [\vecb{\phi}]_1[\vecb{v}^\top_2]_2. \label{eq:Qm-memb-verif2}
 \end{align}
-Further, these proofs can be re-randomized as noted in \cite{C:BCCKLS09}. That is, given only $[\vecb{a}]_1,[\vecb{b}]_2$ and $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_2$ (and not its openings nor randomness) satisfying (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), we can compute new commitments $[\vecb{a}']_1$ and $[\vecb{b}']_2$ and proofs $[\vecb{\theta}']_2,[\vecb{\pi}']_1,[\vecb{\xi}']_2,[\vecb{\phi}']_2$ for the satisfiability of equation $\beta(1-\beta)=0$. For $\gamma,\epsilon,\zeta,\zeta'\gets\Z_q$, the re-randomized proof is computed as
+Further, these proofs can be re-randomized as noted in \cite{C:BCCKLS09}. That is, given only $[\vecb{a}]_1,[\vecb{b}]_2$ and $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_2$ (and not its openings nor randomness) satisfying (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), we can compute new commitments $[\vecb{a}']_1$ and $[\vecb{b}']_2$ and proofs $[\vecb{\theta}']_2,[\vecb{\pi}']_1,[\vecb{\xi}']_2,[\vecb{\phi}']_2$ for the satisfiability of equation $\beta(1-\beta)=0$. For $\gamma,\epsilon,\zeta,\zeta'\gets\Z_q$, the re-randomized commitments and proofs are computed as
 \begin{align}
 &[\vecb{a}']_1 = [\vecb{a}]_1 + \gamma[\vecb{u}]_2, &[\vecb{b}']_2 = [\vecb{b}]_2 + \epsilon[\vecb{v}_2]_2 \nonumber\\
 &[\vecb{\theta}']_2 = [\vecb{\theta}]_2 + \gamma([\vecb{v}_1]_2-[\vecb{b}']_2)+\zeta[\vecb{v}_2]_2
@@ -108,14 +108,16 @@ In particular, our simulator considers $[\vecb{b}]_2=\rho[\vecb{v}_2]_2$, for $\
 Note that both, the honest and the simulated proofs, follows exactly the same distribution. Indeed in both cases, $\vecb{a}$ and $\vecb{b}$ are uniformly distributed in, respectively, $\Span(\vecb{u}_2)$ and $\Span(\vecb{v}_2)$, and the proofs are uniformly chosen among those that satisfy the respective verification equation.
 %If there is an adversary $\advA$ which tells apart a real proof from a simulated one, we can construct an adversary against the semantic security of ElGamal. Our adversary  runs $\advA$ until it outputs solution $\beta$ and request a ciphertext $[\vecb{b}]_2$ to its oracle, which returns the encryption of either $\beta$ or $0$. It defines $[\vecb{a}]_1=r[\vecb{u}_2]_1$,$ r\gets\Z_q$,   and simulates $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_1$ as in (\ref{eq:Qm-sim-proofs}), gives $[\vecb{a}]_1,[\vecb{b}]_2$ together with the simulated proofs to $\advA$, and outputs whatever $\advA$ outputs. Clearly, when $[\vecb{b}]_1$ encrypts $\beta$, the proof follows exactly the same distribution of an honestly computed proof, and when encrypts $0$ is distributed as the simulated proofs.
 
-Finally, is direct that the re-randomized proofs follow the same distribution as the real proofs. Define $\tilde{r} := r + \gamma,\tilde{\rho} := \rho+\epsilon,\tilde{\delta} := \zeta-\epsilon(r+\gamma), \tilde{\delta}' := \zeta'$, which are uniformly distributed over $\Z_q$. It follows by inspection that the re-randomized proof can be obtained as a real proof using $\tilde{r},\tilde{\rho},\tilde{\delta}$ and $\tilde{\delta}'$ as random coins.
+Finally, is direct that the re-randomized proofs follow the same distribution as the real proofs.
+Define $\tilde{r} := r + \gamma,\tilde{\rho} := \rho+\epsilon,\tilde{\delta} := \zeta-\epsilon(r+\gamma), \tilde{\delta}' := \zeta'$, which are uniformly distributed over $\Z_q$.
+It follows by inspection that the re-randomized proof can be obtained as a real proof using $\tilde{r},\tilde{\rho},\tilde{\delta}$ and $\tilde{\delta}'$ as random coins.
 \end{proof} 
 
 \subsubsection{The function $g$.} Consider perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1=[\vecb{u}_1\cat\vecb{u}_2]_1,[\matr{V}]_2 = [\vecb{v}_1\cat\vecb{v}_2]_2$, together with a trapdoor for the commitment scheme $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_2=0$ and $\vecb{k}^\top\vecb{u}_1=1$, consider also $[\matr{A}]_1$ such that $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$. The function $g$ is defined as
 $$
 g_{\matr{A}}(\vecb{x}):= \vecb{k}^\top\matr{A}\vecb{x}=\vecb{\beta}^\top\vecb{x}.
 $$
-Although not efficiently computable, we add to the function key additional Groth-Sahai proofs wich enable to prove that
+Although not efficiently computable, we consider a reference string $\sigma$ formed of Groth-Sahai proofs wich enable to prove that
  $g_{\matr{A}}(\vecb{x}) = g_{\matr{A}}(\vecb{x}')$, for some fixed $\vecb{x}$, while keeping computationally hard to find collisions --- in our ring signature $[\vecb{x}]_2$ contains $m$ verification keys of a signature scheme while $\vecb{x}$ contains $m$ secret keys.
 We provide Groth-Sahai proofs that $\beta x=y$, for $\beta=\beta_i,x=x_i,y=\beta_ix_i$, and $i\in[m]$, which consists of two vectors
 \begin{equation}
@@ -131,6 +133,13 @@ satisfying the following verification equation
 [\vecb{a}]_1[\vecb{c}^\top]_2-[\vecb{u}_1]_1[\vecb{d}^\top]_2 =[\vecb{u}_2]_1[\vecb{\psi}^\top]_2+[\vecb{\omega}]_1[\vecb{v}^\top_2]_2.
 \label{eq:wi-verif}
 \end{equation}
+These proofs and commitments can be re-randomized as follows
+\begin{align}
+&[\vecb{a}']_1 = [\vecb{a}]_1 + \gamma[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{c}']_2= [\vecb{c}]_2 + \alpha[\vecb{v}_2]_2, &[\vecb{d}']_2 =[\vecb{d}]_2 + \eta[\vecb{v}_2]_2 \nonumber\\
+&[\vecb{\psi}']_2=[\vecb{\psi}]_2+\gamma[\vecb{c}']_2-\tau[\vecb{v}_2]_2, & [\vecb{\omega}']_1 =[\vecb{\omega}]_1+\eta[\vecb{u}_1]+\tau[\vecb{u}_2]_1,
+\end{align}
+for $\gamma,\alpha,\eta,\tau\gets\Z_q$.
 
 We prove the following Lemma.
 \begin{lemma} \label{lemma:betax=y}
