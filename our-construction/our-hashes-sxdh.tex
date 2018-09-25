@@ -1,13 +1,15 @@
 % !TEX root = ../main-ring-signature.tex
 
-We instantiate definitions \ref{def:hash1} and \ref{def:hash2}  with, respectively, the functions $g$ and $h$ defined in this section. Function $h$ is unconditionally collision resistant, under a relaxation of the notion of equality of purported collisions, while the latter function is collision resistant under the SXDH assumption.
+We instantiate definitions \ref{def:hash1} and \ref{def:hash2}  with, respectively, the functions $g$ and $h$ defined in this section. Although neither $h$ and $g$ are efficiently computable, it is easy to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in the reference string $\sigma$. Further, $\sigma$ is computed in a distributed fashion $\sigma = (\sigma_0,\sigma_1,\ldots,\sigma_n)$, such that $\sigma_i$ is computed only from $\sigma_0$ and hence, if $j\neq i$, then $\sigma_i$ and $\sigma_j$ are independent conditioned on $\sigma_0$. In our ring signature, $\sigma_0$ is the global reference string and $\sigma_i$ is the verification key of the $i$-th party.
+   
+Function $h$ is unconditionally collision resistant, under a relaxation of the notion of equality of purported collisions, while the latter function is collision resistant under the SXDH assumption.
 
 %We additionally show how to compute zero-knowledge proofs of membership in the message space of $h$ and of satisfiability of $g_k(x)=g_k(x')$.
 %We obtain shorter proofs replacing some commitments by ElGamal encryptions as done in \cite{PKC:EscGro14}. Although the security of this shorter proofs is shown in \cite{PKC:EscGro14}, for completeness we include in Appendix XXX the security proofs of our instantiations of the general framwork described in \cite{PKC:EscGro14}.
 
-Our constructions are inspired on much simpler instantiation of this functions which we can only prove secure under a stronger assumption, the Permutation Pairing assumption introduced by Groth and Lu \cite{AC:GroLu07}. This simpler instantiation can be found in Appendix XXX. 
+Our constructions are inspired on a much simpler instantiation of this functions which we can only prove secure under a stronger assumption, the Permutation Pairing assumption introduced by Groth and Lu \cite{AC:GroLu07}. This simpler instantiation can be found in Appendix XXX. 
 
-\subsubsection{The function $h$.} Consider Groth-Sahai commitment keys  $[\matr{U}]_1 = [\vecb{u}_1|\vecb{u}_2]_1\in\GG_1^{2\times 2},[\matr{V}]_2=[\vecb{v}_1|\vecb{v}_2]_2\in\GG_2^{2\times 2}$. The message space of $h$ a set of matrices $\mathcal{Q}_m$ defined as follows
+\subsubsection{The function $h$.} Consider perfectly binding Groth-Sahai commitment key $[\matr{U}]_1 = [\vecb{u}_1|\vecb{u}_2]_1\in\GG_1^{2\times 2}$ together with its trapdoor $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_1 = 1$ and $\vecb{k}^\top\vecb{u}_2 = 0$. The message space of $h$ a set of matrices $\mathcal{Q}_m\in\Z_q^{2\times m}$ defined as follows
 \begin{align*}
 &\mathcal{Q}_m^\vecb{\beta} := \left\{
 \begin{array}{c}
@@ -18,18 +20,24 @@ Our constructions are inspired on much simpler instantiation of this functions w
 }
 \end{array}\right\},
 \ \mathcal{Q}_m := \cup_{\vecb{\beta}\in\bits^m} \mathcal{Q}_m^\vecb{\beta},\\
-&\text{and } h(\matr{A}):= \sum_{i=1}^m\vecb{a}_i,
+&\text{and } h(\matr{A}):= \vecb{k}^\top\sum_{i=1}^m\vecb{a}_i = \sum_{i=1}^m \beta_i \text{ is the hamming weight of }\vecb{\beta}.
 \end{align*}
-and the space for hashes is $\mathcal{Y}=\Z_q^2$. The function is simply $h(\matr{A})=\sum_{i=1}^m \vecb{a}_i$.
 
-If $A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m)\in\mathcal{Q}_m$, then $[\vecb{a}_i]_1$ is a Groth-Sahai commitment $\Com_{[\matr{U}]_1}(\beta_i;r_i)$.
-Therefore $[h(\matr{A})]_1$ outputs a Groth-Sahai commitment to the hamming weight of $\vecb{\beta}$, that is $[h(\matr{A})]_1 = \Com_{[\matr{U}]_1}(\sum_{i=1}^m \beta_i;\sum_{i=0}^m r_i)$. Although is possible to find collisions, it happens only if the matrices open to bitstrings with the same hamming weight or equivalently, the openings are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
+Note that, if $\vecb{a}_1,\ldots \vecb{a}_m\in\mathcal{Q}_{1}$, then $\matr{A} = (\vec{a}_1\cat\cdots\cat\vecb{a}_m)\in\mathcal{Q}_{m}$ and $[\vecb{a}_i]_1$ is a Groth-Sahai commitment to $\beta_i$.
+Therefore $\sum_{i=0}^m[\vecb{a}_i]_1$ is a Groth-Sahai commitment to the hamming weight of $\vecb{\beta}$, that is $\Com_{[\matr{U}]_1}(\sum_{i=1}^m \beta_i;\sum_{i=0}^m r_i)$.
+
+Although is possible to find collisions, it happens only if the matrices open to bitstrings with the same hamming weight or equivalently, the openings are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
 $$
 \matr{A}' \equiv_\vecb{u} \matr{A} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{A}' = \matr{A}\matr{P} + \vecb{u}_2\vecb{\delta}^\top,
 $$
 where $\mathcal{S}_m\subset \bits^{m\times m}$ is the set of permutation matrices of size $m$.
 
-Whenever $\matr{U}$ is chosen from the perfectly binding distribution, is impossible to find collisions $[\matr{A}]_1,[\matr{A}]_1'\in[\mathcal{Q}_m]_1$ such that $\matr{A}\not\equiv_\vecb{u}\matr{A}'$ and $h(\matr{A})=h(\matr{A}')$. Given $\matr{A},\matr{A}'\in\mathcal{Q}_m$ we may assume that $\matr{A}=\matr{U}\smallpmatrix{\vecb{\beta}^\top\\\vecb{r}^\top},\matr{A}'=\matr{U}\smallpmatrix{{\vecb{\beta}'}^\top\\\vecb{\delta}^\top}$. Since $\vecb{\beta}$ and $\vecb{\beta}'$ must have the same hamming weigh there exists a permutation matrix $\matr{P}$ such that $\vecb{\beta}^\top\matr{P} = {\vecb{\beta}'}^\top$, and hence
+We prove the following lemma.
+\begin{lemma}
+If $\matr{U}$ is chosen from the perfectly binding distribution, is (unconditionally) impossible to find collisions $[\matr{A}]_1,[\matr{A}]_1'\in[\mathcal{Q}_m]_1$ such that $\matr{A}\not\equiv_\vecb{u}\matr{A}'$ and $h(\matr{A})=h(\matr{A}')$.
+\end{lemma}
+\begin{proof}
+Given $\matr{A},\matr{A}'\in\mathcal{Q}_m$ we may assume that $\matr{A}=\matr{U}\smallpmatrix{\vecb{\beta}^\top\\\vecb{r}^\top},\matr{A}'=\matr{U}\smallpmatrix{{\vecb{\beta}'}^\top\\\vecb{\delta}^\top}$. Since $\vecb{\beta}$ and $\vecb{\beta}'$ must have the same hamming weigh there exists a permutation matrix $\matr{P}$ such that $\vecb{\beta}^\top\matr{P} = {\vecb{\beta}'}^\top$, and hence
 \begin{align*}
 \matr{A}' &= \matr{U}\pmatri{\vecb{\beta}^\top\matr{P}\\\vecb{\delta}^\top}+ \vecb{u}_2\vecb{r}^\top\matr{P} - \vecb{u}_2\vecb{r}^\top\matr{P}\\
 &=
@@ -37,37 +45,57 @@ Whenever $\matr{U}$ is chosen from the perfectly binding distribution, is imposs
  &=
  \matr{A}\matr{P} + \vecb{u}_2\tilde{\vecb{\delta}}^\top.
 \end{align*}
-When $\matr{U}$ is chosen from the perfectly hiding distribution, it turns out that $\mathcal{Q}_m$ becomes $\mathcal{Q}_m^{0^m}$, which is in fact $\Z_q^{2\times m}$, and there doesn't exist $\matr{A},\matr{A}'$ such that $\matr{A}\not\equiv_{\matr{U}}\matr{A}'$. 
+\end{proof}
+
+Even 
+when $\matr{U}$ is chosen from the perfectly hiding distribution, it turns out that $\mathcal{Q}_m$ becomes $\mathcal{Q}_m^{0^m}$, which is in fact $\Z_q^{2\times m}$, and there doesn't exist $\matr{A},\matr{A}'$ such that $\matr{A}\not\equiv_{\matr{U}}\matr{A}'$. 
+
+To enable the efficient construction of proofs that $h(\matr{A}') = h(\matr{A})$, we note that
+\begin{equation}
+h(\matr{A})=h(\matr{A}') \iff \sum_{i=1}^{m}[\vecb{a}_i]_1 - \sum_{i=1}^m[\vecb{a}'_i] = \gamma[\vecb{u}_2]_1
+\end{equation}
+which can be proved with a Groth-Sahai proof. Further, such proof corresponds to a proof of membership in the span of $\vecb{u}_2$ which can be proved using more efficient QA-NIZK proofs \cite{C:JutRoy14,EC:KilWee15}. In this case the proof consists of only 1 element of $\GG_1$, instead the $2$ required by Groth-Sahai proofs.
 
 Further, is possible to efficiently prove membership in $\mathcal{Q}_m$. It suffices to give Groth-Sahai proofs for
 \begin{equation}
-\beta(1-\beta')=0\text{ and }\beta=\beta' \label{eq:Qm-memb},
+\beta(1-\beta)=0 \label{eq:Qm-memb},
 \end{equation}
-for $\beta=\beta_1,\ldots,\beta_m,\beta'=\beta_1,\ldots,\beta_m$.
+for $\beta=\beta_1,\ldots,\beta_m$.
 
-To do so we compute a commitment to $\beta'$, $[\vecb{b}]_2 = \beta'[\vecb{v}_1]_2+\rho[\vecb{v}_2]_2$ and proofs
+To do so we compute an additional commitment to $\beta'$, $[\vecb{b}]_2 = \beta'[\vecb{v}_1]_2+\rho[\vecb{v}_2]_2$ and proofs
 \begin{align}
 &[\vecb{\theta}]_2 = r([\vecb{v}_1]_2-[\vecb{b}]_2)+\delta[\vecb{v}_2]_2
 &[\vecb{\pi}]_1 = \beta\rho[\vecb{u}_1]_1-\delta[\vecb{u}_2]_1 \nonumber\\
 &[\vecb{\xi}]_2 = r[\vecb{v}_1]_2+\delta'[\vecb{v}_2]_2
-&[\vecb{\phi}]_2 = \rho[\vecb{u}_1]_1 -\delta'[\vecb{u}_2]_1.
+&[\vecb{\phi}]_2 = \rho[\vecb{u}_1]_1 -\delta'[\vecb{u}_2]_1,
 \label{eq:Qm-memb-proofs}
 \end{align}
-Such proofs satisfy the following verification equations
+that $\beta(1-\beta')=0$ and $\beta=\beta'$.
+These proofs satisfy the following verification equations
 \begin{align}
 &[\vecb{a}]_1([\vecb{v}_1]_2-[\vecb{b}]_2)^\top = [\vecb{u}_2]_1[\vecb{\theta}^\top]_2+[\vecb{\pi}]_1[\vecb{v}^\top_2]_2\text{ and } \label{eq:Qm-memb-verif1} \\
-&[\vecb{a}]_1[\vecb{v}_1^\top]_2-[\vecb{u}_1]_1[\vecb{b}^\top]_2 = [\vecb{u}_2]_1[\vecb{\xi}^\top]_2 + [\vecb{\phi}]_1[\vecb{v}^\top_2]_2 \label{eq:Qm-memb-verif2}
+&[\vecb{a}]_1[\vecb{v}_1^\top]_2-[\vecb{u}_1]_1[\vecb{b}^\top]_2 = [\vecb{u}_2]_1[\vecb{\xi}^\top]_2 + [\vecb{\phi}]_1[\vecb{v}^\top_2]_2. \label{eq:Qm-memb-verif2}
+\end{align}
+Further, these proofs can be re-randomized as noted in \cite{C:BCCKLS09}. That is, given only $[\vecb{a}]_1,[\vecb{b}]_2$ and $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_2$ (and not its openings nor randomness) satisfying (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), we can compute new commitments $[\vecb{a}']_1$ and $[\vecb{b}']_2$ and proofs $[\vecb{\theta}']_2,[\vecb{\pi}']_1,[\vecb{\xi}']_2,[\vecb{\phi}']_2$ for the satisfiability of equation $\beta(1-\beta)=0$. For $\gamma,\epsilon,\zeta,\zeta'\gets\Z_q$, the re-randomized proof is computed as
+\begin{align}
+&[\vecb{a}']_1 = [\vecb{a}]_1 + \gamma[\vecb{u}]_2, &[\vecb{b}']_2 = [\vecb{b}]_2 + \epsilon[\vecb{v}_2]_2 \nonumber\\
+&[\vecb{\theta}']_2 = [\vecb{\theta}]_2 + \gamma([\vecb{v}_1]_2-[\vecb{b}']_2)+\zeta[\vecb{v}_2]_2
+&[\vecb{\pi}']_1 = [\vecb{\pi}]_1 + \epsilon[\vecb{a}]_1-\zeta[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{\xi}']_2 = [\vecb{\xi}]_2+\gamma[\vecb{v}_1]_2+\zeta'[\vecb{v}_2]_2
+&[\vecb{\phi}']_1 = [\vecb{\phi}]_1 + \epsilon[\vecb{u}_1]_1 -\zeta'[\vecb{u}_2]_1,
+\label{eq:Qm-rerand-proofs}
 \end{align}
 
  The following Lemma formally states the security of the previous proofs.
 \begin{lemma} \label{lemma:Qm-memb}
-Consider the quadratic equation $\beta(1-\beta') = 0$ and the linear equation $\beta = \beta'$, whose variables are $\beta$ and $\beta'$. 
+Consider the quadratic equation $\beta(1-\beta) = 0$ whose variable is $\beta$. 
 The proof system whose crs consists Groth-Sahai perfectly binding commitment keys $[\matr{U}]_1,[\matr{V}]_2$, whose prover computes the proofs as in (\ref{eq:Qm-memb-proofs}), and the verifier verifies equations (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), is perfectly complete and sound, and computationally zero-knowledge under the SXDH assumption.
+Further, the re-randomized proofs from (\ref{eq:Qm-rerand-proofs}) follow exactly the same distribution as the original proofs.
 \end{lemma}
 \begin{proof}
 Completeness follows by inspection. Soundness follows from the fact that, whenever $\matr{U},\matr{V}$ come from the perfectly binding distribution, $\vecb{u}_1\vecb{v}_1^\top,\vecb{u}_1\vecb{v}_2^\top,\allowbreak\vecb{u}_2\vecb{v}_1^\top,\allowbreak\vecb{u}_2\vecb{v}_2^\top$ form basis of $\Z_q^{2\times 2}$. Since in equations (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}) the right sides have no components in $\vecb{u}_1\vecb{v}_1$ and left sides components are, respectively, $\beta(1-\beta')$ and $\beta-\beta'$, we conclude that $\beta(1-\beta') = 0$ and $\beta=\beta'$.
 
-Finally, computational zero-knowledge follows from the following argument.
+Computational zero-knowledge follows from the following argument.
 When $[\matr{U}]_1,[\matr{V}]_2$ are sampled from the perfectly hiding distribution, $\vecb{u}_1 = \mu\vecb{u}_2$ and $\vecb{v}_1 = \nu\vecb{v}_2$, for some random $\mu$ and $\nu$. In this setting we can sample $\vecb{a} = r\vecb{u}_2$ without changing $\vecb{a}$'s distribution, and we can simulate the proofs for any $[\vecb{b}]_2$ as 
 \begin{align} \label{eq:Qm-sim-proofs}
 &[\vecb{\theta}]_2 = r([\vecb{v}_1]_1-[\vecb{b}]_2)+\delta[\vecb{v}_2]_2
@@ -79,6 +107,8 @@ In particular, our simulator considers $[\vecb{b}]_2=\rho[\vecb{v}_2]_2$, for $\
 
 Note that both, the honest and the simulated proofs, follows exactly the same distribution. Indeed in both cases, $\vecb{a}$ and $\vecb{b}$ are uniformly distributed in, respectively, $\Span(\vecb{u}_2)$ and $\Span(\vecb{v}_2)$, and the proofs are uniformly chosen among those that satisfy the respective verification equation.
 %If there is an adversary $\advA$ which tells apart a real proof from a simulated one, we can construct an adversary against the semantic security of ElGamal. Our adversary  runs $\advA$ until it outputs solution $\beta$ and request a ciphertext $[\vecb{b}]_2$ to its oracle, which returns the encryption of either $\beta$ or $0$. It defines $[\vecb{a}]_1=r[\vecb{u}_2]_1$,$ r\gets\Z_q$,   and simulates $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_1$ as in (\ref{eq:Qm-sim-proofs}), gives $[\vecb{a}]_1,[\vecb{b}]_2$ together with the simulated proofs to $\advA$, and outputs whatever $\advA$ outputs. Clearly, when $[\vecb{b}]_1$ encrypts $\beta$, the proof follows exactly the same distribution of an honestly computed proof, and when encrypts $0$ is distributed as the simulated proofs.
+
+Finally, is direct that the re-randomized proofs follow the same distribution as the real proofs. Define $\tilde{r} := r + \gamma,\tilde{\rho} := \rho+\epsilon,\tilde{\delta} := \zeta-\epsilon(r+\gamma), \tilde{\delta}' := \zeta'$, which are uniformly distributed over $\Z_q$. It follows by inspection that the re-randomized proof can be obtained as a real proof using $\tilde{r},\tilde{\rho},\tilde{\delta}$ and $\tilde{\delta}'$ as random coins.
 \end{proof} 
 
 \subsubsection{The function $g$.} Consider perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1=[\vecb{u}_1\cat\vecb{u}_2]_1,[\matr{V}]_2 = [\vecb{v}_1\cat\vecb{v}_2]_2$, together with a trapdoor for the commitment scheme $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_2=0$ and $\vecb{k}^\top\vecb{u}_1=1$, consider also $[\matr{A}]_1$ such that $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$. The function $g$ is defined as
