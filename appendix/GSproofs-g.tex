@@ -1,0 +1,51 @@
+% !TEX root = ../main-ring-signature.tex
+
+We consider Groth-Sahai proofs that $\beta x=y$, for $\beta=\beta_i,x=x_i,y=\beta_ix_i$, and $i\in[m]$. These proofs  consists of two vectors
+\begin{align}
+[&\vecb{\psi}]_2=r[\vecb{c}]_2-t[\vecb{w}_1]_2-\delta[\vecb{w}_2]_2 &[\vecb{\omega}]_1 =\beta s[\vecb{u}_1]_1+\delta[\vecb{u}_2]_1
+\label{eq:wi-proofs}
+\end{align}
+and commitments to $x$ and to $y$
+$$
+[\vecb{c}]_2= x[\vecb{w}_1]_2+s[\vecb{w}_2]_2,\ [\vecb{d}]_1 =y[\vecb{u}_1]_2 + t[\vecb{u}_2]_2,\ s,t\gets\Z_q,
+$$
+satisfying the following verification equation
+\begin{equation}
+[\vecb{a}]_1[\vecb{c}^\top]_2-[\vecb{d}]_1[\vecb{w}_1]_2 =[\vecb{u}_2]_1[\vecb{\psi}^\top]_2+[\vecb{\omega}]_1[\vecb{w}^\top_2]_2.
+\label{eq:wi-verif}
+\end{equation}
+(In our ring signature we will set $s=0$ as we are not interested on hiding $[\vecb{x}]_2$.)
+
+These proofs and commitments can be re-randomized as follows
+\begin{align}
+&[\vecb{a}']_1 = [\vecb{a}]_1 + \gamma[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{c}']_2= [\vecb{c}]_2 + \alpha[\vecb{w}_2]_2, &[\vecb{d}']_1 =[\vecb{d}]_1 + \eta[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{\psi}']_2=[\vecb{\psi}]_2+\gamma[\vecb{c}']_2 - \eta[\vecb{w}_1]-\tau[\vecb{w}_2]_2, & [\vecb{\omega}']_1 = [\vecb{\omega}]_1 + \alpha[\vecb{a}]_1+\tau[\vecb{u}_2]_1,
+\label{eq:wi-rerand}
+\end{align}
+for $\gamma,\alpha,\eta,\tau\gets\Z_q$.
+
+We prove the following Lemma.
+\begin{lemma} \label{lemma:betax=y}
+Consider the the quadratic equation $\beta x = y$, whose variables are $\beta,x,y$. 
+The proof system whose crs consists of perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1,[\matr{W}]$, whose prover computes the proofs as in (\ref{eq:wi-proofs}), and the verifier verifies equation (\ref{eq:wi-verif}), is perfectly complete and sound, and computationally zero-knowledge under the SXDH assumption. Further, the proofs from (\ref{eq:wi-rerand}) follows exactly the same distribution as the proofs computed by the prover.
+\end{lemma}
+\begin{proof}
+Completeness follows by inspection. 
+Soundness follows from the fact that, whenever $\matr{U},\matr{W}$ come from the perfectly binding distribution, $\vecb{u}_1\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top,\allowbreak\vecb{u}_2\vecb{w}_1^\top,\allowbreak\vecb{u}_2\vecb{w}_2^\top$ form basis of $\Z_q^{2\times 2}$.
+The right side of equation (\ref{eq:wi-verif}) has no component in $\vecb{u}_1\vecb{w}^\top_1$, while the left side component is $\beta x-y$. Hence, we conclude that $\beta x = y$.
+
+Computational zero-knowledge follows from the following argument.
+When $[\matr{U}]_1,[\matr{W}]_2$ are sampled from the perfectly hiding distribution, $\vecb{u}_1 = \mu\vecb{u}_2$ and $\vecb{w}_1  = \nu\vecb{w}_2$, for some random $\mu$ and $\nu$. In this setting we can sample $\vecb{a} = r\vecb{u}_2$ without changing $\vecb{a}$'s distribution, and we can simulate the proofs for any $[\vecb{c}]_2,[\vecb{d}]_2$ as 
+\begin{equation} \label{eq:sim-proofs}
+[\vecb{\psi}]_2 = r\mu[\vecb{c}]_2-\mu[\vecb{d}]_2-\delta[\vecb{w}_2]_2\text{ and }[\vecb{\omega}]_1 = \delta[\vecb{u}_2]_1\text{, for } \delta\gets\Z_q.
+\end{equation} 
+In particular, our simulator considers $[\vecb{c}]=s[\vecb{w}_2]_2,[\vecb{d}]_2=t[\vecb{w}_2]_2$ for $s,t\gets\Z_q$.
+
+Note that both, the honest and the simulated proofs, follows exactly the same distribution. Indeed in both cases, $\vecb{a}$ and $\vecb{c},\vecb{d}$ are uniformly distributed in, respectively, $\Span(\vecb{u}_2)$ and $\Span(\vecb{w}_2)$, and the proofs are uniformly chosen among those that satisfy the respective verification equation.
+
+Finally, is direct that the re-randomized proofs follow the same distribution as the real proofs.
+Define $\tilde{r} := r + \gamma,\tilde{s} := s+\alpha,\tilde{t} := t+\eta, \tilde{\delta} := \delta+\tau+r\alpha$, which are uniformly distributed over $\Z_q$.
+It follows by inspection that the re-randomized proof can be obtained as a real proof using $\tilde{r},\tilde{s},\tilde{t}$ and $\tilde{\delta}$ as random coins.
+%If there is an adversary $\advA$ which tells apart a real proof from a simulated one, we can construct an adversary against the semantic security of ElGamal. Our adversary  runs $\advA$ until it outputs $\beta,[x]_2,[y]_2$ and request a ciphertexts $[\vecb{c}]_1$ which is the encryption of either $[x]_2$ or $0$. It defines $[\vecb{a}]_1=r[\vecb{u}_2]_1$,$ r\gets\Z_q$, computes $[\vecb{d}]_2 = \beta[\vecb{c}]_2 + \rho[\vecb{w}]_2$  and simulates $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ as in (\ref{eq:sim-proofs}), gives $[\vecb{a}]_1,[\vecb{c}]_2,[\vecb{d}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1$ to $\advA$, and outputs whatever $\advA$ outputs. Clearly, when $[\vecb{c}]_1$ encrypts $[x]_2$, the proof follows exactly the same distribution of an honestly computed proof, and when encrypts $0$ is distributed as te simulated proof.
+\end{proof} 

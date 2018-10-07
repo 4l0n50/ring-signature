@@ -1,0 +1,57 @@
+% !TEX root = ../main-ring-signature.tex
+
+To prove membership in $\mathcal{Q}_1$ we construct Groth-Sahai proofs for
+\begin{equation}
+\beta(1-\beta)=0 \label{eq:Qm-memb},
+\end{equation}
+for $\beta=\beta_1,\ldots,\beta_m$.
+To do so we compute an additional commitment to $\beta'$, $[\vecb{b}]_2 = \beta'[\vecb{v}_1]_2+\rho[\vecb{v}_2]_2$ and proofs
+\begin{align}
+&[\vecb{\theta}]_2 = r([\vecb{v}_1]_2-[\vecb{b}]_2)+\delta[\vecb{v}_2]_2
+&[\vecb{\pi}]_1 = \beta\rho[\vecb{u}_1]_1-\delta[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{\xi}]_2 = r[\vecb{v}_1]_2+\delta'[\vecb{v}_2]_2
+&[\vecb{\phi}]_2 = \rho[\vecb{u}_1]_1 -\delta'[\vecb{u}_2]_1,
+\label{eq:Qm-memb-proofs}
+\end{align}
+that $\beta(1-\beta')=0$ and $\beta=\beta'$.
+These proofs satisfy the following verification equations
+\begin{align}
+&[\vecb{a}]_1([\vecb{v}_1]_2-[\vecb{b}]_2)^\top = [\vecb{u}_2]_1[\vecb{\theta}^\top]_2+[\vecb{\pi}]_1[\vecb{v}^\top_2]_2\text{ and } \label{eq:Qm-memb-verif1} \\
+&[\vecb{a}]_1[\vecb{v}_1^\top]_2-[\vecb{u}_1]_1[\vecb{b}^\top]_2 = [\vecb{u}_2]_1[\vecb{\xi}^\top]_2 + [\vecb{\phi}]_1[\vecb{v}^\top_2]_2. \label{eq:Qm-memb-verif2}
+\end{align}
+Further, these proofs can be re-randomized as noted in \cite{C:BCCKLS09}. That is, given only $[\vecb{a}]_1,[\vecb{b}]_2$ and $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_2$ (and not its openings nor randomness) satisfying (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), we can compute new commitments $[\vecb{a}']_1$ and $[\vecb{b}']_2$ and proofs $[\vecb{\theta}']_2,[\vecb{\pi}']_1,[\vecb{\xi}']_2,[\vecb{\phi}']_2$ for the satisfiability of equation $\beta(1-\beta)=0$. For $\gamma,\epsilon,\zeta,\zeta'\gets\Z_q$, the re-randomized commitments and proofs are computed as
+\begin{align}
+&[\vecb{a}']_1 = [\vecb{a}]_1 + \gamma[\vecb{u}]_2, &[\vecb{b}']_2 = [\vecb{b}]_2 + \epsilon[\vecb{v}_2]_2 \nonumber\\
+&[\vecb{\theta}']_2 = [\vecb{\theta}]_2 + \gamma([\vecb{v}_1]_2-[\vecb{b}']_2)+\zeta[\vecb{v}_2]_2
+&[\vecb{\pi}']_1 = [\vecb{\pi}]_1 + \epsilon[\vecb{a}]_1-\zeta[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{\xi}']_2 = [\vecb{\xi}]_2+\gamma[\vecb{v}_1]_2+\zeta'[\vecb{v}_2]_2
+&[\vecb{\phi}']_1 = [\vecb{\phi}]_1 + \epsilon[\vecb{u}_1]_1 -\zeta'[\vecb{u}_2]_1,
+\label{eq:Qm-rerand-proofs}
+\end{align}
+
+ The following Lemma formally states the security of the previous proofs.
+\begin{lemma} \label{lemma:Qm-memb}
+Consider the quadratic equation $\beta(1-\beta) = 0$ whose variable is $\beta$. 
+The proof system whose crs consists Groth-Sahai perfectly binding commitment keys $[\matr{U}]_1,[\matr{V}]_2$, whose prover computes the proofs as in (\ref{eq:Qm-memb-proofs}), and the verifier verifies equations (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}), is perfectly complete and sound, and computationally zero-knowledge under the SXDH assumption.
+Further, the re-randomized proofs from (\ref{eq:Qm-rerand-proofs}) follow exactly the same distribution as the proofs computed by the prover.
+\end{lemma}
+\begin{proof}
+Completeness follows by inspection. Soundness follows from the fact that, whenever $\matr{U},\matr{V}$ come from the perfectly binding distribution, $\vecb{u}_1\vecb{v}_1^\top,\vecb{u}_1\vecb{v}_2^\top,\allowbreak\vecb{u}_2\vecb{v}_1^\top,\allowbreak\vecb{u}_2\vecb{v}_2^\top$ form basis of $\Z_q^{2\times 2}$. Since in equations (\ref{eq:Qm-memb-verif1}) and (\ref{eq:Qm-memb-verif2}) the right sides have no components in $\vecb{u}_1\vecb{v}_1$ and left sides components are, respectively, $\beta(1-\beta')$ and $\beta-\beta'$, we conclude that $\beta(1-\beta') = 0$ and $\beta=\beta'$.
+
+Computational zero-knowledge follows from the following argument.
+When $[\matr{U}]_1,[\matr{V}]_2$ are sampled from the perfectly hiding distribution, $\vecb{u}_1 = \mu\vecb{u}_2$ and $\vecb{v}_1 = \nu\vecb{v}_2$, for some random $\mu$ and $\nu$. In this setting we can sample $\vecb{a} = r\vecb{u}_2$ without changing $\vecb{a}$'s distribution, and we can simulate the proofs for any $[\vecb{b}]_2$ as 
+\begin{align} \label{eq:Qm-sim-proofs}
+&[\vecb{\theta}]_2 = r([\vecb{v}_1]_1-[\vecb{b}]_2)+\delta[\vecb{v}_2]_2
+&[\vecb{\pi}]_1 = -\delta[\vecb{u}_2]_1 \nonumber\\
+&[\vecb{\xi}]_2 = r[\vecb{v}_1]_2-\mu[\vecb{b}]_2+\delta'[\vecb{v}_2]_2
+&[\vecb{\phi}]_2 = -\delta'[\vecb{u}_2]_1.
+\end{align} 
+In particular, our simulator considers $[\vecb{b}]_2=\rho[\vecb{v}_2]_2$, for $\rho\gets\Z_q$, which is follows exactly the same distribution as in the honest proof.
+
+Note that both, the honest and the simulated proofs, follows exactly the same distribution. Indeed in both cases, $\vecb{a}$ and $\vecb{b}$ are uniformly distributed in, respectively, $\Span(\vecb{u}_2)$ and $\Span(\vecb{v}_2)$, and the proofs are uniformly chosen among those that satisfy the respective verification equation.
+%If there is an adversary $\advA$ which tells apart a real proof from a simulated one, we can construct an adversary against the semantic security of ElGamal. Our adversary  runs $\advA$ until it outputs solution $\beta$ and request a ciphertext $[\vecb{b}]_2$ to its oracle, which returns the encryption of either $\beta$ or $0$. It defines $[\vecb{a}]_1=r[\vecb{u}_2]_1$,$ r\gets\Z_q$,   and simulates $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_1$ as in (\ref{eq:Qm-sim-proofs}), gives $[\vecb{a}]_1,[\vecb{b}]_2$ together with the simulated proofs to $\advA$, and outputs whatever $\advA$ outputs. Clearly, when $[\vecb{b}]_1$ encrypts $\beta$, the proof follows exactly the same distribution of an honestly computed proof, and when encrypts $0$ is distributed as the simulated proofs.
+
+Finally, is direct that the re-randomized proofs follow the same distribution as the real proofs.
+Define $\tilde{r} := r + \gamma,\tilde{\rho} := \rho+\epsilon,\tilde{\delta} := \delta+\zeta-\epsilon(r+\gamma), \tilde{\delta}' := \zeta'$, which are uniformly distributed over $\Z_q$.
+It follows by inspection that the re-randomized proof can be obtained as a real proof using $\tilde{r},\tilde{\rho},\tilde{\delta}$ and $\tilde{\delta}'$ as random coins.
+\end{proof} 

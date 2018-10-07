@@ -1,19 +1,38 @@
 % !TEX root = ../main-ring-signature.tex
 
-We recall the definition of a hash function and also a weaker notion from the work of Rogaway and Shrimpton \cite{FSE:RogShr04}. For both definitions we consider functions $g,h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and an algorithm $\KGen$ which on input $1^\lambda$ randomly samples an element from $\mathcal{K}$.
+We recall the definition of a hash function plus two variants: a stronger variant where  the adversary may adpatively ask for the random coins of parts of the key, and a weaker notion from the work of Rogaway and Shrimpton \cite{FSE:RogShr04}. We consider functions $h:\mathcal{K}\times\mathcal{M}\to\mathcal{Y}$ and an algorithm $\KGen$ which on input a group key randomly samples an element from $\mathcal{K}$.
+
+We say that $h$'s key can be generated in a distributed fashion if $h:\mathcal{K}_\mathsf{global}\times\mathcal{K}^m_{\mathsf{local}}\times\mathcal{M}^m\to \mathcal{Y}$, $\KGen = (\KGen_\mathsf{global},\KGen_\mathsf{local})$, $k = (k_0,k_1,\ldots,k_m)$ and $x=(x_1,\ldots,x_m)$, where $k_0\gets\KGen_{\mathsf{global}}(gk)$ and $k_i\gets\KGen_{\mathsf{local}}(gk,k_0,\mathsf{aux}_i)$, $\mathsf{aux}_1,\ldots,\mathsf{aux}_m$ are independent random variables and $i\in[m]$. 
 
 \begin{definition}[Collision Resistance]\label{def:hash1}
- We say that $g$ is a hash-function family with collision resistance if for all PPT adversary $\advA$
+ We say that $h$ is a hash-function family with collision resistance if for all PPT adversary $\advA$
 $$
-\adv_g^{\mathsf{Col}}(\advA) := \Pr[k\gets\KGen(1^\lambda), (x,x')\gets A(k):g_k(x)=g_k(x')]
+\adv_g^{\mathsf{Col}}(\advA) := \Pr[k\gets\KGen(1^\lambda), (x,x')\gets \advA(k):x\neq x'\text{ and }h_k(x)=h_k(x')]
 $$ 
 is negligible in $\lambda$.
+\label{def:collision-resistance}
 \end{definition}
+
+For functions whose key is generated in a distributed fashion, we consider a stronger notion of collision resistance which we call adaptive collision resistance. We refer to definition \ref{def:collision-resistance} as static collision resistance.
+
+
+\begin{definition}[Adaptive Collision Resistance] \label{def:hash1-adaptive}
+A hash-function family $h$ with distributed key generation is adaptive collision resistant if for all PPT adversary $\advA$
+$$
+\adv_g^{\mathsf{Col}}(\advA) := \Pr\left[\begin{array}{c}
+k_0\gets\KGen_{\mathsf{global}}(gk), (x,x')\gets \advA^{\mathsf{KeyGen},\mathsf{Corrupt}}(k_0):\\
+x_{I\setminus Q} \neq x_{I\setminus Q}\text{ and }h_k(x)=h_k(x')
+\end{array}\right]
+$$ 
+is negligible in $\lambda$.  The $i$-th call to the oracle $\mathsf{KeyGen}(\mathsf{aux}_i)$ stores $i$ on $I$, if $i\notin I$, and returns $k_i:=\KGen(gk,k_0,\mathsf{aux}_i;r_i)$, for a uniform $r_i\in\bits^{\mathsf{poly}(\lambda)}$. The oracle $\mathsf{Corrupt}(i)$ returns the random coins used to generate $k_i$, if $i\in I$, and stores $i$ in $Q$. For an index set $S  = \{s_1,\ldots,s_n\}$, condition $x_{S} \neq x'_{S}$ means that $(x_{s_1},\ldots, x_{s_n})\neq (x'_{s_1},\ldots,x'_{s_n})$. 
+\end{definition}
+
+We prove a weaker variant of collision resistance for our hash function based on the PPA assumption.
 
 \begin{definition}[Always Second-Preimage Resistance \cite{FSE:RogShr04}]\label{def:hash2}
  We say that $h$ is a hash-function family with always second-preimage resistance if for all PPT adversary $\advA$
 $$
-\adv_h^{\mathsf{aPre}}(\advA) := \Pr[k\gets\KGen(1^\lambda), x\gets\mathcal{M}, x'\gets A(x):h_k(x)=h_k(x')]
+\adv_h^{\mathsf{aPre}}(\advA) := \Pr[k\gets\KGen(gk), x\gets\mathcal{M}, x'\gets A(x): x\neq x'\text{ and }h_k(x)=h_k(x')]
 $$ 
 is negligible in $\lambda$.
 \end{definition}

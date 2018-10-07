@@ -35,3 +35,9 @@ Given $s\in\{1,2\}$, the Boneh-Boyen signature scheme is described below.
 \item[$\mathsf{BB}.\Ver$:] On input the verification key $[vk]_{3-s}$, a message $m\in\Z_q$, and a signature $[\sigma]_{s}$, verify that $[m+vk]_{3-s}[\sigma]_{s}=[1]_T$.
 \end{description} 
 
+It is direct to prove knowledge of a Boneh-Boyen signature for some message $m$ under some committed verification key with a Groth-Sahai proof for the verification equation. In our SXDH based ring signature we need to prove a slightingly different statement. Since we have a commitment to the secret key $[\vecb{c}]_{2} = \Com_{ck_2}(sk;s) = sk[\vecb{v}_1]_2+s[\vecb{v}_2]_2$ we need to show that
+\begin{equation}
+e([{\sigma}]_1, m[\vecb{v}_1]_2 + [\vecb{c}]_2) - [\vecb{v}_1]_T= e([r]_1,[v_2]_2),
+\label{eq:bbs-verification}
+\end{equation}
+for some $s\in\Z_q$.

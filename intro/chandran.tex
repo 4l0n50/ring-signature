@@ -35,3 +35,16 @@ Using Groth-Sahai proofs, the prover proves that
 \item $[vk_\alpha]_2=\sum_{i=1}^m b'_i[\kappa_i]_2$.\label{eq4}
 \end{enumerate}
 Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1]_2,\ldots,[\kappa_m]_2)^\top$ is a column of $[\matr{V}]_2$, and equation \ref{eq4} proves that $[vk_\alpha]_2$ is an element of $([\kappa_1]_2,\ldots,[\kappa_m]_2)$.
+
+In our SXDH base ring signature we need this set-membership to show that some vector $[\vecb{s}]_2$ is the re-encryption of one of the elements of the set of commitments $S = \{[\vecb{s}]_2,\ldots,[\vecb{s}]_n\}\subseteq\GG_2$. That is, there exists some $\delta\in\Z_q$ such that $[\vecb{s}]-\delta[\vecb{v}_2]_2\in S$. The proof remains the same but now
+the prover computes re-randomizations
+\begin{enumerate}[1.']
+\setcounter{enumi}{2}
+\item[3'.] $[\vecb{\kappa}_1]_2:=[\vecb{s}_{1,j_\alpha}]_2+\delta_1[\vecb{v}_2],\ldots,[\vecb{\kappa}_m]_2:=[\vecb{s}_{m,j_\alpha}]_2+\delta_m[\vecb{v}_2]_2$.
+\end{enumerate}
+and Groth-Sahai proofs that
+\begin{enumerate}[i.']
+\setcounter{enumi}{2}
+\item[iii'.] $[\vecb{\kappa}_1]_2 - \sum_{j=1}^m b_j [\vecb{s}_{1,j}]_2 = \delta_1[\vecb{v}_2]_2,\ldots,[\vecb{\kappa}_m]_2-\sum_{j=1}^m b_j[\vecb{s}_{m,j}]_2 = \delta_m[\vecb{v}_2]_2$,\label{eq3}
+\item[iv'.] $[\vecb{s}]_2 - \sum_{i=1}^m b'_i[\vecb{\kappa}_i]_2  = (\delta-\delta_{i_\alpha})[\vecb{v}_2]_2$.\label{eq4}
+\end{enumerate}

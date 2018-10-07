@@ -12,7 +12,7 @@
 %\bibliographystyle{plainurl}% the recommended bibstyle
 
 % Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A Shorter Ring Signature from the SXDH assumption}
+\title{A Shorter Ring Signature from Standard Assumptions}
 %\titlerunning{An Efficient Ring Signature in the Standard Model} %optional, in case that the title is too long; the running title should fit into the top page column
 
 %% Please provide for each author the \author and \affil macro, even when authors have the same affiliation, i.e. for each author there needs to be the  \author and \affil macros
@@ -53,6 +53,8 @@
 \begin{abstract}
     \input{abstract}
 \end{abstract} 
+
+%\input{KalPanYan18}
 
 \section{Introduction}
 
@@ -100,21 +102,27 @@
     
         	 \input{prelim/flawed}
 
-    \section{Our Construction} \label{sec:oc}
+    \section{Our Hash Functions} \label{sec:hf}
+    
+    	\input{our-construction/our-hashes}
+    	
+    	\subsection{Our hash functions from the PPA assumption} \label{sec:hf-ppa}
+    	
+    		\input{our-construction/our-hashes-ppa}
 
-	\subsection{Our hash functions}
+	\subsection{Our hash functions from the SXDH Assumption} \label{sec:hf-sxdh}
 
 		\input{our-construction/our-hashes-sxdh}
 
 	\input{our-construction/hash}
 	
-	\subsection{High Level Description of our Construction} \label{sec:high-level}
+	\section{Our Construction} \label{sec:high-level}
         
         		\input{intro/high-level-sxdh}
     	
 	\subsection{Our Ring Signature}\label{sec:our-construction}
-        	\input{our-construction/construction} 
-	\input{appendix/security-proof}
+        	\input{our-construction/construction-sxdh} 
+	\input{appendix/security-proof-sxdh}
 
 	\section{Conclusions}
 
@@ -135,12 +143,22 @@
 	
 		\input{appendix/asymm-ppa}
 		
-		\subsection{Our hash functions from the PPA assumption}
+		%\subsection{Our hash functions from the PPA assumption}
 
-		\input{our-construction/our-hashes}
+		%\input{our-construction/our-hashes}
 
 
 	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
+	\section{Groth-Sahai proofs for $h$ and $g$ in the SXDH setting}
+	
+	In this section we detail the Groth-Sahai proofs used by $h$ and $g$ in section \ref{sec:hf-sxdh}. We also describe how these proofs can be re-randomized, as shown by Belenky et al.~\cite{C:BCCKLS09}.
+		\subsection{Groth-Sahai proofs for $h$} \label{sec:GSproofs-h}
+		
+			\input{appendix/GSproofs-h}
+			
+		\subsection{Groth-Sahai proofs for $g$} \label{sec:GSproofs-g}
+		
+			\input{appendix/GSproofs-g}
 
 %\input{appendix/security-proof}
 

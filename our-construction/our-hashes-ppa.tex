@@ -1,0 +1,40 @@
+% !TEX root = ../main-ring-signature.tex
+
+We instantiate definition \ref{def:hash1} with the function $g$ and \ref{def:hash2}  with $h$ defined as follows. For  $h$, $\mathcal{M}=Q_m$, $\mathcal{Y}=\GG_1^2$, $\KGen=\ggen_a$, and
+\begin{align*}
+&h(A):= \sum_{([\vecb{a}]_1,[\vecb{a}]_2)\in A}[\vecb{a}]_1, \text{ where}\\
+&\mathcal{Q}_m := \{\matr{A}\in \Z_q^{2\times m}:A=(\vecb{a}_1\cat\cdots\cat\vecb{a}_m) \text{ and } \vecb{a}_i = (a_{i,1},a_{i,2})^\top \text{ s.t. } a_{i,2} = a_{i,1}^2\}\text{ and }\\
+&Q_m = \{A : \exists \matr{A}\in\mathcal{Q}_m\text{ s.t. } A' = \cup_{i=1}^m([\vecb{a}_i]_1,[\vecb{a}_i]_2)\}.
+\end{align*}
+It might seem odd to define $Q_m$ as sets  of vectors in both groups while $h$ only require elements in one group. However, this will be crucial in the security proof of our ring signature, where we need to compute $[vk \vecb{a}]_2$, for some $vk\in\Z_q$, without knowledge of $\vecb{a}$. For simplicity, we may just write $h(A)$ for $A\subseteq \GG_1^2$ (which is still well defined).
+
+Given a second preimage $h$, it is trivial to construct an adversary breaking the $m$-PPA assumption. Indeed, Let $[\matr{A}]_1,[\matr{A}]_2$ the challenge of the $m$-PPA assumption and let $A$ the set of columns of $[\matr{A}]_1$ and $[\matr{A}]_2$, which is clearly uniformly distributed in $Q_m$. Then given any $A'\in Q_m$ such that $A'\neq A$ and $h(A)=h(A')$, it holds that $[\matr{A}']_1$, the matrix whose columns are the first components of the elements of $A'$, is not a permutation of $[\matr{A}]_1$ and hence breaks $m$-PPA assumption. Then for any adversary $\advA$ there is an adversary $\advB$ such that $\adv^{\mathsf{aPre}_g}(\advA)=\adv_{m\mbox{-}\mathsf{PPA}}(\advB)$. 
+
+In the case of $g$, $\mathcal{M}=\GG^m_2$, $\mathcal{Y}=\GG_2^2$, and $\KGen_{\mathsf{global}}$ picks a group description $gk\gets\ggen_a(1^\lambda)$, while $\KGen_\mathsf{local}$ picks $[\vecb{a}]_1\in\GG^{2\times m}_1$, where $\vecb{a}\gets\mathcal{Q}_1$, and the function is defined as
+$$
+g_{[\matr{A}]_1}([\vecb{x}]_2):= [\matr{A}\vecb{x}]_2.
+$$
+Although not efficiently computable, one can efficiently check if $g_{[\matr{A}]_1}([\vecb{x}]_2) = g_{[\matr{A}]_1}([\vecb{x}']_2)$ using the pairing operation. Further, in our scheme we will publish values of the form $[\vecb{a}_ix_i]_2$ which will render $g$ efficiently computable.
+
+Given a collision $[\vecb{x}]_2,[\vecb{x}']_2$ for $g$, then $([\vecb{x}]_2-[\vecb{x}]'_2)\neq [\vecb{0}]$ is in the kernel of $[\matr{A}]_1$. Therefore, is trivial to prove that for any adversary $\advA$ against static collision resistance there is an adversary $\advB$ such that $\adv^{\mathsf{Col}_g}(\advA)=\adv_{\mathcal{Q}_m^\top\mbox{-}\skermdh}(\advB)$, whenever $\matr{A}\gets\mathcal{Q}_m$.
+
+We note that given $A\in Q_m,[\matr{A}]_1\in\GG^{2\times m}_1,[\vecb{x}]_2\in\GG^m_2$, $[\vecb{y}]_1\in\GG_2^2$ and $[\vecb{y}']_1\in\GG^1_2$ one can express the statements $A\in Q_m$, $g_{[\matr{A}]_1}([\vecb{x}]_2)=[\vecb{y}]_2$, and $h(A)=[\vecb{y}']_1$ as (\ref{eq:Q}),(\ref{eq:g}), and (\ref{eq:h}), respectively.
+ \begin{align}
+&e([a_{1}]_1,[1]_2) = e([1]_1,[{b}_1]_2)\text{ and }\nonumber\\
+&e([a_{2}]_1,[1]_2)=e([a_{1}]_1,[b_1]_2)
+\text{ for each }([\vecb{a}]_1,[\vecb{b}]_2)\in A \label{eq:Q}\\
+&\sum_{j=1}^m e([a_{i,j}]_1,[x_i]_1) = e([1]_1,[y_i]_2) \text{ for each } i\in\{1,2\} \label{eq:g}\\
+&\sum_{([\vecb{a}]_1,[\vecb{a}]_2)\in A} [a_i]_1 = [y'_i]_1 \text{ for each } i\in\{1,2\}.\label{eq:h}
+\end{align}
+Hence, one can compute Groth-Sahai proofs of size $\Theta(m),\Theta(1)$, and $\Theta(1)$, respectively, for the satisfiability of each statement.
+
+Finally, we prove a simple lemma that relates both functions
+\begin{lemma}\label{lemma:hg}
+Let $A\gets Q_m,A'\in Q_m,[\vecb{x}]_2,[\vecb{x}']_2\in\GG^m_2$, and $[\matr{A}]_1,[\matr{A}']_1$ the matrices whose columns are the first component of the elements of $A$ and $A'$, respectively. Then $h(A)=h(A')$ and $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}']_1}([\vecb{x}']_2)$ implies that $A'$ is a second preimage of $h(A)$ or there exists a permutation matrix $\matr{P}$ such that $g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{x}']_2)$.
+\end{lemma}
+\begin{proof}
+If $A\neq A'$, then $A'$ is a second preimage of $h(A)$. Else, there is a permutation matrix $\matr{P}$ such that $[\matr{A}']_1 =[\matr{A}\matr{P}]_1$. Then
+$$
+ g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}']_1}([\vecb{x}']_2)\Longleftrightarrow  g_{[\matr{A}]_1}([\vecb{x}]_2)=g_{[\matr{A}\matr{P}]_1}([\vecb{x}']_2)=g_{[\matr{A}]_1}([\matr{P}\vecb{x}']_2).
+$$
+\end{proof}
