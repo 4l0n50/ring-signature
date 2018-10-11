@@ -90,17 +90,13 @@
     
             \input{prelim/bb-signatures}
 
-      	\subsection{Chandran et al.'s Ring Signature}
+      	\subsection{Chandran et al.'s Ring Signature} \label{sec:chan-rs}
 	
        		\input{intro/chandran}
 
 	\subsection{Hash Functions} \label{sec:hash}
 
 		\input{prelim/hash}
-
-	\subsection{The Ring Signatures of Bose et al.~and of Gritti et al.\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
-    
-        	 \input{prelim/flawed}
 
     \section{Our Hash Functions} \label{sec:hf}
     
@@ -116,17 +112,24 @@
 
 	\input{our-construction/hash}
 	
-	\section{Our Construction} \label{sec:high-level}
+	\section{Our Construction in the PPA setting}
+	
+		\input{intro/high-level}
+    	
+		We give the full description and prove security of our PPA based ring signature in App.~\ref{sec:ppa-full}
+
+	
+	\section{Our Construction in the SXDH setting} \label{sec:high-level}
         
         		\input{intro/high-level-sxdh}
     	
-	\subsection{Our Ring Signature}\label{sec:our-construction}
-        	\input{our-construction/construction-sxdh} 
-	\input{appendix/security-proof-sxdh}
+		\subsection{Our Ring Signature}\label{sec:our-construction}
+        		\input{our-construction/construction-sxdh} 
+		\input{appendix/security-proof-sxdh}
 
-	\section{Conclusions}
+	%\section{Conclusions}
 
-		\input{conclusions/conclusions}
+	%	\input{conclusions/conclusions}
 %%
 %% Bibliography
 %%
@@ -146,17 +149,22 @@
 		%\subsection{Our hash functions from the PPA assumption}
 
 		%\input{our-construction/our-hashes}
+		
+	\section{Full description of the Ring Signature in the PPA setting} \label{sec:ppa-full}
+	\subsection{Our Ring Signature}\label{sec:our-construction-ppa}
+        		\input{our-construction/construction} 
+		\input{appendix/security-proof}
 
 
 	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
 	\section{Groth-Sahai proofs for $h$ and $g$ in the SXDH setting}
 	
 	In this section we detail the Groth-Sahai proofs used by $h$ and $g$ in section \ref{sec:hf-sxdh}. We also describe how these proofs can be re-randomized, as shown by Belenky et al.~\cite{C:BCCKLS09}.
-		\subsection{Groth-Sahai proofs for $h$} \label{sec:GSproofs-h}
+		\subsection{Groth-Sahai proofs for $\beta(\beta-1)=0$} \label{sec:GSproofs-h}
 		
 			\input{appendix/GSproofs-h}
 			
-		\subsection{Groth-Sahai proofs for $g$} \label{sec:GSproofs-g}
+		\subsection{Groth-Sahai proofs for $\beta x = y$} \label{sec:GSproofs-g}
 		
 			\input{appendix/GSproofs-g}
 
@@ -168,6 +176,10 @@
 			\input{appendix/chandran-eff}
 		\subsection{Our Ring Signature}
 			\input{appendix/our-eff}
+			
+	\section{The Ring Signatures of Bose et al.~and of Gritti et al.\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
+    
+        	 \input{prelim/flawed}
 
 %\section{Our construction in Asymmetric Groups}
 %

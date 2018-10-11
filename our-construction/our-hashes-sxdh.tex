@@ -17,17 +17,17 @@
 Note that, if $\vecb{a}_1,\ldots \vecb{a}_m\in\mathcal{Q}_{1}$, then $\matr{A} = (\vec{a}_1\cat\cdots\cat\vecb{a}_m)\in\mathcal{Q}_{m}$ and $[\vecb{a}_i]_1$ is a Groth-Sahai commitment to $\beta_i$.
 Therefore $\sum_{i=0}^m[\vecb{a}_i]_1$ is a Groth-Sahai commitment to the hamming weight of $\vecb{\beta}$, that is $\Com_{[\matr{U}]_1}(\sum_{i=1}^m \beta_i;\sum_{i=0}^m r_i)$.
 
-Sincet $h$ is not efficiently computable, we craft a key $k$ which encodes a matrix $\matr{A}$ and makes possible the construction proofs that $\matr{A}'\in\mathcal{Q}_m$ and $h(\matr{A}')=h(\matr{A})$ only if $\matr{A}'\equiv_{\matr{U}}\matr{A}$. Cocretely, the global key is a Groth-Sahai commitment key $[\matr{U}]_1,[\matr{V}]_2$ while each local key is $[\vecb{a}]_1$ and proofs that $\vec{a}\in\mathcal{Q}_1$.
+Sincet $h$ is not efficiently computable, we craft a key $k$ which encodes a matrix $\matr{A}$ and makes possible the construction proofs that $\matr{A}'\in\mathcal{Q}_m$ and $h(\matr{A}')=h(\matr{A})$. Cocretely, the global key is a Groth-Sahai commitment key $[\matr{U}]_1,[\matr{V}]_2$ while each local key is $[\vecb{a}]_1$ and proofs that $\vec{a}\in\mathcal{Q}_1$.
 
 Although is possible to find collisions, it happens only if the matrices open to bitstrings with the same hamming weight or equivalently, the openings are equal up to a permutation. Consequently, to restore collision resistance, we weaken the equality relation to the following equivalence relation
 $$
-\matr{A}' \equiv_\vecb{u} \matr{A} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{A}' = \matr{A}\matr{P} + \vecb{u}_2\vecb{\delta}^\top,
+\matr{A}' \sim_\matr{U} \matr{A} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{A}' = \matr{A}\matr{P} + \vecb{u}_2\vecb{\delta}^\top,
 $$
 where $\mathcal{S}_m\subset \bits^{m\times m}$ is the set of permutation matrices of size $m$.
 
 We prove the following lemma.
 \begin{lemma}
-If $\matr{U}$ is chosen from the perfectly binding distribution, is (unconditionally) impossible to find collisions $\matr{A},\matr{A}'\in\mathcal{Q}_m$ such that $\matr{A}\not\equiv_\vecb{u}\matr{A}'$ and $h(\matr{A})=h(\matr{A}')$.
+If $\matr{U}$ is chosen from the perfectly binding distribution, is (unconditionally) impossible to find collisions $\matr{A},\matr{A}'\in\mathcal{Q}_m$ such that $\matr{A}\not\sim_\matr{U}\matr{A}'$ and $h(\matr{A})=h(\matr{A}')$.
 \end{lemma}
 \begin{proof}
 Given $\matr{A},\matr{A}'\in\mathcal{Q}_m$ we may assume that $\matr{A}=\matr{U}\smallpmatrix{\vecb{\beta}^\top\\\vecb{r}^\top},\matr{A}'=\matr{U}\smallpmatrix{{\vecb{\beta}'}^\top\\\vecb{\delta}^\top}$. Since $\vecb{\beta}$ and $\vecb{\beta}'$ must have the same hamming weigh there exists a permutation matrix $\matr{P}$ such that $\vecb{\beta}^\top\matr{P} = {\vecb{\beta}'}^\top$, and hence
@@ -41,19 +41,23 @@ Given $\matr{A},\matr{A}'\in\mathcal{Q}_m$ we may assume that $\matr{A}=\matr{U}
 \end{proof}
 
 Even 
-when $\matr{U}$ is chosen from the perfectly hiding distribution, it turns out that $\mathcal{Q}_m$ becomes $\mathcal{Q}_m^{0^m}$, which is in fact $\Z_q^{2\times m}$, and there doesn't exist $\matr{A},\matr{A}'$ such that $\matr{A}\not\equiv_{\matr{U}}\matr{A}'$. 
+when $\matr{U}$ is chosen from the perfectly hiding distribution, it turns out that $\mathcal{Q}_m$ becomes $\mathcal{Q}_m^{0^m}$, which is in fact $\Z_q^{2\times m}$, and there doesn't exist $\matr{A},\matr{A}'$ such that $\matr{A}\not\sim_{\matr{U}}\matr{A}'$. 
 
+\paragraph{Showing Membership in $\mathcal{Q}_m$.}
+The statement $\matr{A}\in\mathcal{Q}_m$ corresponds to the conjunction of $\vecb{a}_1\in\mathcal{Q}_1,\ldots,\vecb{a}_m\in\mathcal{Q}_m$.
 To prove membership of $\vecb{a}$ in $\mathcal{Q}_1$ we construct Groth-Sahai proofs for
 \begin{equation}
 \beta(1-\beta)=0 \label{eq:Qm-memb},
 \end{equation}
 for $\beta=\beta_1,\ldots,\beta_m$. For more detail on how this proof is constructed and how to re-randomize them see Appendix \ref{sec:GSproofs-h}.
+Further, given $[\matr{A}]_1$ and a proofs that $\matr{a}_1,\ldots,\matr{a}_m\in\mathcal{Q}_1$, we can construct a proof that $\matr{A}'\in\mathcal{Q}_m$ whenever $\matr{A}'\sim_\matr{U}\matr{A}$. Since $\vecb{a}'_i$ is the re-randomization of $\vecb{a}_j$, for some $j\in[m]$, it suffices to construct the corresponding re-randomized proof.
 
-We will need to construct proofs that $h(\matr{A}') = h(\matr{A})$ from $[\vecb{a}'_1]_1,\ldots,[\vecb{a}'_m]_1$ and some $[\vecb{h}]_1 = \Com_{[\matr{U}]_1}(h(\matr{A}))$. To do so, it suffices to show that
+\paragraph{Proving $h(\matr{A})=h(\matr{A}')$.} We can construct proofs that $h(\matr{A}') = h(\matr{A})$ given $\matr{P}\in\mathcal{S}_m$ and $\vecb{\delta}\in\Z_q^m$ such that $\matr{A}' = \matr{A}\matr{P}+\vecb{u}_2\vecb{\delta}^\top$. To do so, it suffices to show that
 \begin{equation}
-\sum_{i=1}^{m}[\vecb{a}'_i]_1 - [\vecb{g}]_1 = \gamma[\vecb{u}_2]_1
+\sum_{i=1}^{m}[\vecb{a}'_i]_1 - [\vecb{g}]_1 = \gamma[\vecb{u}_2]_1,
 \label{eq:coll-h}
 \end{equation}
+where $\gamma = \sum_{i=1}^m \delta_i$,
 which can be proved with a Groth-Sahai proof. Further, such proof corresponds to a proof of membership in the span of $\vecb{u}_2$ which can be proved using more efficient QA-NIZK proofs \cite{C:JutRoy14,EC:KilWee15}. In this case the proof consists of only 1 element of $\GG_1$, instead of the $2$ required by Groth-Sahai proofs.
 
 \subsubsection{The function $g$.} Consider perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1=[\vecb{u}_1\cat\vecb{u}_2]_1,[\matr{W}]_2 = [\vecb{w}_1\cat\vecb{w}_2]_2$, together with a trapdoor for the commitment scheme $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_2=0$ and $\vecb{k}^\top\vecb{u}_1=1$, consider also $[\matr{A}]_1$ such that $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$.
@@ -62,147 +66,160 @@ We start defining $g$ as $g_\matr{A}(\vecb{x}) = \vecb{k}^\top\matr{A}\vecb{x} =
 In our ring signature $\vecb{\beta}=0$ but, since it remains hidden to the adversary, we could change to a game where $\vecb{\beta}$ is a random bit-vector of hamming weight 1. Since the unique coordinate $i$ such that $\beta_i=1$ remains hidden, $g_\matr{A}(\vecb{x}) = x_i \neq x'_i =g_\matr{A}(\vecb{x}')$ with probability $\approx 1/m$, whenever $\vecb{x}\neq\vecb{x}'$. But this reasoning is flawed, since $\vecb{\beta}=0$ in the actual instantiation and thus $g_\matr{A}(\vecb{x}) = 0$ for all $\vecb{x}\in\Z_q^m$ and is trivial to find collisions.
 We will show that what is indeed hard to compute is the Groth-Sahai proof that $\vecb{\beta}^\top\vecb{x} = \vecb{\beta}^\top\vecb{x}'$, even when $g_\matr{A}(\vecb{x})\equiv 0$.
 
-The problem is now, how to encode the proof in the hash function? Lets see how the Groth-Sahai proof for the statement $\vecb{\beta}^\top\vecb{x} = y$ looks like. We would like $\vecb{\beta}$ and $y$ to remain hidden, so we commit to these values with $[\matr{A}]_1$ and $[\vecb{d}]_1 = \vecb{\beta}^\top\vecb{x}[\vecb{u}_1]_1+t[\vecb{u}_2]_1$, respectively. The verification equation is
-\begin{align*}
-&[\matr{A}]\vecb{x}[\vecb{w}_1^\top]_2-[\vecb{d}]_1[\vecb{w}_1^\top]_2 = [\vecb{u}_1]_1[\vecb{\theta}^\top]_2+[\vecb{\pi}]_1[\vecb{w}_2^\top]_2\\
-\iff & [\matr{A}]\vecb{x}[\vecb{w}_1^\top]_2 - [\vecb{u}_1]_1[\vecb{\theta}^\top]_2 - [\vecb{\pi}]_1[\vecb{w}_2^\top]_2 = [\vecb{d}]_1[\vecb{w}_1^\top]_2.
-\end{align*}
+The problem is now, how to encode the proof in the hash function? Lets see how the Groth-Sahai proof for the statement $\vecb{\beta}^\top\vecb{x} = y$ looks like. We would like $\vecb{\beta},\vecb{x}$ and $y$ to remain hidden, so we commit to these values with $[\matr{A}]_1$, $[\matr{C}]_2 = [\vecb{w}_1]_2\vecb{x}^\top+[\vecb{u}_2]_2\vecb{s}^\top$ and $[\vecb{d}]_1 = \vecb{\beta}^\top\vecb{x}[\vecb{u}_1]_1+t[\vecb{u}_2]_1$, respectively. The verification equation is
+\begin{align}
+&[\matr{A}][\matr{C}^\top]_2-[\vecb{d}]_1[\vecb{w}_1^\top]_2 = [\vecb{u}_1]_1[\vecb{\psi}^\top]_2+[\vecb{\omega}]_1[\vecb{w}_2^\top]_2 \label{eq:ver-betax=y}\\
+\iff & [\matr{A}][\matr{C}^\top]_2 - [\vecb{u}_1]_1[\vecb{\psi}^\top]_2 - [\vecb{\omega}]_1[\vecb{w}_2^\top]_2 = [\vecb{d}]_1[\vecb{w}_1^\top]_2. \nonumber
+\end{align}
 We define $g$ as the left side of the previous equation
 $$
-g_{\matr{A}}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]):= [\matr{A}]_1[\vecb{x}\vecb{w}_1^\top]_2-[\vecb{u}_2][\vecb{\theta}^\top]_2-[\vecb{\pi}]_1[\vecb{w}_2^\top]_2,
+g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1):= [\matr{A}]_1[\matr{C}^\top]_2-[\vecb{u}_2][\vecb{\psi}^\top]_2-[\vecb{\omega}]_1[\vecb{w}_2^\top]_2,
 $$
-which is efficiently given $\vecb{w}_1$.
+which is efficiently given $\vecb{w}_1$. Of course, there is an alternative of computing $g$ as $g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)=[\vecb{d}]_1[\vecb{w}_1^\top]_2$. For simplicity, we may simply write $g_\matr{A}(\matr{C})$ instead of $g_{[\matr{A}]_1}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
-However, is still not hard to find collisions. Indeed, any $[\vecb{x}]_2=[\vecb{x}']_2,[\vecb{\theta}]_2=\epsilon + \delta[\vecb{v_2}]_2,[\vecb{\theta}']_2 = \epsilon + \delta'[\vecb{w}_2]_2,[\vecb{\pi}]_1 = -\delta[\vec{u}_2]_2$  and $[\vecb{\pi}']_1 = -\delta'[\vecb{u}_2]_1$, $\delta\neq \delta'$ form a collision. It turns out that this are the only type of collisions so we we will say that $([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1)$ and $([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_1)$ are a collision if  $g_{[\matr{A}]_1}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1) = g_{[\matr{A}]_1}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_1)$ but we additionally require that $[\vecb{x}]_2\neq[\vecb{x}']_2$. For simplicity, we may simply write $g_\matr{A}(\vecb{x})$ instead of $g_{[\matr{A}]_1}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1)$.
+However, is still tow ways of computing collisions. First, one may pick $[\matr{C}]_2,\allowbreak[\vecb{\psi}']_2,[\vecb{\omega}']_1$ such that $[\vecb{u}_2][{\vecb{\psi}'}^\top]_2+[\vecb{\omega}']_1[\vecb{w}_2^\top]_2=[\vecb{u}_2][\vecb{\psi}^\top]_2+[\vecb{\omega}]_1[\vecb{w}_2^\top]_2$. Second, one may pick $[\matr{C}]_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1$ such that $[\matr{C}']_2 = [\matr{C}]_2 + [\vecb{w}_2]\vecb{\delta}^\top$. It turns out that this are the only type of collisions. Consequently, we consider collisions only with respect to the first argument and we we will weaken the equality relation to the following equivalence relation
+$$
+\matr{C}'\simeq_\matr{W} \matr{C} \iff \exists \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{C}' = \matr{C}+\vecb{u}_2\vecb{\delta}^\top.
+$$
+Further, we also prove collision resistance with respect to relation $\sim_\matr{W}$ 
+$$
+\matr{C}'\sim_\matr{W} \matr{C} \iff \exists \matr{P}\in\mathcal{S}_m, \vecb{\delta}\in\Z_q^m \text{ s.t. } \matr{C}' = \matr{C}\matr{P}+\vecb{w}_2\vecb{\delta}^\top,
+$$
+where $\mathcal{S}_m\subset\bits^{m\times m}$ is the set of permutation matrices of size $m$.
 
 %The function $g$ outputs the evaluation of the left side of (a rearrangement of) the Groth-Sahai verification equation for the equation
 %$
-%\vecb{\beta}^\top\vecb{x} = y.
+%\vecb{\beta}^\top\matr{C} = y.
 %$
-%Intuitively, $g_{[\matr{A}]_1}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1) = g_{[\matr{A}]_1}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_1)$ implies that $\vecb{\beta}^\top(\vecb{x}-\vecb{x}')=0$. Since $\vecb{\beta}$ is remains computationally hidden, it must be the case that $\vecb{\beta}$ is the all zero vector except at the position where $\vecb{x}$ and $\vecb{x}'$ differ.
+%Intuitively, $g_{[\matr{A}]_1}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1) = g_{[\matr{A}]_1}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1)$ implies that $\vecb{\beta}^\top(\matr{C}-\matr{C}')=0$. Since $\vecb{\beta}$ is remains computationally hidden, it must be the case that $\vecb{\beta}$ is the all zero vector except at the position where $\matr{C}$ and $\matr{C}'$ differ.
 
-We consider a reference string $(k_0,k_1,\ldots,k_m)$ formed of Groth-Sahai proofs wich enable to prove that
- $g_{\matr{A}}(\vecb{x}) = g_{\matr{A}}(\vecb{x}')$, for some fixed $\vecb{x}$, while keeping computationally hard to find collisions --- in our ring signature $[\vecb{x}]_2$ contains $m$ verification keys of a signature scheme while $\vecb{x}$ contains $m$ secret keys.
+\paragraph{The Distributed Key Generation.} The key generation algorithm
+ %, for some fixed $\matr{C}$, while keeping computationally hard to find collisions --- in our ring signature $[\matr{C}]_2$ contains commitments to $m$ secret keys of a Boneh-Boyen signature scheme.
  %The global key $k_0$ contains the Groth-Sahai commitment keys and each local key $k_i$ contains Groth-Sahai proofs that $\beta x=y$, for $\beta=\beta_i,x=x_i,y=\beta_ix_i$, and $i\in[m]$. We note that such proofs can be re-randomized as shown in Appendix \ref{sec:GSproofs-g}.
-We prove $g$'s collision resistance in an scenario where $k$ gives additional information about $[\matr{A}]_1$ to the adversary.
+%We prove $g$'s collision resistance in an scenario where $k$ gives additional information about $[\matr{A}]_1$ to the adversary.
 %Specifically, $k_0$ contains the Groth-Sahai commitment keys $[\matr{U}]_1,\allowbreak[\matr{V}]_2,\allowbreak[\matr{W}]_2$. We use two commitment keys in $\GG_2$ in order to open commitments computed with $[\matr{W}]_2$ even when the distribution of $[\matr{V}]_2$ is changed. Hence, we prove collision resistance even when the adversary knows $\matr{W}$. Each $k_i$ contains a proof showing that $\matr{a}_i\in\mathcal{Q}_1$, as shown in App.~\ref{sec:GSproofs-g}, and a proof that $\beta_ix_i = y_i$, as shown in App.~\ref{sec:GSproofs-g}. We prove collision resistance with respect to adaptive adversaries only when $\vecb{\beta} = \vecb{0}$. In the general case, when $\vecb{\beta}\in\bits^m$ the security degrades exponentially with the hamming weight of $\vecb{\beta}$, although we don't prove it. Anyway, for our ring signatures it will suffice collision resistance with respect to $\vecb{\beta}=\vecb{0}$.
+$\KGen$ on input a group key $gk$ and vectors $\vecb{\beta}\in\bits^m$ and $\vecb{x}\in\Z_q^m$,  outputs $(k_0,k_1,\ldots,k_m)$ where $k_0 \gets \KGen_\mathsf{global}(gk)$ and  $k_i\gets \KGen_{\mathsf{local}}(gk,k_0,\beta_i)$. The global key generator $\KGen_\mathsf{global}$ on input a group key outputs Groth-Sahai commitment keys $[\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_2$. We use two commitment keys in $\GG_2$ in order to open commitments computed with $[\matr{W}]_2$ even when the distribution of $[\matr{V}]_2$ is changed. Hence, we prove collision resistance even when the adversary knows $\matr{W}$. The local key generator on input a group key, a global key, and a bit $\beta\in\bits$, samples $\matr{a}\gets\mathcal{Q}_1$ and outputs $[\vecb{a}]_1$ and a proof $\pi$ that $\vecb{a}\in\mathcal{Q}_1$.
+%$[\vecb{c}]_2 = x[\vecb{w}_1]_2$, $[\vecb{d}]_1 = \Com_{[\matr{U}]_1}(\beta x)$ and proofs proofs $[\vecb{\psi}]_2,[\vecb{\omega}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ computed as in (\ref{eq:Qm-memb-proofs}) and (\ref{eq:wi-proofs}), respectively (see App.~\ref{sec:GSproofs-h} and \ref{sec:GSproofs-g}).
+%The function key is
+%$$
+%k = ([\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_2,[\matr{A}]_1,[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2,[\matr{\Theta}]_2,%[\matr{\Pi}]_1,
+%[\matr{\Xi}]_2,[\matr{\Phi}]_1,[\matr{\Psi}]_2,[\matr{\Omega}]_1),
+%$$
+%where the matrices columns are denoted by the corresponding lower case letter.
 
-Formally, $\KGen$ on input a group key $gk$ and vectors $\vecb{\beta}\in\bits^m$ and $\vecb{x}\in\Z_q^m$,  outputs $(k_0,k_1,\ldots,k_m)$ where $k_0 \gets \KGen_\mathsf{global}(gk)$ and  $k_i\gets \KGen_{\mathsf{local}}(gk,k_0,\beta_i,\allowbreak x_i)$. The global key generator $\KGen_\mathsf{global}$ on input a group key outputs Groth-Sahai commitment keys $[\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_2$. We use two commitment keys in $\GG_2$ in order to open commitments computed with $[\matr{W}]_2$ even when the distribution of $[\matr{V}]_2$ is changed. Hence, we prove collision resistance even when the adversary knows $\matr{W}$. The local key generator on input a group key, a global key, a bit $\beta\in\bits$ and $x\in\Z_q$, samples $\matr{a}\gets\mathcal{Q}_1$ and outputs $[\vecb{a}]_1$, $[\vecb{b}]_2 = \Com_{[\matr{V}]_2}(\beta)$,  $[\vecb{c}]_2 = x[\vecb{w}_1]_2$, $[\vecb{d}]_1 = \Com_{[\matr{U}]_1}(\beta x)$ and proofs proofs $[\vecb{\theta}]_2,[\vecb{\pi}]_1,[\vecb{\xi}]_2,[\vecb{\phi}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ computed as in (\ref{eq:Qm-memb-proofs}) and (\ref{eq:wi-proofs}), respectively (see App.~\ref{sec:GSproofs-h} and \ref{sec:GSproofs-g}). The function key is
-$$
-k = ([\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_2,[\matr{A}]_1,[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2,[\matr{\Theta}]_2,[\matr{\Pi}]_1,
-[\matr{\Xi}]_2,[\matr{\Phi}]_1,[\matr{\Psi}]_2,[\matr{\Omega}]_1),
-$$
-where the matrices columns are denoted by the corresponding lower case letter.
+\paragraph{Showing that $g_{\matr{A}'}(\matr{C}')=g_{\matr{A}_i}(\matr{C}_i)$.}
+For $i\in[n]$, consider $[\matr{A}_i]_1,[\matr{C}_i]_2,[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_2$ and $[\vecb{d}_i]_1$ such that $g_{\matr{A}_i}([\matr{C}_i]_2,\allowbreak[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1)=[\vecb{d}_i]_1[\vecb{w}_1^\top]_2$. We are interested in constructing
+ $[\matr{A}']_1,[\matr{C}']_2,\allowbreak[\vecb{\psi}']_2,[\vecb{\omega}']_1,[\vecb{d}']_1$ such that $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{d}']_1[\vecb{w}_2^\top]_2$
+ and $[\vecb{d}']_1=[\vecb{d}_i]_1 + \eta[\vecb{u}_2]_1$, without revealing information about $i$. (For simplicity we avoid subindex $i$ and simply write $\matr{A},\matr{C}$ and so on).
 
-Next, we show that given $k$  it is hard to find $\vecb{x}\neq \vecb{x}'$ such that $g_{\matr{A}}(\vecb{x})=g_\matr{A}(\vecb{x}')$. %Intuitively, since the opening of $[\matr{A}]_1$ is computationally hidden, it  may open to some $\vecb{\beta}\in\bits^m$ that contains a single $1$ at a random position $i\gets[m]$. Then, by the hiding property Groth-Sahai commitments and the fact that $\vecb{x}$ and $\vecb{x}'$ differ in at least one coordinate, $g_\matr{A}(\vecb{x}) = x_i\neq x'_i  = g_{\matr{A}}(\vecb{x}')$ with probability $1/m$. 
+%We do so for $\matr{A}'\sim_\matr{U}\matr{A}$ and $\matr{C}'\sim_\matr{W}\matr{C}$ whenever $\matr{A}',\matr{C}'$ are obtained using the same permutation. That is $\matr{A}\simeq_\matr{U}\matr{A}\matr{P}$ and $\matr{C}'\simeq_\matr{W}\matr{C}\matr{P}$ for some $\matr{P}\in\mathcal{S}_m$.
+
+We will able to do so whenever $\matr{A}'\sim_\matr{U}\matr{A}$ and $\matr{C}'\sim_\matr{W}\matr{C}$, and when $\matr{A}',\matr{C}'$ are computed using the same permutation.
+Let $\matr{A}' = \matr{A}\matr{P}+\vecb{u}_2\vecb{\delta}^\top$ and $\matr{C}' = \matr{C}\matr{P}+\vecb{w}_2\vecb{\alpha}^\top$, for $\vecb{\delta},\vecb{\alpha}\in\Z_q^m$ and $\matr{P}\in\mathcal{S}_n$.
+ Since $g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)=[\vecb{d}]_1[\vecb{w}_1^\top]_2$ is just a rewriting of the Groth-Sahai verification equation for $\vecb{\beta}^\top\vecb{x} = y$, where $\vecb{x}$ and $y$ are the openings of $[\matr{C}]_2$ and $[\vecb{d}]_1$, we derive re-randomized proofs $[\matr{A}']_1,[\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1$, and $[\vecb{d}']_1$ for the same equation.
+ 
+We define
+\begin{align}
+&[\vecb{\psi}']_2 := [\vecb{\psi}]_2+[\matr{C}']_2\vecb{\delta}-\eta[\vecb{w}_1]_2-\tau[\vecb{w}_2]_2
+&[\vecb{\omega}']_1 := [\vecb{\omega}]_1 +[\matr{A}]_1\matr{P}\vecb{\alpha} + \tau[\vecb{u}_2]_1.
+\label{eq:g-rerand-proofs}
+\end{align}
+We also give a Groth-Sahai proof  that $[\vecb{d}']_1-[\vecb{d}]_1 = \eta[\vecb{u}_2]_1$, which is consists of a commitment $[\xi]_2 = \eta[\vecb{w}_1]_2+\zeta[\vecb{w}_2]_2$ plus 2 elements of $\GG_1$. 
+
+If follows by inspection that $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{d}']_1[\vecb{w}_2^\top]_2$. Furthermore, $[\vecb{\psi}']_2,[\vecb{\omega}']_1$ are uniformly distributed conditioned on satisfying the verification and, if
+the commitment keys are sampled from the perfectly hiding distribution, $[\matr{A}']_1,[\matr{C}']_2,[\vecb{d}']_1$ are uniformly distributed. Hence, no information about $i$ is leaked.
+
+\paragraph{Adaptive Collision Resistance.}
+Next, we show that given $k$  it is hard to find $\matr{C}\not\simeq_\matr{W} \matr{C}'$ such that $g_{\matr{A}}(\matr{C})=g_\matr{A}(\matr{C}')$.
+%Intuitively, since the opening of $[\matr{A}]_1$ is computationally hidden, it  may open to some $\vecb{\beta}\in\bits^m$ that contains a single $1$ at a random position $i\gets[m]$. Then, by the hiding property Groth-Sahai commitments and the fact that $\matr{C}$ and $\matr{C}'$ differ in at least one coordinate, $g_\matr{A}(\matr{C}) = x_i\neq x'_i  = g_{\matr{A}}(\matr{C}')$ with probability $1/m$. 
 %
 %Further, for our ring signature, we require a slightly different reduction to the SXDH assumption. We allow the adversary against $g$ to give only commitments  to the purported collision, computed with commitment key $[\matr{W}]_2$, such that even the reduction ignores its opening. To achieve such strong guarantee, our reduction requires an additional advice indicating an index $i$ such that $x'_i\neq x'_j$ for all $j\in[m]$. To get a uniform treatment of both types of reduction, we consider reduction (an adversary against SXDH) $\advB$ which always receives an advice $i\in[0,m]$. If $i=0$ then the adversary against $g$ must give collisions ``in the clear'', and if $i>0$, then the adversary against $g$ is allowed to give committed collisions such that $x_i\neq x_i'$. Anyway, the proof for $i=0$ and $i>0$ are almost identical. 
 %The  next lemma shows adaptive collision resistance. 
-\begin{lemma} \label{lemma:h-cr-sxdh}
-For any adversary $\advA$ against adaptive collision resistance of $g$, making at most $m$  queries to the key-generator oracle and $t$ queries to the corruption oracle and $t<m$, there exists an adversary $\advB$ against SXDH such that the probability that $\advA$ outputs a collision $([\vecb{x}]_1,[\vecb{\theta}]_2,[\vecb{\pi}]_1),(\vecb{x}',[\vecb{\theta}']_2,[\vecb{\pi}']_1)$ for $g_\matr{A}$  is less than $2m \adv_{\mathrm{SXDH}}(\advB)$. This statement holds even when $\matr{W}$, the discrete logs of $[\matr{W}]_2$, are given to the adversary 
+\begin{lemma} \label{lemma:g-cr-sxdh}
+For any adversary $\advA$ against adaptive collision resistance of $g$, making at most $m$  queries to the key-generator oracle and $t$ queries to the corruption oracle and $t<m$, there exists an adversary $\advB$ against SXDH such that the probability that $\advA$ outputs a collision $([\matr{C}]_1,[\vecb{\psi}]_2,[\vecb{\omega}]_1),([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1)$ for $g_\matr{A}$  is less than $2m \adv_{\mathrm{SXDH}}(\advB)$. This statement holds even when $\matr{W}$, the discrete logs of $[\matr{W}]_2$, are given to the adversary 
 \end{lemma}
 \begin{proof}
 We may assume that the adversary is ``eager'', that is, it makes all its queries to the key-generator oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes $m$ queries to its oracle and answers $\advA'$ queries ``on demand''. This is justified by the fact that the output of the key-generator oracle is independent of all previous outputs.
 The proof follows from the indistinguishability of the following games.
 \begin{description}
-\item[$\sfGame_0(\advA)$:] This game honestly runs the collision resistance experiment for $g_{\matr{A}}$ and outputs 1 if $[\vecb{x}]_2 \neq [\vecb{x}']_2$ and $g_\matr{A}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1)=g_{\matr{A}}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_2)$.
-\item[$\sfGame_1(\advA)$:] This game is exactly as $\sfGame_0$ but it picks $i\gets[m]$ and aborts if the adversary requests the random coins for generating $k_i$ or outputs $[x_i]_2=[x'_i]_2$.
+\item[$\sfGame_0(\advA)$:] This game honestly runs the collision resistance experiment for $g_{\matr{A}}$ and outputs 1 if $\matr{C} \not\sim_\matr{W} \matr{C}'$ and $g_\matr{A}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)=g_{\matr{A}}([\matr{C}']_2,[\vecb{\psi}']_2,\allowbreak[\vecb{\omega}']_2)$.
+\item[$\sfGame_1(\advA)$:] This game is exactly as $\sfGame_0$ but the openings $[\vecb{x}]_2,[\vecb{x}']_2$ are extracted from $[\matr{C}]_2,[\matr{C}']_2$, respectively. Additionally, the game picks $i\gets[m]$ and aborts if the adversary requests the random coins for generating $k_i$ or outputs $[x_i]_2=[x'_i]_2$.
 \item[$\sfGame_2(\advA)$:] This game is exactly as $\sfGame_1$ but $[\matr{U}]_1$ and $[\matr{V}]_2$ are sampled from the perfectly hiding distribution.
-\item[$\sfGame_3(\advA)$:] This game is exactly as $\sfGame_2$ but $\matr{A}$ is sampled from $\mathcal{Q}_m^{\vecb{\beta}_i}$, where $\vecb{\beta}_i\in\bits^m$ contains a single 1 at postion $i$. Consequently, $[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2$ and corresponding proofs are computed using $\vecb{\beta}_i$.
+\item[$\sfGame_3(\advA)$:] This game is exactly as $\sfGame_2$ but queries to $\mathsf{VKGen}$ are answered with $k_j\gets\KGen(gk,k_0,0)$ if $j\neq i$ and $k_j\gets\KGen(gk,k_0,1)$ otherwise.
 \item[$\sfGame_4(\advA)$:] This game is exactly as $\sfGame_3$ but $[\matr{U}]_1$ and $[\matr{V}]_2$ are sampled from the perfectly binding distribution.
 \end{description}
-$\Pr[\sfGame_0(\advA)=1]\leq \frac{m}{m-t}\Pr[\sfGame_1(\advA)=1]$  follows from the fact that the probability that $\sfGame_1$ doesn't abort is: a) the probability that each of the corruption calls doesn't abort and b) the probability that $[x_i]_2=[x'_i]_2$. The probability of a) is $\frac{m-i}{m}$ at the $i$-th call, and the probability of b) is $\frac{1}{m-t}$. It follows that the desired probaility is $\frac{m-1}{m}\frac{m-2}{m-1}\cdots\frac{m-t}{m}\frac{1}{m-t}=\frac{1}{m}$
+Denote by $\neg\mathsf{Abort}$ the event where the abort condition of $\sfGame_1$ was no triggered. Then
+\begin{align*}
+\Pr[\sfGame_1(\advA)=1] &= \Pr[\sfGame_0(\advA)=1|\neg\mathsf{Abort}]\Pr[\neg\mathsf{Abort}]\\
+&=\Pr[\neg\mathsf{Abort}|\sfGame_0(\advA)=1]\Pr[\sfGame_0(\advA)=1].
+\end{align*}
+Below we proceed to bound $\Pr[\neg\mathsf{Abort}|\sfGame_0(\advA)=1]$.
 
-It holds that $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$, for some adversary $\advB$, since the only change in the games is the Groth-Sahai commitment key wich is changed from perfectly binding to perfectly hiding. %However, here the argument is slightly more subtle. An adversary attempting to tell apart perfectly binding from perfectly hiding Groth-Sahai commitments keys (or equivalently, an adversary against SXDH) can't efficiently simulate $\sfGame_1(\advA)$ and $\sfGame_2(\advA)$ as they require the computation of $g$ while the discrete logarithm of the commitment keys is unknown. Let $\vecb{x}_1,\vecb{x}'_1$ and $\vecb{x}_2,\vecb{x}'_2$ the purported collisions output by $\advA$ in, respectively, $\sfGame_1$ and $\sfGame_2$. We note that $\Pr[\sfGame_1(\advA)=1] \leq \Pr[x_{1,i}\neq x'_{1,i}]$ and $\Pr[\sfGame_2(\advA)=1] = \Pr[x_{2,i}\neq x'_{2,i}]$, since in $\sfGame_2$ it holds that $g_{\matr{A}}(\vecb{x}) = \vecb{k}^\top\matr{A}\vecb{x} = 0 = g_\matr{A}(\vecb{x}')$ for any $\vecb{x},\vecb{x}'$. Therefore, $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq \Pr[x_{1,i}\neq x'_{1,i}]-\Pr[x_{2,i}\neq x'_{2,i}]$. Instead of simulating the games, the adversary $\advB$, which receives as challenge Groth-Sahai commitment keys, runs $\sfGame_1$ replacing the commitment keys by it challenges and outputs $1$ if $x_i\neq x'_i$ and $0$ otherwise regardless of whether $g_\matr{A}(\vecb{x})=g_{\matr{A}}(\vecb{x}')$ or not.
+The probability is: a) the probability that each of the corruption calls doesn't abort and b) the probability that $[x_i]_2\neq[x'_i]_2$. The probability of a) is $\frac{m-i}{m}$ at the $i$-th call, and the probability of b) is at least $\frac{1}{m-t}$. It follows that the desired probability is at least $\frac{m-1}{m}\frac{m-2}{m-1}\cdots\frac{m-t}{m}\frac{1}{m-t}=\frac{1}{m}$ and then $\Pr[\sfGame_0(\advA)=1]\leq m \Pr[\sfGame_1(\advA)=1]$.
 
-It also holds that $\Pr[\sfGame_2(\advA)=1]-\Pr[\sfGame_3(\advA)=1]=0$, since commitment keys $[\matr{U}]_1,[\matr{V}]_2$ are perfectly hiding in both games, and hence, matrices $[\matr{A}]_1,[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2$ follow exactly the same distribution in both games.
+It holds that $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$, for some adversary $\advB$, since the only change in the games is the Groth-Sahai commitment key wich is changed from perfectly binding to perfectly hiding. %However, here the argument is slightly more subtle. An adversary attempting to tell apart perfectly binding from perfectly hiding Groth-Sahai commitments keys (or equivalently, an adversary against SXDH) can't efficiently simulate $\sfGame_1(\advA)$ and $\sfGame_2(\advA)$ as they require the computation of $g$ while the discrete logarithm of the commitment keys is unknown. Let $\matr{C}_1,\matr{C}'_1$ and $\matr{C}_2,\matr{C}'_2$ the purported collisions output by $\advA$ in, respectively, $\sfGame_1$ and $\sfGame_2$. We note that $\Pr[\sfGame_1(\advA)=1] \leq \Pr[x_{1,i}\neq x'_{1,i}]$ and $\Pr[\sfGame_2(\advA)=1] = \Pr[x_{2,i}\neq x'_{2,i}]$, since in $\sfGame_2$ it holds that $g_{\matr{A}}(\matr{C}) = \vecb{k}^\top\matr{A}\matr{C} = 0 = g_\matr{A}(\matr{C}')$ for any $\matr{C},\matr{C}'$. Therefore, $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq \Pr[x_{1,i}\neq x'_{1,i}]-\Pr[x_{2,i}\neq x'_{2,i}]$. Instead of simulating the games, the adversary $\advB$, which receives as challenge Groth-Sahai commitment keys, runs $\sfGame_1$ replacing the commitment keys by it challenges and outputs $1$ if $x_i\neq x'_i$ and $0$ otherwise regardless of whether $g_\matr{A}(\matr{C})=g_{\matr{A}}(\matr{C}')$ or not.
+
+It also holds that $\Pr[\sfGame_2(\advA)=1]-\Pr[\sfGame_3(\advA)=1]=0$, since commitment keys $[\matr{U}]_1,[\matr{V}]_2$ are perfectly hiding in both games, and hence, $k_1,\ldots,k_m$ follow exactly the same distribution in both games.
 %Note that, by the self-reducibility of DDH, we can change many ciphertexts at once without increasing  the security loss.\footnote{For completeness, assume that you want to switch from encryptions of $m_1,\ldots,m_\ell\in\Z_q$ to encryptions of $m'_1,\ldots,m'_\ell\in\Z_q$. Construct an adversary that asks to its left or right oracle for encryptions of $0$ or $1$, receives $[\vecb{c}]_2$ as challenge, and returns $[\vecb{c}_i] := m_i[\vecb{c}_i] + m'_i[\smallpmatrix{0\\1}-\vecb{c}_i]_2+\delta_i[\vecb{w}]_2$, $\delta_i\gets\Z_q$. Clearly, when $[\vecb{c}]_2$ encrypts $1$, then the adversary returns encryptions to $m_1,\ldots,m_\ell$, and when it encrypts $0$ returns encryptions to $m'_1,\ldots,m'_\ell$.} Note that, when changing the cyperthexts, we need to simulate proofs as in (\ref{eq:Qm-sim-proofs}) and (\ref{eq:sim-proofs}).
 
-Similarly as before, $\Pr[\sfGame_4(\advA)=1]-\Pr[\sfGame_3(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$. We point out that the adversary, after corrupting the $j$-th key, could detect that $[\vecb{a}_j]_1$'s  can no longer be opened to 0 since now the commitment keys are prfectly binding. However, since only $\beta_i\neq 0$, this can not happened as the game would have aborted when corrupting $k_i$.
+Similarly as before, $\Pr[\sfGame_4(\advA)=1]-\Pr[\sfGame_3(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$. We point out that the adversary, after corrupting the $j$-th key, could detect that $[\vecb{a}_j]_1$'s  can no longer be opened to 0 since now the commitment keys are perfectly binding. However, since only $\beta_i\neq 0$, this can not happened as the game would have aborted when corrupting $k_i$.
 
-Finaly, $\Pr[\sfGame_4(\advA)=1]=0$ since in this case $x_i \neq x'_i$ and $g_\matr{A}([\vecb{x}]_2,[\vecb{\theta}]_2,\allowbreak[\vecb{\pi}]_1)=g_{\matr{A}}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_2)$  only if $x_i = x'_i$. Note that in this case $\vecb{u}_1\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top,\allowbreak\vecb{u}_2\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top$ is a basis of $\Z_q^{2\times 2}$. Then, there is a collision only if
+Finaly, $\Pr[\sfGame_4(\advA)=1]=0$ since in this case $x_i \neq x'_i$ but $g_\matr{A}([\matr{C}]_2,[\vecb{\psi}]_2,\allowbreak[\vecb{\omega}]_1)=g_{\matr{A}}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_2)$  only if $x_i = x'_i$. Indeed, note that in this case $\vecb{u}_1\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top,\allowbreak\vecb{u}_2\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top$ is a basis of $\Z_q^{2\times 2}$. Then, there is a collision only if
 \begin{align*}
-&\matr{A}(\vecb{x}-\vecb{x}')\vecb{w}_1^\top - (\vec{\theta}-\vecb{\theta}')\vecb{w}_2 - \vecb{u}_2(\vecb{\pi}-\vecb{\pi}')^\top = 0\\
-&\vecb{u}_1\vecb{\beta}^\top\vecb{x}\vecb{w}_1^\top - (\vec{\theta}-\vecb{\theta}')\vecb{w}_2 - \vecb{u}_2(\vecb{\pi}-\vecb{\pi}'-\vecb{w}_1\vecb{r}^\top(\vecb{x}-\vecb{x}'))^\top = 0\\
-\Longrightarrow & \vecb{\beta}^\top(\vecb{x}-\vecb{x}') = 0\\
-\Longrightarrow & x_i  = x'_i\\
+0=&\matr{A}(\matr{C}-\matr{C}')^\top - (\vec{\psi}-\vecb{\psi}')\vecb{w}_2 - \vecb{u}_2(\vecb{\omega}-\vecb{\omega}')^\top\\
+=&\vecb{u}_1\vecb{\beta}^\top(\vecb{x}-\vecb{x}')\vecb{w}_1^\top - (\vec{\psi}-\vecb{\psi}'-\vecb{u}_1\vecb{\beta^\top}(\vecb{s}-\vecb{s}'))\vecb{w}_2 - \\
+&\vecb{u}_2(\vecb{\omega}-\vecb{\omega}'-\vecb{w}_1\vecb{r}^\top(\matr{C}-\matr{C}'))^\top\\
+\Longrightarrow & \vecb{\beta}^\top\vecb{x}=\vecb{\beta}^\top\vecb{x}' \\
+\Longrightarrow  &x_i  = x'_i\\
 \end{align*}
 \end{proof}
 
-We will also need to show that $g_{\matr{A}'}(\vecb{x}')= g_{\matr{A}}(\vecb{x})$ from $[\vecb{d}_1]_2,\ldots,[\vecb{d}_m]_2$ and some $[\vecb{g}]_2 = \Com_{[\matr{W}]_2}(\vecb{x})$. To do so, it suffices to give to prove the satisfiability of
-\begin{equation}
-\sum_{i=1}^{m}[\vecb{d}_i]_2 - [\vecb{g}]_2 = \gamma[\vecb{w}_2]_2.
-\label{eq:coll-g}
-\end{equation}
-A Groth-Sahai proof requires $2$ group elements, while a QA-NIZK proof requires only one \cite{C:JutRoy14,EC:KilWee15}.
+\subsubsection{Using $h$ and $g$ together.}
+Lemma \ref{lemma:g-crp-sxdh} relates functions $h$ and $g$ and is analogous to lemma \ref{lemma:hg} with some differences. When $g$ is instantiated in the ring signature it won't be possible to extract the permutation $\matr{P}$ which relates $\matr{A}$ and $\matr{A}'$ as with the PPA instantiation.\footnote{It might be also possible to extract $\matr{P}$ if we compute Groth-Sahai commitments to the randomness used to re-randomize $\matr{A}'$. This solution is far less efficient though.}
+%Further, instead of having $g_\matr{A}(\matr{C}) = g_{\matr{A}'}(\matr{C}')$ we only get that $g_\matr{A}(\matr{C}) = [\vecb{d}]_1[\vecb{w}_1^\top]_1$ and $g_{\matr{A}'}(\matr{C}') = [\vecb{d}']_1[\vecb{w}_1^\top]_1$ and $[\vecb{d}']_1-[\vecb{d}]_1 = \eta[\vecb{u}_2]_1$. We denote this relaxed collision condition by $g_\matr{A}(\matr{C}) \simeq_\matr{U} g_{\matr{A}'}(\matr{C}')$.
+We prove that, given a proof that $h(\matr{A}')=h(\matr{A})$, it is hard to find $\matr{C},\matr{C}'$ such that $g_\matr{A}(\matr{C})=g_\matr{A'}(\matr{C}')$ and $\matr{C}\not\sim_\matr{W}\matr{C}'$.
 
+We further need to assume that $\matr{C}$ opens to some $\vecb{x}$ without repeated entries. In this case, given that $\matr{C}'\not\sim_\matr{W}\matr{C}$, there is some $i$ such that $x_i\neq x'_j$ for any $j$. Indeed, to reach a contradiction assume that for all $i\in[m]$ there is some $j\in[m]$ such that $x_i=x'_j$. Even more, the assumption that $x_i\neq x_j$ for all $i\neq j$ implies that such $j$ must be unique. But then we might define the permutation $\pi$ which assigns $j$ to $i$ and $x_i = x'_{\pi(i)}$ for all $i$, which contradicts the assumption that $\vecb{x}$ is not a permutation of $\vecb{x}'$.
 
-Finally, lemma \ref{lemma:hg-sxdh} relates functions $h$ and $g$ and is analogous to lemma \ref{lemma:hg} with some differences. When $g$ is instantiated in the ring signature it won't be possible to extract the permutation $\matr{P}$ which relates $\matr{A}$ and $\matr{A}'$ as with the PPA instantiation.\footnote{It might be also possible to extract $\matr{P}$ if we compute a Groth-Sahai commitment to the randomness used to re-randomize $\matr{A}'$. This solution is far less efficient though.} To alleviate this we prove that is hard to find $\vecb{x},\vecb{x}'$ such that $g_\matr{A}(\vecb{x})=g_\matr{A'}(\vecb{x}')$, $\vecb{x}$ is uniform over $\Z_q^m$, and $\vecb{x}$ is not a permutation of $\vecb{x}'$.
+Thereby, we can prove lemma \ref{lemma:g-crp-sxdh} in exactly the same  we proved lemma \ref{lemma:g-cr-sxdh}: we try to guess such $i$ and choose $\vecb{\beta}$ such that is $1$ only at position $i$. Then, whatever the permutation $\matr{P}$ is, $\vecb{\beta}^\top\matr{P}\vecb{x}' = x'_j \neq x_i = \vecb{\beta}^\top\vecb{x}$, for some $j\in[m]$.
 
-The proof almost mimics lemma \ref{lemma:h-cr-sxdh} but the abort condition of $\sfGame_1$ is different. 
-Consider this new abort condition: ``pick random $i\in[m]$ and abort if $x_i=x_j$ for some $j\in[m]$''. The following lemma implies that, with high probability, the abort condition will not be triggered.
-\begin{lemma}
-If $\vecb{x}\gets\Z_q^m$ is not a permutation of $\vecb{x}'\in\Z_q^m$, then
-$$
-\Pr[\exists i\in[m] \forall j\in[m], x_i\neq x'_j] > 1-\frac{m^2}{q}
-$$
-\end{lemma}
-\begin{proof}
-Conditioned on the event $E:=x_i\neq x_j$ for all $i\neq j$, the probability is 1. Indeed, to reach a contradiction assume that there is a non-zero probability that for all $i\in[m]$ there is some $j\in[m]$ such that $x_i=x'_j$. Even more, the assumption that $x_i\neq x_j$ for all $i\neq j$ implies that such $j$ is unique. But then we might define the permutation $\pi$ which assigns $j$ to $i$ and $x_i = x'_{\pi(i)}$ for all $i$ which contradicts the assumption that $\vecb{x}$ is not a permutation of $\vecb{x}'$.
+ \begin{lemma} \label{lemma:g-crp-sxdh} Consider the following modified security game for adaptive collision-resistance. The adversary wins if it returns $[\matr{A}']_1,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_2,[\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1$ and a Groth-Sahai proof that  $h(\matr{A})=h(\matr{A}')$ such that $g_\matr{A}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1) = g_{\matr{A}'}([\matr{C}']_2,\allowbreak[\vecb{\psi}']_2,[\vecb{\omega}']_2)$, but  $\matr{C}\not\sim_\matr{W}\matr{C}'$ and the opening $[\vecb{x}]_2$ of $[\matr{C}]_2$ has no repeated entries.
 
-On the other hand, there are $q^m$ different ways of picking $\vecb{x}$ of which $q!/(q-m)!$ satisfy $E$. Then
-\begin{align*}
-\Pr[E] & = \frac{q!/(q-m)!}{q^m} > \frac{(q-m)^m}{q^m} = \left(1-\frac{m}{q}\right)^m \geq 1-\frac{m^2}{q},
-\end{align*}
-where the last step follows from Bernoulli's inequality.
-
-We conclude that
-\begin{align*}
-\Pr[\exists i\in[m] \forall j\in[m], x_i\neq x'_j] &\geq  \Pr[\exists i\in[m] \forall j\in[m], x_i\neq x'_j|E]\Pr[E]\\
-& \geq 1-\frac{m^2}{q}.
-\end{align*}
-\end{proof}
- While the abort condition of lemma \ref{lemma:h-cr-sxdh} doesn't guarantee that $\vecb{\beta}^\top \vecb{x} \neq \vecb{\beta}^\top \vecb{x}'$ if $\vecb{x}'$ is permuted, the new abort condition does. Indeed, $\vecb{\beta}^\top\matr{P}\vecb{x}' = x_j\neq x_i = \vecb{\beta}^\top\vecb{x}$, for some $j\in[m]$.
- 
- \begin{lemma} \label{lemma:h-cr-sxdh}
- Consider the following variant of the adaptive collision-resistance game. The adversary wins if produces $\matr[A]'_1,[\vecb{x}]_2,[\vecb{x}],[\vecb{\pi}]_2,[\vecb{\pi}']_2,[\vecb{\theta}]_1,[\vecb{\theta}']_1$ such that $h(\matr{A})=h(\matr{A}')$ and $g_\matr{A}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1)=g_{\matr{A}}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_2)$.
-For any adversary $\advA$ against this variant of adaptive collision resistance of $g$, making at most $m$  queries to the key-generator oracle and $t$ queries to the corruption oracle and $t<m$, there exists an adversary $\advB$ against SXDH with the following property such that he probability that $\advA$ outputs wins is less than $2m\frac{q}{1-m^2/q} \adv_{\mathrm{SXDH}}(\advB)$. This statement holds even when $\matr{W}$, the discrete logs of $[\matr{W}]_2$, are given to the adversary 
+Then, for any adversary $\advA$, making at most $m$  queries to the key-generator oracle and $t$ queries to the corruption oracle and $t<m$, there exists an adversary $\advB$ against SXDH such that the probability that $\advA$ outputs wins is less than $2m \adv_{\mathrm{SXDH}}(\advB)$. This statement holds even when $\matr{W}$, the discrete logs of $[\matr{W}]_2$, are given to the adversary.
 \end{lemma}
 \begin{proof}
 As in lemma \ref{lemma:g-cr-sxdh} we may assume, without loss of generality, that the adversary is ``eager'', that is, it makes all its queries to the key-generator oracle at the beginning.
 
 The proof follows from the indistinguishability of the following games.
 \begin{description}
-\item[$\sfGame_0(\advA)$:] This game honestly runs the modified collision resistance experiment for $g_{\matr{A}}$ and outputs 1 if $[\vecb{x}]_2 $ is not a permutation of $[\vecb{x}']_2$ and $g_\matr{A}([\vecb{x}]_2,[\vecb{\theta}]_2,[\vecb{\pi}]_1)=g_{\matr{A}'}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_2)$ and $h(\matr{A})=h(\matr{A}')$.
+\item[$\sfGame_0(\advA)$:] This game honestly runs the modified second-preimage resistance experiment for $g_{\matr{A}}$ and outputs 1 if $[\matr{C}]_2 \not\sim_\matr{W}[\matr{C}']_2$ and $g_\matr{A}([\matr{C}]_2,[\vecb{\psi}]_2,\allowbreak [\vecb{\omega}]_1)=g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_2)$ and the proof that $h(\matr{A})=h(\matr{A}')$ is valid.
 \item[$\sfGame_1(\advA)$:] This game is exactly as $\sfGame_0$ but it picks $i\gets[m]$ and aborts if the adversary requests the random coins for generating $k_i$ or $[x_i]_2=[x'_j]_2$ for some $j\in[m]$.
 \item[$\sfGame_2(\advA)$:] This game is exactly as $\sfGame_1$ but $[\matr{U}]_1$ and $[\matr{V}]_2$ are sampled from the perfectly hiding distribution.
-\item[$\sfGame_3(\advA)$:] This game is exactly as $\sfGame_2$ but $\matr{A}$ is sampled from $\mathcal{Q}_m^{\vecb{\beta}_i}$, where $\vecb{\beta}_i\in\bits^m$ contains a single 1 at postion $i$. Consequently, $[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2$ and corresponding proofs are computed using $\vecb{\beta}_i$.
+\item[$\sfGame_3(\advA)$:] This game is exactly as $\sfGame_2$ but queries to $\mathsf{VKGen}$ are answered with $k_j\gets\KGen(gk,k_0,0)$ if $j\neq i$ and $k_j\gets\KGen(gk,k_0,1)$ otherwise.
 \item[$\sfGame_4(\advA)$:] This game is exactly as $\sfGame_3$ but $[\matr{U}]_1$ and $[\matr{V}]_2$ are sampled from the perfectly binding distribution.
 \end{description}
-$\Pr[\sfGame_0(\advA)=1]\leq \frac{m}{m-t}\Pr[\sfGame_1(\advA)=1]$  follows from the fact that the probability that $\sfGame_1$ doesn't abort is: a) the probability that each of the corruption calls doesn't abort and b) the probability that $[x_i]_2=[x'_i]_2$. The probability of a) is $\frac{m-i}{m}$ at the $i$-th call, and the probability of b) is $\frac{1}{m-t}$. It follows that the desired probaility is $\frac{m-1}{m}\frac{m-2}{m-1}\cdots\frac{m-t}{m}\frac{1}{m-t}=\frac{1}{m}$
+Denote by $\neg\mathsf{Abort}$ the event where the abort condition of $\sfGame_1$ was no triggered. Then
+\begin{align*}
+\Pr[\sfGame_1(\advA)=1] &= \Pr[\sfGame_0(\advA)=1|\neg\mathsf{Abort}]\Pr[\neg\mathsf{Abort}]\\
+&=\Pr[\neg\mathsf{Abort}|\sfGame_0(\advA)=1]\Pr[\sfGame_0(\advA)=1].
+\end{align*}
+Below we proceed to bound $\Pr[\neg\mathsf{Abort}|\sfGame_0(\advA)=1]$.
 
-It holds that $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$, for some adversary $\advB$, since the only change in the games is the Groth-Sahai commitment key wich is changed from perfectly binding to perfectly hiding. %However, here the argument is slightly more subtle. An adversary attempting to tell apart perfectly binding from perfectly hiding Groth-Sahai commitments keys (or equivalently, an adversary against SXDH) can't efficiently simulate $\sfGame_1(\advA)$ and $\sfGame_2(\advA)$ as they require the computation of $g$ while the discrete logarithm of the commitment keys is unknown. Let $\vecb{x}_1,\vecb{x}'_1$ and $\vecb{x}_2,\vecb{x}'_2$ the purported collisions output by $\advA$ in, respectively, $\sfGame_1$ and $\sfGame_2$. We note that $\Pr[\sfGame_1(\advA)=1] \leq \Pr[x_{1,i}\neq x'_{1,i}]$ and $\Pr[\sfGame_2(\advA)=1] = \Pr[x_{2,i}\neq x'_{2,i}]$, since in $\sfGame_2$ it holds that $g_{\matr{A}}(\vecb{x}) = \vecb{k}^\top\matr{A}\vecb{x} = 0 = g_\matr{A}(\vecb{x}')$ for any $\vecb{x},\vecb{x}'$. Therefore, $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq \Pr[x_{1,i}\neq x'_{1,i}]-\Pr[x_{2,i}\neq x'_{2,i}]$. Instead of simulating the games, the adversary $\advB$, which receives as challenge Groth-Sahai commitment keys, runs $\sfGame_1$ replacing the commitment keys by it challenges and outputs $1$ if $x_i\neq x'_i$ and $0$ otherwise regardless of whether $g_\matr{A}(\vecb{x})=g_{\matr{A}}(\vecb{x}')$ or not.
+The probability is: a) the probability that each of the corruption calls doesn't abort and b) the probability that $[x_i]_2\neq[x'_j]_2$ for all $j\in[m]$. The probability of a) is $\frac{m-i}{m}$ at the $i$-th call, and the probability of b) is at least $\frac{1}{m-t}$. It follows that the desired probability is at least $\frac{m-1}{m}\frac{m-2}{m-1}\cdots\frac{m-t}{m}\frac{1}{m-t}=\frac{1}{m}$ and then $\Pr[\sfGame_0(\advA)=1]\leq m\frac{q}{q-m^2} \Pr[\sfGame_1(\advA)=1]$.
 
-It also holds that $\Pr[\sfGame_2(\advA)=1]-\Pr[\sfGame_3(\advA)=1]=0$, since commitment keys $[\matr{U}]_1,[\matr{V}]_2$ are perfectly hiding in both games, and hence, matrices $[\matr{A}]_1,[\matr{B}]_2,[\matr{C}]_2,[\matr{D}]_2$ follow exactly the same distribution in both games.
+It holds that $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$, for some adversary $\advB$, since the only change in the games is the Groth-Sahai commitment key wich is changed from perfectly binding to perfectly hiding. %However, here the argument is slightly more subtle. An adversary attempting to tell apart perfectly binding from perfectly hiding Groth-Sahai commitments keys (or equivalently, an adversary against SXDH) can't efficiently simulate $\sfGame_1(\advA)$ and $\sfGame_2(\advA)$ as they require the computation of $g$ while the discrete logarithm of the commitment keys is unknown. Let $\matr{C}_1,\matr{C}'_1$ and $\matr{C}_2,\matr{C}'_2$ the purported collisions output by $\advA$ in, respectively, $\sfGame_1$ and $\sfGame_2$. We note that $\Pr[\sfGame_1(\advA)=1] \leq \Pr[x_{1,i}\neq x'_{1,i}]$ and $\Pr[\sfGame_2(\advA)=1] = \Pr[x_{2,i}\neq x'_{2,i}]$, since in $\sfGame_2$ it holds that $g_{\matr{A}}(\matr{C}) = \vecb{k}^\top\matr{A}\matr{C} = 0 = g_\matr{A}(\matr{C}')$ for any $\matr{C},\matr{C}'$. Therefore, $\Pr[\sfGame_1(\advA)=1]-\Pr[\sfGame_2(\advA)=1]\leq \Pr[x_{1,i}\neq x'_{1,i}]-\Pr[x_{2,i}\neq x'_{2,i}]$. Instead of simulating the games, the adversary $\advB$, which receives as challenge Groth-Sahai commitment keys, runs $\sfGame_1$ replacing the commitment keys by it challenges and outputs $1$ if $x_i\neq x'_i$ and $0$ otherwise regardless of whether $g_\matr{A}(\matr{C})=g_{\matr{A}}(\matr{C}')$ or not.
+
+It also holds that $\Pr[\sfGame_2(\advA)=1]-\Pr[\sfGame_3(\advA)=1]=0$, since commitment keys $[\matr{U}]_1,[\matr{V}]_2$ are perfectly hiding in both games, and hence, $k_1,\ldots,k_m$ follow exactly the same distribution in both games.
 %Note that, by the self-reducibility of DDH, we can change many ciphertexts at once without increasing  the security loss.\footnote{For completeness, assume that you want to switch from encryptions of $m_1,\ldots,m_\ell\in\Z_q$ to encryptions of $m'_1,\ldots,m'_\ell\in\Z_q$. Construct an adversary that asks to its left or right oracle for encryptions of $0$ or $1$, receives $[\vecb{c}]_2$ as challenge, and returns $[\vecb{c}_i] := m_i[\vecb{c}_i] + m'_i[\smallpmatrix{0\\1}-\vecb{c}_i]_2+\delta_i[\vecb{w}]_2$, $\delta_i\gets\Z_q$. Clearly, when $[\vecb{c}]_2$ encrypts $1$, then the adversary returns encryptions to $m_1,\ldots,m_\ell$, and when it encrypts $0$ returns encryptions to $m'_1,\ldots,m'_\ell$.} Note that, when changing the cyperthexts, we need to simulate proofs as in (\ref{eq:Qm-sim-proofs}) and (\ref{eq:sim-proofs}).
 
-Similarly as before, $\Pr[\sfGame_4(\advA)=1]-\Pr[\sfGame_3(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$. We point out that the adversary, after corrupting the $j$-th key, could detect that $[\vecb{a}_j]_1$'s  can no longer be opened to 0 since now the commitment keys are prfectly binding. However, since only $\beta_i\neq 0$, this can not happened as the game would have aborted when corrupting $k_i$.
+Similarly as before, $\Pr[\sfGame_4(\advA)=1]-\Pr[\sfGame_3(\advA)=1]\leq\adv_\mathrm{SXDH}(\advB)$. We point out that the adversary, after corrupting the $j$-th key, could detect that $[\vecb{a}_j]_1$'s  could no longer be opened to 0 since now the commitment keys are perfectly binding. However, since only $\beta_i\neq 0$, this can not happened as the game would have aborted when corrupting $k_i$.
 
-Finaly, $\Pr[\sfGame_4(\advA)=1]=0$ since in this case $x_i \neq x'_i$ and $g_\matr{A}([\vecb{x}]_2,[\vecb{\theta}]_2,\allowbreak[\vecb{\pi}]_1)=g_{\matr{A}}([\vecb{x}']_2,[\vecb{\theta}']_2,[\vecb{\pi}']_2)$  only if $x_i = x'_i$. Note that in this $\vecb{u}_1\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top,\vecb{u}_2\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top$ is a basis of $\Z_q^{2\times 2}$. There is a collision only if
+Finaly, $\Pr[\sfGame_4(\advA)=1]=0$ since in this case $x_i \neq x'_j$ for all $j\in[m]$, but $g_\matr{A}([\matr{C}]_2,[\vecb{\psi}]_2,\allowbreak[\vecb{\omega}]_1)=g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_2)$  only if $x_i = x'_j$ for some $j\in[m]$. Indeed, note that there is some permutation matrix $\matr{P}$ and $\vecb{\delta}\in\Z_q^m$ such that $\matr{A}'  = \matr{A}\matr{P}+\vecb{u}_2\vecb{\delta}^\top$, and note also that $\vecb{u}_1\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top,\vecb{u}_2\vecb{w}_1^\top,\vecb{u}_1\vecb{w}_2^\top$ is a basis of $\Z_q^{2\times 2}$. There is a collision only if
 \begin{align*}
-&\matr{A}(\vecb{x}-\vecb{x}')\vecb{w}_1^\top - (\vec{\theta}-\vecb{\theta}')\vecb{w}_2 - \vecb{u}_2(\vecb{\pi}-\vecb{\pi}')^\top = 0\\
-&\vecb{u}_1\vecb{\beta}^\top\vecb{x}\vecb{w}_1^\top - (\vec{\theta}-\vecb{\theta}')\vecb{w}_2 - \vecb{u}_2(\vecb{\pi}-\vecb{\pi}'-\vecb{w}_1\vecb{r}^\top(\vecb{x}-\vecb{x}'))^\top = 0\\
-\Longrightarrow & \vecb{\beta}^\top(\vecb{x}-\vecb{x}') = 0\\
-\Longrightarrow & x_i  = x'_i\\
+0=&(\matr{A}\matr{C}-\matr{A}'\matr{C}')^\top - (\vec{\psi}-\vecb{\psi}')\vecb{w}_2 - \vecb{u}_2(\vecb{\omega}-\vecb{\omega}')^\top\\
+=&\vecb{u}_1\vecb{\beta}^\top(\vecb{x}-\matr{P}\vecb{x}')\vecb{w}_1^\top - (\vec{\psi}-\vecb{\psi}'-\vecb{u}_1\vecb{\beta}^\top(\vecb{s}-\vecb{s}'))\vecb{w}_2 - \\
+&\vecb{u}_2(\vecb{\omega}-\vecb{\omega}'-(\matr{C}-\matr{P}\matr{C}')\vecb{r}-\matr{C}'\vecb{\delta})^\top = 0\\
+\Longrightarrow  &\vecb{\beta}^\top(\vecb{x}-\matr{P}\vecb{x}')=0\\
+\Longrightarrow  &x_i  = x'_j,\text{ for some }j\in[m].\\
 \end{align*}
-\end{proof}
-
-\begin{lemma}\label{lemma:hg-sxdh}
-Let $\matr{A}\gets \mathcal{Q}_m,\matr{A}'\in \mathcal{Q}_m,\vecb{x},\vecb{x}'\in\Z_q^m$. Then $h(\matr{A})=h(\matr{A}')$ and $g_{\matr{A}}(\vecb{x})=g_{\matr{A}'}(\vecb{x}')$ implies that $\matr{A}'$ is a second preimage of $h(\matr{A})$ or there exists a permutation matrix $\matr{P}$ such that $g_{\matr{A}}(\vecb{x})=g_{\matr{A}}(\matr{P}\vecb{x}')$.
-\end{lemma}
-\begin{proof}
-If $\matr{A}\not\equiv_\matr{U} \matr{A}'$, then $\matr{A}'$ is a second preimage of $h(\matr{A})$. Else, there is a permutation matrix $\matr{P}$ and $\vecb{\delta}\in\Z_q^m$ such that $\matr{A}' =\matr{A}\matr{P}+\vecb{u}_2\vecb{\delta}^\top$. Then
-$$
- g_{\matr{A}}(\vecb{x})=g_{\matr{A}'}(\vecb{x}')\Longleftrightarrow  g_{\matr{A}'}(\vecb{x})=g_{\matr{A}\matr{P}+\vecb{u}_2\vecb{\delta}^\top}(\vecb{x})=g_{\matr{A}\matr{P}}(\vecb{x}')=g_\matr{A}(\matr{P}\vecb{x}').
-$$
 \end{proof}

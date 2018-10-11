@@ -21,3 +21,11 @@ Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and usi
 &\GS.\Com_{ck_2}(x;\vecb{r}):=x[\vecb{v}_1]_2+{r}[\vecb{v}_2]_2
 \end{align*}
 where $ck_1:=[\vecb{u}_1\cat\vecb{u}_2]_1,ck_2:=[\vecb{v}_1\cat\vecb{v}_2]_2$, and $\vecb{u}_2,\vecb{v}_2$ are sampled from the same distribution as $\matr{A}$, the matrix from definition \ref{def:dlin}. The GS reference string is formed by the commitment keys $ck_1,ck_2$  and $\vecb{u}_1:=w\vecb{u}_2+\vecb{e}_2,\vecb{v}_1:=w'\vecb{v}_2+\vecb{e}_2$ in the perfectly binding setting, and $\vecb{u}_1:=w\vecb{u}_2,\vecb{v}_1:=w'\vecb{v}_2$ in the perfectly hiding setting, for $w,w'\gets\Z_q$.
+
+We define commitments to row vectors as the horizontal concatenation of commitments to each of the coordinates. That is, for $\vecb{x}\in\Z_q^m$ and $\vecb{r}\in\Z_q^m$
+\begin{align*}
+\GS.\Com_{ck_1}(\vecb{x}^\top;\vecb{r}^\top) := [\vecb{u}_1]_1\vecb{x}^\top+[\vecb{u}_2]_1\vecb{r}^\top\in\GG_1^{2\times m}.
+\end{align*}
+Commitments for $ck_2$ are computed analogously.
+
+Given a Groth-Sahai commitment $[\vecb{c}]_s$, we will say that $[\vecb{c}']_s$ is a re-randomization of $[\vecb{c}]_1$ if $[\vecb{c}'] = [\vecb{c}]_1 + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$ and $s\in\{1,2\}$. 

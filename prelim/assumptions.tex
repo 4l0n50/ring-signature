@@ -1,32 +1,27 @@
 % !TEX root = ../main-ring-signature.tex
 
-We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. We formalize a much stronger assumption where the adversary may interactively ask for the discrete logs of $m-\ell$ elements from the challenge, and we call this assumption $(\ell,m)$-PPA.
-Our natural non-interactive translation of the permutation pairing assumption becomes the non-interactive $(m,m)$-PPA assumption, which we simply call $m$-PPA, where the adversary hast no access to the discrete logs of the challenge.
+We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. 
 \begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
-Let $\ell,m$ integers such that $2\leq \ell \leq m$, let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
+Let $\mathcal{Q}_{m}=\underbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}_{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and 
 $$\mathcal{Q}: \vecb{a}=\pmatri{x\\x^2},\quad x\gets\Z_q.$$
-We say that the $(\ell,m)$-permutation pairing assumption holds relative to $\G_a$ if for any adversary $\advA$
+We say that the $m$-permutation pairing assumption holds relative to $\G_a$ if for any adversary $\advA$
 \begin{small}$$
 \Pr\left[
 \begin{array}{l}
 	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};\\
-	(i_1,\mathsf{st}_1) \gets \advA(gk,[\matr{A}]_1,[\matr{A}]_2),
-	(i_2,\mathsf{st}_2) \gets \advA(\vecb{a}_{i_1},\mathsf{st}_2),\ldots,\\
-	(i_{m-\ell},\mathsf{st}_{m-\ell}) \gets \advA(\vecb{a}_{i_{m-\ell-1}},\mathsf{st}_{m-\ell-1})\\
 	%\begin{array}{c}\vdots\end{array}\\
 	%\\
-	([\matr{Z}]_1,[\underline{\vecb{z}}]_2)\gets\advA(gk,[\matr{A}]_1,[\matr{A}]_2, \vecb{a}_{i_1},\ldots, \vecb{a}_{i_{m-\ell}},\mathsf{st}_{m-\ell}):\\
-	\mathrm{(i)} \sum_{i\in I}[\vecb{z}_i]_1 = \sum_{i\in I}[\vecb{a}_i]_1,\\
-	\mathrm{(ii)}\ \forall i\in I \ [z_{1,i}]_1[1]_2=[1]_1[\underline{z}_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[\underline{z}_{i}]_2,\\
-	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}_I
+	([\matr{Z}]_1,[\underline{\vecb{z}}]_2)\gets\advA(gk,[\matr{A}]_1,[\matr{A}]_2):\\
+	\mathrm{(i)} \sum_{i=1}^m[\vecb{z}_i]_1 = \sum_{i=1}^m[\vecb{a}_i]_1,\\
+	\mathrm{(ii)}\ \forall i\in [m] \ [z_{1,i}]_1[1]_2=[1]_1[\underline{z}_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[\underline{z}_{i}]_2,\\
+	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
 \end{array}
 \right],
 $$\end{small}
-where $I:=\{1,\ldots, m\}\setminus \{i_1,\ldots, i_{m-\ell} \}$, $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_\ell]_1\in\GG_1^{2\times \ell}, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\underline{\vecb{z}}]_2=\allowbreak[(\underline{z}_1,\ldots,\allowbreak \underline{z}_\ell)]_2\in\GG_2^{1\times \ell}$,
-$\matr{A}_I\in \Z_q^{2\times \ell}$ is the matrix whose columns are $\vecb{a}_i$, $i\in I$ (in some fixed order),
+where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m]_1\in\GG_1^{2\times m}, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\underline{\vecb{z}}]_2=\allowbreak[(\underline{z}_1,\ldots,\allowbreak \underline{z}_m)]_2\in\GG_2^{1\times m}$,
  is negligible in $\lambda$.
 \end{definition}
-Groth and Lu proved the hardness of the PPA in generic symmetric bilinear groups \cite{AC:GroLu07}. In Appendix \ref{sec:aPPA} we show that the $(\ell,m)$-PPA in generic asymmetric groups is as hard as the PPA in generic symmetric groups. It follows that the $m$-PPA is also generically hard.
+Groth and Lu proved the hardness of the PPA in generic symmetric bilinear groups \cite{AC:GroLu07}. In Appendix \ref{sec:aPPA} we show that the $m$-PPA in generic asymmetric groups is as hard as the PPA in generic symmetric groups.
 
 We recall also the definition of the Decisional Diffie-Hellman assumption (in matrix notation) and the kernel matrix Diffie-Hellman assumption.
 
