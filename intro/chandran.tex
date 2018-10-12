@@ -35,9 +35,9 @@ Using Groth-Sahai proofs, the prover proves that
 \item $[\kappa_1]_\gamma=\sum_{j=1}^m b_j [s_{1,j}]_\gamma,\ldots,[\kappa_m]_\gamma=\sum_{j=1}^m b_j[s_{m,j}]_\gamma$,\label{eq3}
 \item $[s_\alpha]_\gamma=\sum_{i=1}^m b'_i[\kappa_i]_\gamma$.\label{eq4}
 \end{enumerate}
-Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)^\top$ is a column of $[\matr{S}]_\gamma$, and equation \ref{eq4} proves that $[x_\alpha]_\gamma$ is an element of $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)$.
+Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)^\top$ is a column of $[\matr{S}]_\gamma$, and equation \ref{eq4} proves that $[s_\alpha]_\gamma$ is an element of $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)$.
 
-In our SXDH base ring signature we need this set-membership to show that some vector $[\vecb{s}]_\gamma$ is the re-randomization of one of the elements of the set of commitments $S = \{[\vecb{s}]_\gamma,\ldots,[\vecb{s}_n]_\gamma\}\subseteq\GG_\gamma$. That is, there exists some $\delta\in\Z_q$ such that $[\vecb{s}]_\gamma-\GS.\Com_{ck_\gamma}(0;\delta)\in S$. The proof remains the same but now
+In our SXDH based ring signature we need this set-membership to show that some vector $[\vecb{s}]_\gamma$ is the re-randomization of one of the elements of the set of commitments $S = \{[\vecb{s}]_\gamma,\ldots,[\vecb{s}_n]_\gamma\}\subseteq\GG_\gamma^2$. That is, there exists some $\delta\in\Z_q$ such that $[\vecb{s}]_\gamma-\GS.\Com_{ck_\gamma}(0;\delta)\in S$. The proof remains the same but now
 the prover computes re-randomizations
 \begin{enumerate}[1'.]
 \setcounter{enumi}{2}

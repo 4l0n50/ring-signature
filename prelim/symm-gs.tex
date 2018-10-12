@@ -27,4 +27,6 @@ We define commitments to row vectors as the horizontal concatenation of commitme
 \GS.\Com_{ck_\gamma}(\vecb{x}^\top;\vecb{r}^\top) := [\vecb{u}_1]_\gamma\vecb{x}^\top+[\vecb{u}_2]_\gamma\vecb{r}^\top\in\GG_\gamma^{2\times m}.
 \end{align*}
 
-Given a Groth-Sahai commitment $[\vecb{c}]_\gamma$, we will say that $[\vecb{c}']_\gamma$ is a re-randomization of $[\vecb{c}]_\gamma$ if $[\vecb{c}']_\gamma = [\vecb{c}]_\gamma + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$. 
+Given a Groth-Sahai commitment $[\vecb{c}]_\gamma$, we will say that $[\vecb{c}']_\gamma$ is a re-randomization of $[\vecb{c}]_\gamma$ if $[\vecb{c}']_\gamma = [\vecb{c}]_\gamma + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$.
+
+Further, Belenky et al.~noted that Groth-Sahai proofs can be \emph{re-randomized} \cite{C:BCCKLS09}. This means that, given commitments and proofs showing the satisfiability of some equation, on can compute new proofs which looks exactly as fresh proofs (i.e. computed with fresh randomness) for the same equation, even without knowing the commitment openings nor the randomness. In this work compute such proofs for integer equations $\beta(\beta-1)=0$ and $\beta x = y$. For completeness, in App.~\ref{sec:GSproofs-hg} we show how to construct and re-randomize such proofs.

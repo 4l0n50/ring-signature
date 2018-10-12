@@ -27,7 +27,7 @@ W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeabil
     \item The Groth-Sahai CRS is sampled together with its discrete logarithms from the perfectly binding distribution. Note that the discrete logarithms of the CRS allow to open the Groth-Sahai commitments.
     \item At the beginning, variables $\mathsf{err}_2,\mathsf{err}_3$ and $\mathsf{err}_4$ are initialized to $0$ and a random index $i^*$ is chosen from $\{1,\ldots, q_\mathsf{gen}\}$.
     \item On a query to $\mathsf{Corrupt}$ with argument $i$, if $i=i^*$ set $\mathsf{err_4}\gets 1$ and proceed as in $\sfGame_0$.
-    \item Let $(m,R,\sigma)$ the purported forgery output by $\advA$. If $[x]_2$, the opening of commitment $[\vecb{c}_{\mu,\nu}]_2$ from $\sigma$, is not equal to $[x_{i^*}]_2$,  set $\mathsf{err}_4\gets 1$. If $[x]_2\notin R$, then set $\mathsf{err}_3=1$. If there is some $i,j\in[m],i\neq j$ such that $[x_{\mu,i}]_1=[x_{\mu,j}]_2$, then set $\mathsf{err}_2\gets 1$.
+    \item Let $(m,R,\sigma)$ the purported forgery output by $\advA$. If $[x'_1]_2$, the opening of commitment $[\vecb{c}'_1]_2$ from $\sigma$, is not equal to $[x_{i^*}]_2$,  set $\mathsf{err}_4\gets 1$. If $[x]_2\notin R$, then set $\mathsf{err}_3=1$. If there is some $i,j\in[m],i\neq j$ such that $[x_{\mu,i}]_1=[x'_{j}]_2$, then set $\mathsf{err}_2\gets 1$, where $\mu$ is the index defined in $\pi_G$ and $\pi_H$.
     \end{itemize}
 \item[$\sfGame_2$:] This is game exactly as $\sfGame_1$ except that, if $\mathsf{err}_2$ is set to 1, $\sfGame_2$ aborts.
 \item[$\sfGame_3$:] This is game exactly as $\sfGame_2$ except that, if $\mathsf{err}_3$ is set to 1, $\sfGame_3$ aborts.
@@ -62,14 +62,14 @@ Note that
  \leq& \Pr[\sfGame_3=1] + \Pr[\sfGame_1=1|\err_3=0]\\
 \Longrightarrow  &|\Pr[\sfGame_3=1]-\Pr[\sfGame_2=1]|\leq \Pr[\sfGame_2=1|\err_3=1].
 \end{align*}
-We proceed to bound this last probability constructing two adversaries against collision resistance of $g$ and preimage resistance of $h$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_H$.
+We proceed to bound this last probability constructing an adversaries against collision resistance of $g$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_H$.
 
 %Consider an adversary $\advA_h$ that finds a second preimage of $h$ when $\mathcal{M}=Q_{q_\mathsf{gen}}$. It honestly simulates $\sfGame_1$ until $\advA$ outputs and $\pi_{Q_m}$. $\advA_h$  $A'=\{([\vecb{a}'_1]_1,[\vecb{a}'_1]_2),\ldots,([\vecb{a}'_m]_1,[\vecb{a}'_m]_2\}$ and returns $A'\cup \bar{A}_\mu$, where $\bar{A}_\mu:= B\setminus A_\mu$.
 
-We construct another adversary $\advB$ against $g$ that receives as challenge $k_0$ plus a trapdoor for opening commitments computed with commitment key $[\matr{W}]_2$. $\advB$ honestly simulates $\sfGame_1(\advA)$ embedding $k_0$ in the crs. Wen $\advA$ calls its $\mathsf{VKGen}$ oracle, $\advB$ samples $(x,[x]_2)\gets\mathsf{BB}.\mathsf{KeyGen}(gk)$ and calls its $\mathsf{KeyGen}$ oracle on input $(x,0)$ and returns and returns an honestly computed verification key to $\advA$. Each time $\advA$ calls its $\mathsf{Corrupt}$ oracle, the answer is forwarded from $\advB$'s  $\mathsf{Corrupt}$ oracle.
-When $\advA$ outputs $[\matr{A}']_1,[\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1,[\vecb{g}]_1$, $\advB$ uses its trapdoor to extract $[\delta_g]_2$ from $\pi_H$ (this proof contains a commitment to $\delta_g$ computed unsing $[\matr{W}]_2$), and defines $[\vecb{\varphi}]_2 = [\vecb{\delta}_g]_2\vecb{w}_1$.
+We construct an adversary $\advB$ against $g$ that receives as challenge $k_0$ plus a trapdoor for opening commitments computed with $[\matr{W}]_2$. $\advB$ honestly simulates $\sfGame_1(\advA)$ embedding $k_0$ in the crs. Wen $\advA$ calls its $\mathsf{VKGen}$ oracle, $\advB$ samples $(x,[x]_2)\gets\mathsf{BB}.\mathsf{KeyGen}(gk)$ and calls its $\mathsf{KeyGen}$ oracle on input $(x,0)$ and returns an honestly computed verification key to $\advA$. Each time $\advA$ calls its $\mathsf{Corrupt}$ oracle, the answer is forwarded from $\advB$'s  $\mathsf{Corrupt}$ oracle.
+When $\advA$ outputs $[\matr{A}']_1,[\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1,[\vecb{g}]_1$, $\advB$ uses its trapdoor to extract $[\delta_g]_2$ from $\pi_H$ (this proof contains a commitment to $\delta_g$ computed unsing $[\matr{W}]_2$), and defines $[\vecb{\varphi}]_2 = [\vecb{\psi}_\mu]_2 - [\vecb{\delta}_g]_2\vecb{w}_1$.
 W.l.o.g.~\allowbreak assume that the current matrix $\matr{A}$ encoded in $k$ is $\matr{A}=\matr{A}_\mu\cat\bar{\matr{A}}_\mu$, where $\bar{\matr{A}}_\mu$ is some matrix whose columns are of the form $\vecb{a}_{i,j}$, $i\neq \mu$. Finally, $\advA$ returns
-$[\matr{A}'\cat\bar{\matr{A}}_\mu]_2,[\matr{C}'\cat\matr{0}]_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1,[\matr{C}_\mu|\matr{0}]_2,([\vecb{\psi}_\mu]_2-[\vecb{\varphi}]_2),[\vecb{\omega}_\mu]_1$, where $[\matr{C}_\mu]_2,[\vecb{\psi}_\mu]_2,[\vecb{\omega}_\mu]_1$ are computed as in an honest signature.
+$[\matr{A}'\cat\bar{\matr{A}}_\mu]_2,[\matr{C}'\cat\matr{0}]_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1,[\matr{C}_\mu|\matr{0}]_2,[\vecb{\varphi}]_2,[\vecb{\omega}_\mu]_1$, where $[\matr{C}_\mu]_2,[\vecb{\psi}_\mu]_2,[\vecb{\omega}_\mu]_1$ are computed as in an honest signature.
 
 Perfect soundness of proof $\pi_h,\pi_{\mathcal{Q}}$ and $\pi_H$ implies that
 $\sum_{i=1}^m[\vecb{a}'_i]_1-[\vecb{h}]_1=\gamma[\vecb{u}_2]_1$, $\matr{A}'\in \mathcal{Q}_m$ and $[\vecb{h}]_1 = [\vecb{h}_\mu]_1 +\delta_h[\vecb{u}_2]_1$. Then $\GS.\Com_{ck_1}(h(\matr{A}'))-\GS.\Com_{ck_1}(\allowbreak h(\matr{A}_\mu)) = \GS.\Com_{ck_1}(0;\gamma+\delta_h)$ and thus, $h(\matr{A})=h(\matr{A}')$.
@@ -77,7 +77,7 @@ $\sum_{i=1}^m[\vecb{a}'_i]_1-[\vecb{h}]_1=\gamma[\vecb{u}_2]_1$, $\matr{A}'\in \
 
 Given perfect soundness of proof $\pi_G$, it holds that that $[\vecb{g}]_1 = [\vecb{g}_\mu]_1 +\delta_g[\vecb{u}_2]_1$ and given that the signature output by $\advA$ verifies $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{g}]_1[\vecb{w}_1^\top]_2$. Furthermore, since $[\matr{C}_\mu]_2,[\vecb{\psi}_\mu]_2,[\vecb{\omega}_\mu]_1$ are honestly computed
 $$
-g_{\matr{A}}([\matr{C}_\mu]_2,[\vecb{\psi}_\mu]_2-[\vecb{\varphi}]_2,[\vecb{\omega}_\mu]_1) = [\vecb{g}_\mu]_1[\vecb{w}_1^\top] + [\vecb{u}_2][\delta_g\vecb{w}_1^\top] = [\vecb{g}]_1[\vecb{w}_1^\top].
+g_{\matr{A}}([\matr{C}_\mu]_2,[\vecb{\varphi}]_2,[\vecb{\omega}_\mu]_1) = [\vecb{g}_\mu]_1[\vecb{w}_1^\top] + [\vecb{u}_2][\delta_g\vecb{w}_1^\top] = [\vecb{g}]_1[\vecb{w}_1^\top].
 $$
 If $\sfGame_2=1$, then $\mathsf{err}_2=0$ and thus $[\vecb{x}_\mu]$, the opening of $[\matr{C}]_2$, has no repeated components. The fact that $\mathsf{err}_3=1$ implies that $[x'_1]$, the opening of the first column of $[\matr{C}']_2$, is not in $R$ and thus $[\vecb{x}]_2$ is not a permutation of $[\vecb{x}']$.  Then $\Pr[\sfGame_2=1|\mathsf{err}_3=1]$ is the probability that $\advB$ wins in lemma \ref{lemma:g-crp-sxdh}.
 Finally, lemma  \ref{lemma:g-crp-sxdh} implies that there exists another adversary $\advB_2$ such that $\Pr[\sfGame_2=1|\mathsf{err}_3=1]\leq 2m\adv_\mathsf{SXDH}(\advB_2)$.
@@ -96,7 +96,7 @@ It holds that
 &=\Pr[\sfGame_3=1|\mathsf{err}_4=0]\Pr[\mathsf{err}_4=0]\\
 &=\Pr[\mathsf{err}_4=0|\sfGame_3=1]\Pr[\sfGame_3=1].
 \end{align*}
-The probability that $\mathsf{err}_4=0$ given $\sfGame_3=1$ is the probability that the ${q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[x]_2=[x_{i^*}]_3$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i^*$ is uniformly distributed over the ${q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[x]_3=[x_{i^*}]_3$ is $1/({q_\mathsf{gen}}-{q_\mathsf{cor}})$, since $[x]_3\in R$ (or otherwise $\sfGame_3$ would have aborted). Therefore
+The probability that $\mathsf{err}_4=0$ given $\sfGame_3=1$ is the probability that the ${q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[x'_1]_2=[x_{i^*}]_2$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i^*$ is uniformly distributed over the ${q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[x'_1]_2=[x_{i^*}]_2$ is $1/({q_\mathsf{gen}}-{q_\mathsf{cor}})$, since $[x'_1]_2\in R$ (or otherwise $\sfGame_3$ would have aborted). Therefore
 $$
 \Pr[\mathsf{err}_3=1|\sfGame_3=1]=\frac{{q_\mathsf{gen}}-1}{{q_\mathsf{gen}}}\frac{{q_\mathsf{gen}}-2}{{q_\mathsf{gen}}-1}\ldots\frac{{q_\mathsf{gen}}-{q_\mathsf{cor}}}{{q_\mathsf{gen}}-{q_\mathsf{cor}}+1}\frac{1}{{q_\mathsf{gen}}-{q_\mathsf{cor}}}=\frac{1}{{q_\mathsf{gen}}}.
 $$ 
@@ -124,7 +124,7 @@ q_{\mathsf{sig}}\adv_\mathsf{OT}(\advB_4)\geq  \Pr[\sfGame_4=1|E]
 \end{align*}
 Finally, if $\neg E$ holds, then $[\sigma]_1$ is a forgery for $vk_\mathsf{ot}$ and thus
 $$
-\adv_{\mathsf{BB}}(\advB_4)\geq \Pr[\sfGame_4=1|\neg E]$$
+\adv_{\mathsf{BB}}(\advB_4)\geq \Pr[\sfGame_4=1|\neg E].$$
 \end{proof}
 \end{proof}
 
