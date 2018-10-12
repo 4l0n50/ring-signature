@@ -1,6 +1,6 @@
 % !TEX root = ../main-ring-signature.tex
 
-To give a more clear understanding our contributions, it will be illustrative to see what is the main difficulty when constructing a ring signature on bilinear groups. Most schemes have followed the following approach. Given a ring of users defined by the set of their public keys and a message: a) sign the message, b) prove in zero-knowledge knowledge of a signature which can be verified using some committed/randomized verification key, and then c) prove in zero-knowledge that this verification key belongs to the set of public keys in the ring.  The most expensive part is c) and is sometimes called a \emph{set-membership proof}.
+Most ring signature constructions have followed the following approach. Given a ring of users defined by the set of their public keys and a message: a) sign the message, b) prove in zero-knowledge knowledge of a signature which can be verified using some committed/randomized verification key, and then c) prove in zero-knowledge that this verification key belongs to the set of public keys in the ring.  The most expensive part is c) and is sometimes called a \emph{set-membership proof}.
 
 We observe that in the case of ring signatures \emph{all the verification keys forming the ring are honestly generated}. 
 Indeed, it only makes sense to guarantee unforgeability when all the members of the ring are honest (otherwise the adversary knows at least one secret key) and thus the set-membership proof might assume that all verification keys were honestly generated.
@@ -11,18 +11,26 @@ Can we construct more efficient set membership proofs (without random oracles or
 \end{displayquote}
 We answer this question in the affirmative and we construct a $\Theta(\sqrt[3]{n})$ set membership proof when the verification keys are honestly sampled. In contrast, Chandran et al.'s proof is of size $\Theta(\sqrt{n})$ but it makes no assumption on the verification keys distribution.
 
-Our main technical tool is a structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash function with \emph{always second-preimage resistance} (aSec in the terminology of Rogaway and Shrimpton \cite{FSE:RogShr04}). That is, given $A$ in the domain of $h$, is hard to find $A'\neq A$ such that $h(A')=h(A)$ {\bf whenever $A$ is randomly sampled from some known distribution}.
-Our function $h$ takes as input $A$, a set of verification keys (in fact, a fragment of each verification key), and returns a constant size digest which is simply $h(A)= \sum_{\vecb{a} \in A} \vecb{a}$. Thereby, whenever $h$ is applied to a set of honestly sampled verification keys, $A$ is indeed random and hence is infeasible to compute a second preimage.
+Our main technical tool are two structure preserving --- i.e.~compatible with Groth-Sahai proofs --- hash functions The first funtion, $h$, is \emph{second-preimage resistant} under a slightly different notion of collision. That is, given $A$ in the domain of $h$, is hard to find $A,A'$ such that $h(A')=h(A)$ {\bf whenever $A$ is randomly sampled from some known distribution} and whenever $A'$ is not a permutation of $A$.
+Our function $h$ takes as input $A$, a list of verification keys (in fact, a fragment of each verification key), and returns a constant size digest which is simply $h(A)= \sum_{i=1}^m a_i$. Thereby, whenever $h$ is applied to a set of honestly sampled verification keys, $A$ is indeed random and hence is infeasible to compute a second preimage. 
+
+Our second function $g$ is collision-resistant in the traditional sense an uses $A$ as its key and returns $g_A(x_1,\ldots,x_m) = \sum_{i=1}^m a_ix_i$. Both functions can be used together with the following nice property, given $A,A'$ such that $h(A)=h(A')$, then $g_A(x)=g_{A'}(x')$ implies that $x$ is a permutation of $x'$.
 
 \subsubsection{High level description.}
-We construct a set membership proof where a prover wants to convince a verifier that some commitment $c$ opens to $\vecb{a}$ and $\vecb{a}\in\{\vecb{a}_1,\ldots,\vecb{a}_n\}$. To do so, we arrange the $n$ elements of the ring into $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. We coin the following notation: for a ring $\{\vecb{a}_i:1\leq i \leq n\}$ define $\vecb{a}_{\mu,\nu}:=\vecb{a}_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$.  Let
-\begin{align*}
-& A_1 := \{\vecb{a}_{1,1},\ldots,\vecb{a}_{1,m}\},\ldots, A_{n^{2/3}} := \{\vecb{a}_{n^{2/3},1},\ldots,\vecb{a}_{n^{2/3},m}\},\\
-&H:=\{h(A_1),\ldots,\allowbreak h(A_{n^{2/3}})\}.
-\end{align*}
+In our ring signature, the verification key will contain $a,vk$ and $a\cdot vk$, where $vk$ the verification key of a signature scheme. We want to show that some commitment $c$ opens to $vk$ and $vk\in\{vk_1,\ldots,vk_n\}$. To do so, we arrange the $n$ elements of the ring into $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. We use the following notation: for $\{s_1,\ldots, s_n\}$ define $s_{i,j}:=s_{(i-1)m+j}$, where  $1\leq i \leq n^{2/3},1\leq  j \leq m$. Assume that $vk = vk_{\mu,\nu}$.
 
-We use Chandran et al.'s underlying set membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ verification keys in the preimage of $h(A_\mu)$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, the total size of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
+We divide $\{a_{1},\ldots, a_{n}\}$ into $A_1 := (a_{1,1},\ldots,a_{1,m}),\ldots, A_{n^{2/3}} := (a_{n^{2/3},1},\ldots,\allowbreak a_{n^{2/3},m})$ and we define $H\allowbreak:=\{h(A_1),\allowbreak\ldots,\allowbreak h(A_{n^{2/3}})\}.$  
+We use Chandran et al.'s set-membership proof of size $\Theta(\sqrt{n})$ to prove knowledge of some $h(A_\mu)\in H$. Since $|H|=n^{2/3}$, this proof is of size $\Theta(\sqrt[3]{n})$. Then we prove knowledge of $A'$, a preimage of $h(A_\mu)$, which using Groth-Sahai proofs requires commitments to the $\sqrt[3]{n}$ elements in $A'$ plus a $\Theta(1)$ proof that $h(A')=h(A_\mu)$. Hence, this part of the proof adds up to $\Theta(\sqrt[3]{n})$ group elements.
+%Since $h$ is invariant under permutations of the input, we can sort the commitments of the $\sqrt[3]{n}$ elements in $A'$ so that the first commitment is $c$. We conclude that $A'=A_\mu$, unless we break second-preimage resistance of $h$, and thus $a$, the opening of $c$, belongs to $\{a_1,\ldots,a_n\}$.
 
-Another nice property of our hash function is that its inputs are sets (or equivalently, is invariant under permutations of the input). Hence, we can sort the commitments of the $\sqrt[3]{n}$ verification keys in $A_\mu$ so that the first commitment is $c$. We conclude that $A'=A_\mu$, unless we break second-preimage resistance of $h$, and thus $a$, the opening of $c$, belongs to $\{\vecb{a}_1,\ldots,\vecb{a}_n\}$.
+We give another set-membership proof that
+$g\in\{
+g_{A_1}(vk_{1,1},\ldots,vk_{1,m}),
+\ldots,\allowbreak
+g_{A_{n^{2/3}}}(
+	vk_{n^{2/3},1},
+	\ldots,
+	vk_{n^{2/3},m})\}$ such that $g$ is also at the $\mu$-th position in the set (this is straightforward to do in Chandran et al.'s set-membership proof).
+We commit to $x_1=vk_{\mu,\nu},\ldots,x_m=vk_{\mu,m}$ and we prove using Groth-Sahai proofs that $g = g_{A'}(x_1,\ldots,x_m)$. Again, this part of the proof adds $\Theta(\sqrt[3]{n})$ group elements.
 
-In our ring signature, the verification key will contain $\vecb{a}$ and $vk$, where $vk$ the verification key of a (normal) signature scheme. With the help of another collision-resistant and structure preserving hash function that relates $\vecb{a}$ and $vk$ we will also prove that $vk\in\{vk_1,\ldots,vk_n\}$. We postpone further details to Section \ref{sec:high-level}.
+Finally, since $h(A')=h(A_\mu)$ and $g_{A'}(x_1,\ldots,x_m) = g = g_{A_{\mu}}(vk_{\mu,1},\ldots,x_{\mu,m})$ we conclude that $x_1,\ldots,x_m$ is a permutation of $vk_{\mu,1},\ldots,vk_{\mu,m}$. I suffices to give a third set membership proof that $c$ opens to some element in $\{x_1,\ldots,x_m\}$ (but we can omit this proof setting $x_1 =vk_{\mu,\nu}$ and a clever use of the ``permutation friendly'' properties of $h$ and $g$).

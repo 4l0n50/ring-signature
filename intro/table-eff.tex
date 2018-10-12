@@ -4,21 +4,22 @@
 \begin{center}
 \begin{minipage}{\textwidth}
 \begin{center}
-%\begin{scriptsize}
-\begin{tabular}{l|l|l}
+\begin{scriptsize}
+\begin{tabular}{l|l|l|l}
 %\hline
-                                           & Chandran et al.~\cite{ICALP:ChaGroSah07} & This work \\
+                                           & Chandran et al.~\cite{ICALP:ChaGroSah07} & App.~\ref{sec:ppa-full} &  Sect.~\ref{sec:our-construction} \\
 \hline%\hline
-\rule{0pt}{2.5ex}CRS size  $\GG_1/\GG_2$              & 4/4                                      & $4/4$       \\
-\rule{0pt}{2.5ex}Verification key size $\GG_1/\GG_2$    & $1/0$                                       & $2/5$       \\
-\rule{0pt}{2.5ex}Signature size      $\GG_1/\GG_2$      & $12\sqrt{n}+10/15\sqrt{n}+8$                        & $24\sqrt[3]{n} + 36/34\sqrt[3]{n} + 24$\\
-\rule{0pt}{2.5ex}Signature generation time & $37\sqrt{n}+23$                        & $80\sqrt[3]{n}+71$\\
-\rule{0pt}{2.5ex}Verification time         & $2n + 60\sqrt{n}+38$                & $8n^{2/3} + 162\sqrt[3]{n} + 118$\\
+\rule{0pt}{2.5ex}CRS size  $\GG_1/\GG_2$              & 4/4                                      & $4/4$  & 4/8    \\
+\rule{0pt}{2.5ex}Verification key size $\GG_1/\GG_2$    & $1/0$                                       & $2/5$  &   10/9  \\
+\rule{0pt}{2.5ex}Signature size      $\GG_1/\GG_2$      & $12\sqrt{n}+10/15\sqrt{n}+8$                        & $24\sqrt[3]{n} + 36/34\sqrt[3]{n} + 24$& $18\sqrt[3]{n} + 30/34\sqrt[3]{n} + 18$\\
+\rule{0pt}{2.5ex}Signature generation \#exps. & $37\sqrt{n}+23$                        & $80\sqrt[3]{n}+71$&$72\sqrt[3]{n}+61$\\
+\rule{0pt}{2.5ex}Verification \#pairings         & $2n + 60\sqrt{n}+38$                & $8n^{2/3} + 162\sqrt[3]{n} + 118$&$8n^{2/3} + 122\sqrt[3]{n} + 94$\\
+\rule{0pt}{2.5ex}Assumption         & SXDH                & PPA & SXDH\\
 %\hline 
 \end{tabular}
-%\end{scriptsize}
+\end{scriptsize}
 \end{center}
-\caption{Comparison of Chandran et al.'s ring signature and ours for a ring of size $n$. `Signature generation time' is measured in number of exponentiations, `Verification time' is measured in number of pairings, and all other rows are measured in number of group elements. A quick calculation shows that our signature outperforms Chandran et al.'s (roughly) for $n>180$.\label{table:eff}}
+\caption{Comparison of Chandran et al.'s ring signature and ours for a ring of size $n$. `Signature generation' is given in number of exponentiations, `Verification time' is given in number of pairings, and all other rows are given in number of group elements. A quick calculation shows that our signature outperforms Chandran et al.'s (roughly) for $n>180$.\label{table:eff}}
 \end{minipage}
 \end{center}
 \end{table}

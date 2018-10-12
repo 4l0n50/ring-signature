@@ -5,7 +5,7 @@ In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ defi
 \begin{description}
 \item[$\mathsf{CRSGen}(gk)$:] Pick three perfectly hiding CRS for the Groth-Sahai proof system $ck_1,ck_2,ck'_2$, where $ck_1 := [\matr{U}]_1,ck_2 :=[\matr{V}]_2,ck'_2:=[\matr{W}]_2$ and define $k_0 := (ck_1,ck_2,ck'_2)$. We use $ck_1,ck'_2$ for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,k_0).$
 
-\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $([\vecb{a}]_1,\pi)\allowbreak\gets\KGen_{\mathsf{local}}(gk,k_0,\beta = 0)$. Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 :=x[\vecb{a}]+t[\vecb{u}]_2 = \GS.\Com_{ck_1}(y)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$ (see App.~\ref{sec:GSproofs-g}). The secret key is $x$ and the verification key is $\vecb{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,[\vecb{d}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1,\pi)$.
+\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $([\vecb{a}]_1,\pi)\allowbreak\gets\KGen_{\mathsf{local}}(gk,k_0,\beta = 0)$. Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 :=x[\vecb{a}]_1+t[\vecb{u}]_2 = \GS.\Com_{ck_1}(y)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$ (see App.~\ref{sec:GSproofs-g}). The secret key is $x$ and the verification key is $\vecb{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,[\vecb{d}]_1,[\vecb{\psi}]_2,[\vecb{\omega}]_1,\pi)$.
 
 \item[$\mathsf{Sign}_{\rho,x}(m,R)$:] Let $\alpha=(\mu-1)m+\nu$ the index of the signer with respect to $R$.
 \begin{enumerate}
@@ -29,7 +29,7 @@ Use $[\matr{A}']_1,[\matr{C}']_2,[\matr{A}_\mu]_1,[\matr{C}_\mu]_2,[\vecb{\psi}_
 
 \item Compute $[\sigma]_1\gets\mathsf{BB}.\mathsf{Sign}_{x_{\mu,\nu}}(vk_\mathsf{ot})$, $[\vecb{f}]_1\gets\GS.\Com_{ck_1}([\sigma]_1)$, and a GS proof $\pi_\mathsf{BB}$ a proof of satisfiability of equation (\ref{eq:bbs-verification}) with $[\vecb{c}_{\mu,\nu}]_2$ the commitment to the secret key.
 
-\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_1,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_h,\pi_{\mathcal{Q}})$. (GS proofs include commitments to variables).
+\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_1,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_h,\pi_{\mathcal{Q}},\pi_\mathsf{BB})$. (GS proofs include commitments to variables).
 \end{enumerate}
 
 \item[$\mathsf{Verify}_{\rho,R}(m,\grkb{\sigma})$:] Verify the validity of the one-time signature and of all the proofs, and check also that $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{g}]_1[\vecb{w}_1^\top]_2$. Return 0 if any of these checks fails and 1 otherwise.
@@ -46,5 +46,5 @@ Concretely, for any PPT adversary $\advA$ against the unforgeability of the sche
 \begin{align*}
 \adv(\advA)\leq &\left(1+\frac{2q\cdot q_\mathsf{gen}}{q-m^2}\right)\adv_{\mathrm{SXDH}}(\advB_1)+\frac{q\cdot q_\mathsf{gen}}{q-m^2}(q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_2)+\adv_{\mathsf{BB}}(\advB_3)),
 \end{align*}
-where $q_\mathsf{gen},q_\mathsf{sign},$ and $m$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles, and the cubic root of the size of the ring for $\advA$'s forgery.
+where $q_\mathsf{gen},q_\mathsf{sign},$ and $m$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles, and $m$ is the cubic root of the size of the ring in $\advA$'s forgery.
 \end{theorem}

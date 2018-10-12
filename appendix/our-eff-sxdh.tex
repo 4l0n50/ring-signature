@@ -1,0 +1,49 @@
+% !TEX root = ../main-ring-signature.tex
+
+\begin{description}
+\item[Signature Size:] The number of elements of $\GG_1$ required  for the signature is
+\begin{itemize}
+\item 2 for committing to the Boneh-Boyen signature,
+\item 4 for the proof that the Boneh-Boyen signature is correct,
+\item 4 for $[\vecb{h}]_1$ and $[\vecb{g}]_1$,
+\item $12\sqrt[3]{n} + 16$ for membership in $H$ and $G$,
+\item $2\sqrt[3]{n}$ for $[\matr{A'}]_1$,
+\item $2$ for $[\vecb{\omega}']_1$,
+\item $4\sqrt[3]{n}$ for proof  $\pi_{\mathcal{Q}}$,
+\item $2$ for proof $\pi_h$,
+\item $8$ for $\pi_g$,
+\end{itemize}
+which adds up to $18\sqrt[3]{n} + 30$.
+
+The number of elements of $\GG_2$ required  for the signature is:
+\begin{itemize}
+\item 4 for the proof that the Boneh-Boyen signature is correct,
+\item $28\sqrt[3]{n} + 10$ for membership in $H$ and $G$,
+\item $2\sqrt[3]{n}-2$ for $[\matr{C}']_2$,
+\item $2$ for $[\vecb{\psi}']_2$,
+\item $4\sqrt[3]{n}$ for proof  $\pi_{\mathcal{Q}}$,
+\item $2$ for $\pi_h$,
+\end{itemize}
+which adds up to $34\sqrt[3]{n} + 18$. Additionally, it requires $\sqrt[3]{n}$ elements of $\Z_q$.
+\item[Signature Time:] The number of exponentiations computed by the prover is:
+\begin{itemize}
+\item 5 for the Boneh-Boyen signature and its commitment,
+\item 8 for proof that the Boneh-Boyen signature is correct,
+\item 4 for computing $[\vecb{g}]_1$ and $[\vecb{h}]_1$,
+\item $52\sqrt[3]{n}+36$ for membership in $G$ and $H$,
+\item $8\sqrt[3]{n}$ for $[\matr{A}']_1$ and $[\matr{C}']_2$,
+\item $4\sqrt[3]{n}+6$ for $[\vecb{\psi}]_2$ and $[\vecb{\omega}]_1$, 
+\item $8\sqrt[3]{n}$ for proof $\pi_{\mathcal{Q}}$,
+\item $6$ for proof $\pi_{h}$,
+\end{itemize}
+which ads up to $72\sqrt[3]{n}+61$.
+\item[Verification Time:] The number of paring operations for verifying a signature is:
+\begin{itemize}
+\item 24 for verifying the proof that the Boneh-Boyen signature is correct,
+\item $8n^{2/3} + 96\sqrt[3]{n} + 56$ for membership in $H$ and $G$,
+\item $24\sqrt[3]{n}$ for proof $\pi_{\mathcal{Q}}$,
+\item $8$ for proof $\pi_h$,
+\item $2\sqrt[3]{n}+12$ for $g_{\matr{A}'}([\matr{C}]_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1)=[\vecb{g}]_1[\vecb{w}_1^\top]_2$,
+\end{itemize}
+which ads up to $8n^{2/3} + 122\sqrt[3]{n} + 94$.
+\end{description}

@@ -2,7 +2,7 @@
 
 In this section we construct two different (but related) hash functions. The functions $g$ and $h$ defined in section \ref{sec:hf-ppa}  are proven collision resistant under the PPA (and the $\kermdh$) assumption. In section \ref{sec:hf-sxdh} we give another pair of functions $g$ and $h$ which we prove collision resistant under the SXDH assumtion.
 
-Collision resistance of functions from section \ref{sec:hf-ppa} are almost direct consequence of the PPA assumption, while the functions from \ref{sec:hf-sxdh} are inspired on the PPA instantiations but are more complex. For example, neither $h$ and $g$ are efficiently computable, but we manage to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in $g$'s key $k$. 
+Collision resistance of functions from section \ref{sec:hf-ppa} are almost direct consequence of the PPA assumption, while the functions from \ref{sec:hf-sxdh} are inspired on the PPA instantiations but are more complex. %For example, neither $h$ and $g$ are efficiently computable, but we manage to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in $g$'s key $k$. 
 
 Function $h$ in the SXDH setting is unconditionally collision resistant under a relaxation of the notion of equality of purported collisions. Note that unconditionality implies that collision resistance holds with respect to any auxiliary information (in particular $k$). On the other hand, function $h$ in the PPA instantiation is only second-preimage collision resistant.
 

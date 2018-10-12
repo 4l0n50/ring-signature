@@ -17,17 +17,18 @@ We construct our ring signature using Boneh-Boyen signatures, but we could repla
 is negligible in $\lambda$.
 \end{definition}
 
-The Boneh-Boyen signature is proven wUF-CMA secure under the $m$-\emph{strong Diffie-Hellman} assumption, which is described below.
-
-\begin{definition}[$m\mbox{-}SDH$ assumption]
-For any PPT adversary $\advA$
-$$
-\Pr\left[gk\gets\G_a(1^\lambda),x\gets\Z_q:\advA(gk,[x]_{3-s},[x]_s,[x^2]_s,\ldots,[x^m]_s)=(c,\left[\frac{1}{x+c}\right]_s)\right]
-$$
-is negligible in $\lambda$.
-\end{definition}
-
-Given $s\in\{1,2\}$, the Boneh-Boyen signature scheme is described below.
+The Boneh-Boyen signature described bellow is wUF-CMA under the $m$-\emph{strong Diffie-Hellman} assumption.
+%which is described below.
+%
+%\begin{definition}[$m\mbox{-}SDH$ assumption]
+%For any PPT adversary $\advA$
+%$$
+%\Pr\left[gk\gets\G_a(1^\lambda),x\gets\Z_q:\advA(gk,[x]_{3-s},[x]_s,[x^2]_s,\ldots,[x^m]_s)=(c,\left[\frac{1}{x+c}\right]_s)\right]
+%$$
+%s negligible in $\lambda$.
+%\end{definition}
+%
+%Given $s\in\{1,2\}$, the Boneh-Boyen signature scheme is described below.
 
 \begin{description}
 \item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $vk\gets\Z_q$. The secret/public key pair is defined as $(sk,vk):=(x,[x]_{3-s})$.

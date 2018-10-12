@@ -13,19 +13,18 @@ of equation (\ref{gseq}) using the GS commitments, and then computes a proof tha
 GS proofs are perfectly sound when the CRS is sampled from the perfectly binding distribution, and perfectly witness-indistinguishable when sampled from the perfectly hiding distribution. Computational indistinguishability of  both distributions implies either perfect soundness and computational witness indistinguishability or computational soundness and perfect witness-indistinguishability.
 
 \subsection{Groth-Sahai Commitments.}
-Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_1$ or $\GG_2^2$ of the form
-\begin{align*}
-&\GS.\Com_{ck_1}([x]_1;\vecb{r}):=\pmatri{{[0]_1}\\{[x]_1}}+r_1\left[\vecb{u}_1-\pmatri{0\\1}\right]_1+{r}_2[\vecb{u}_2]_1\\
-&\GS.\Com_{ck_1}(x;\vecb{r}):=x[\vecb{u}_1]_1+{r}[\vecb{u}_2]_1\\
-& \GS.\Com_{ck_2}([x]_2;\vecb{r}):=\pmatri{{[0]_2}\\{[x]_2}}+r_1\left[\vecb{v}_1-\pmatri{0\\1}\right]_2+{r}_2[\vecb{v}_2]_2\\
-&\GS.\Com_{ck_2}(x;\vecb{r}):=x[\vecb{v}_1]_2+{r}[\vecb{v}_2]_2
-\end{align*}
-where $ck_1:=[\vecb{u}_1\cat\vecb{u}_2]_1,ck_2:=[\vecb{v}_1\cat\vecb{v}_2]_2$, and $\vecb{u}_2,\vecb{v}_2$ are sampled from the same distribution as $\matr{A}$, the matrix from definition \ref{def:dlin}. The GS reference string is formed by the commitment keys $ck_1,ck_2$  and $\vecb{u}_1:=w\vecb{u}_2+\vecb{e}_2,\vecb{v}_1:=w'\vecb{v}_2+\vecb{e}_2$ in the perfectly binding setting, and $\vecb{u}_1:=w\vecb{u}_2,\vecb{v}_1:=w'\vecb{v}_2$ in the perfectly hiding setting, for $w,w'\gets\Z_q$.
+Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_\gamma$, $\gamma\in\{1,2\}$, the form
+\begin{small}\begin{align*}
+&\GS.\Com_{ck_\gamma}([x]_\gamma;\vecb{r}):=\pmatri{{[0]_\gamma}\\{[x]_\gamma}}+r_\gamma\left[\vecb{u}_1-\pmatri{0\\1}\right]_\gamma+{r}_2[\vecb{u}_2]_\gamma\\
+&\GS.\Com_{ck_\gamma}(x;\vecb{r}):=x[\vecb{u}_1]_\gamma+{r}[\vecb{u}_2]_\gamma
+%& \GS.\Com_{ck_2}([x]_2;\vecb{r}):=\pmatri{{[0]_2}\\{[x]_2}}+r_1\left[\vecb{v}_1-\pmatri{0\\1}\right]_2+{r}_2[\vecb{v}_2]_2\\
+%&\GS.\Com_{ck_2}(x;\vecb{r}):=x[\vecb{v}_1]_2+{r}[\vecb{v}_2]_2
+\end{align*}\end{small}
+where $ck_\gamma:=[\vecb{u}_1\cat\vecb{u}_2]_\gamma$, and $\vecb{u}_2$ are sampled from the same distribution as $\matr{A}$, the matrix from definition \ref{def:dlin}. The GS reference string is formed by the commitment keys $ck_1,ck_2$  and $\vecb{u}_1:=w\vecb{u}_2+\vecb{e}_2$ in the perfectly binding setting, and $\vecb{u}_1:=w\vecb{u}_2$ in the perfectly hiding setting, for $w\gets\Z_q$.
 
 We define commitments to row vectors as the horizontal concatenation of commitments to each of the coordinates. That is, for $\vecb{x}\in\Z_q^m$ and $\vecb{r}\in\Z_q^m$
 \begin{align*}
-\GS.\Com_{ck_1}(\vecb{x}^\top;\vecb{r}^\top) := [\vecb{u}_1]_1\vecb{x}^\top+[\vecb{u}_2]_1\vecb{r}^\top\in\GG_1^{2\times m}.
+\GS.\Com_{ck_\gamma}(\vecb{x}^\top;\vecb{r}^\top) := [\vecb{u}_1]_\gamma\vecb{x}^\top+[\vecb{u}_2]_\gamma\vecb{r}^\top\in\GG_\gamma^{2\times m}.
 \end{align*}
-Commitments for $ck_2$ are computed analogously.
 
-Given a Groth-Sahai commitment $[\vecb{c}]_s$, we will say that $[\vecb{c}']_s$ is a re-randomization of $[\vecb{c}]_1$ if $[\vecb{c}'] = [\vecb{c}]_1 + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$ and $s\in\{1,2\}$. 
+Given a Groth-Sahai commitment $[\vecb{c}]_\gamma$, we will say that $[\vecb{c}']_\gamma$ is a re-randomization of $[\vecb{c}]_\gamma$ if $[\vecb{c}']_\gamma = [\vecb{c}]_\gamma + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$. 

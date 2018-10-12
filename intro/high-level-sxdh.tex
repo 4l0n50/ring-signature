@@ -31,30 +31,30 @@
 %$$
 
 
-\subsubsection{High Level Description.} Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
-
+\subsubsection{High Level Description.} %Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
+%
 Our proof consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
-Let $(x,vk)$ Boneh-Boyen secret/verification keys (note that $[x]_2=vk$).
-We enlarge user's verification keys the by including $g$'s local key $([\vecb{a}]_1,[\vecb{b}]_2, \pi)\gets \KGen_{\mathsf{local}}(gk,k_0,\beta)$, where $\beta=0$, plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $\theta$ defined below. 
+Let $(x,vk)$ be Boneh-Boyen secret/verification keys (note that $[x]_2=vk$).
+We enlarge user's verification keys the by including $g$'s local key $([\vecb{a}]_1, \pi)\gets \KGen_{\mathsf{local}}(gk,k_0,\beta)$, where $\beta=0$, plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ defined below. 
 %Recall that $[\vecb{a}]_1$, where $\vecb{a}\gets\mathcal{Q}_1^\beta$, is a commitment to $\beta$, as well as $[\vecb{b}]_2=\Com_{[\matr{V}]_2}(\beta;\rho)$.
-We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_2=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $\theta$ is a proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g}). Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([x_i]_2,[\vecb{a}_i]_1,[\vecb{b}_i]_2,[\vecb{c}_i]_2,[\vecb{d}_i]_1,\pi_i,\theta_i)$.
+We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_2=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([x_i]_2,[\vecb{a}_i]_1,[\vecb{b}_i]_2,[\vecb{c}_i]_2,[\vecb{d}_i]_1,[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1,\pi_i)$.
 
-Note that from commitments $[\vecb{a}_1]_1,\ldots,[\vecb{a}_n]_1$ one can derive a commitment to $h(\matr{A})=h((\vecb{a}_1\cat\cdots\cat\vecb{a}_n))$ by simply computing $\sum_{i=0}^n [\vecb{a}_i]_1$. Similarly one can also compute $[\vecb{g}]_1 = \sum_{i=1}^m[\vecb{d}_i]_1$ such that
+Note that from commitments $[\vecb{a}_1]_1,\ldots,[\vecb{a}_n]_1$ one can derive a commitment to $h(\matr{A})=h((\vecb{a}_1\cat\cdots\cat\vecb{a}_n))$ by simply computing $\sum_{i=0}^n [\vecb{a}_i]_1$. Similarly one can also compute $[\vecb{g}]_1 = \sum_{i=1}^m[\vecb{d}_i]_1,[\vecb{\psi}]_2 = \sum_{i=1}^m [\vecb{\psi}_i]_2$, and $[\vecb{\omega}_i]_1 = \sum_{i=1}^m [\vecb{\omega}_i]_1$ such that
 \begin{align*}
 [\vecb{g}]_1[\vecb{w}_1^\top]_2 &= \sum_{i=1}^m [\vecb{d}_i]_1[\vecb{w}_1^\top]_2\\
-&= \sum_{i=1}^m [\vecb{a}_i][\vecb{c}_i^\top] - [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_2\right)^\top  -\left(\sum_{i=1}^m[\vecb{\omega}_1]_1\right)[\vecb{w}_2^\top]_2\\
+&= \sum_{i=1}^m [\vecb{a}_i][\vecb{c}_i^\top] - [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_2\right)^\top  -\left(\sum_{i=1}^m[\vecb{\omega}_i]_1\right)[\vecb{w}_2^\top]_2\\
 &= [\matr{A}]_1[\matr{C}^\top]_2 - [\vecb{u}_2]_1[\vecb{\psi}]_2 - [\vecb{\omega}]_1[\vecb{w}_2^\top]_2\\
 &= g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1),
 \end{align*}
 where the first step follows from the fact that $[\vecb{d}_i]_1$ satisfies equation (\ref{eq:ver-betax=y}) and $\matr{C}=(\vecb{c}_1\cat\cdots\cat\vecb{c}_m)$. %Note also that $\pi_1,\ldots,\pi_n$ is a proof that $\matr{A}\in\mathcal{Q}_n$.
 
-In spite of all these differences with Chandran et al.'s proof, we also show that the opening of a Groth-Sahai commitment is a Boneh-Boyen verification key $[x_i]_2$ and belongs to $\{[x_1]_2,\ldots,[x_n]_2\}$.
-
+%In spite of all these differences with Chandran et al.'s proof, we also show that the opening of a Groth-Sahai commitment is a Boneh-Boyen verification key $[x_i]_2$ and belongs to $\{[x_1]_2,\ldots,[x_n]_2\}$.
 Our first step is to arrange the verification keys in $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. To do so we use the following notation: for a sequence $\{s\}_{1\leq i \leq n}$ define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$. The prover and the verifier arrange some elements of the verification keys into $[\matr{C}_1]_2,\ldots, [\matr{C}_{n^{2/3}}]_2$, and $[\matr{A}_1]_1,\ldots, [\matr{A}_{n^{2/3}}]_1$ such that $[\matr{C}_i]_2:= [\vecb{c}_{i,1}\cat\cdots\cat\vecb{c}_{i,m}]_2\in\GG_2^{2\times m}$,  and $[\matr{A}_i]_1=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]_1\in\GG^{2\times m}_1$. They also define the sets
 \begin{align*}
-&H:=\{[\vecb{h}_1]_1,\ldots,\allowbreak [\vecb{h}_{n^{2/3}}]_1\},\text{ where }[\vecb{h}_i]_1 = \sum_{j=1}^m [\vecb{a}_{i,j}]_1 \\
-&G:=\{[\vecb{g}_1]_1,\ldots,[\vecb{g}_{n^{2/3}}]_1\},\text{ where } [\vecb{g}_i]_1 =  \sum_{j=1}^m [\vecb{d}_{i,j}]_1
+&H:=\{[\vecb{h}_1]_1,\ldots,\allowbreak [\vecb{h}_{n^{2/3}}]_1\},
+&G:=\{[\vecb{g}_1]_1,\ldots,[\vecb{g}_{n^{2/3}}]_1\}, 
 \end{align*}
+where $[\vecb{h}_i]_1 = \sum_{j=1}^m [\vecb{a}_{i,j}]_1$ and $[\vecb{g}_i]_1 =  \sum_{j=1}^m [\vecb{d}_{i,j}]_1$.
 
 Assume that prover's secret key is $x_\alpha = x_{\mu,\nu}$.
 The prover starts computing $[\vecb{h}']_1$,

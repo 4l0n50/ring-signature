@@ -12,7 +12,7 @@
 %\bibliographystyle{plainurl}% the recommended bibstyle
 
 % Author macros::begin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A Shorter Ring Signature from Standard Assumptions}
+\title{Shorter Ring Signatures from Standard Assumptions}
 %\titlerunning{An Efficient Ring Signature in the Standard Model} %optional, in case that the title is too long; the running title should fit into the top page column
 
 %% Please provide for each author the \author and \affil macro, even when authors have the same affiliation, i.e. for each author there needs to be the  \author and \affil macros
@@ -112,13 +112,6 @@
 
 	\input{our-construction/hash}
 	
-	\section{Our Construction in the PPA setting}
-	
-		\input{intro/high-level}
-    	
-		We give the full description and prove security of our PPA based ring signature in App.~\ref{sec:ppa-full}
-
-	
 	\section{Our Construction in the SXDH setting} \label{sec:high-level}
         
         		\input{intro/high-level-sxdh}
@@ -139,8 +132,14 @@
 \bibliography{cryptobib/abbrev2,cryptobib/crypto,manualbib}
 
 %% .. or use the thebibliography environment explicitely
-
+%\end{document}
+\newpage
 \appendix
+
+\begin{center}\begin{Large}{\bf
+Shorter Ring Signatures from Standard Assumptions: Supplementary Material
+}\end{Large}\end{center}
+\vspace{1cm}
 
 	\section{Security of the $m$-PPA assumption in Asymmetric Groups} \label{sec:aPPA}
 	
@@ -150,10 +149,14 @@
 
 		%\input{our-construction/our-hashes}
 		
-	\section{Full description of the Ring Signature in the PPA setting} \label{sec:ppa-full}
-	\subsection{Our Ring Signature}\label{sec:our-construction-ppa}
-        		\input{our-construction/construction} 
-		\input{appendix/security-proof}
+		
+	\section{Our Construction in the PPA setting} \label{sec:ppa-full}
+	
+		\input{intro/high-level}
+		
+		\subsection{Our Ring Signature}\label{sec:our-construction-ppa}
+        			\input{our-construction/construction} 
+			\input{appendix/security-proof}
 
 
 	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
@@ -171,15 +174,21 @@
 %\input{appendix/security-proof}
 
 	\section{Efficiency Analysis} \label{sec:eff-analysis}
-		In this section we calculate the proof size, in number of group elements, signer time, in number of exponentiations, and verifier time, in number of exponentiations, values which are shown in Table \ref{table:eff}. For simplicity, we ignore the influence of the one-time signature as it affects both schemes in the same way. Further, we note that one-time signatures can be constructed from symmetric-key primitives and thus, its costs are negligible in comparison to bilinear groups based primitives. We just remark that both schemes require a hash function $H:\mathcal{VK}_{\mathsf{ots}}\to\Z_q$, which hashes one-time verification keys into integers modulo $q$.
+		In this section we calculate the proof size, in number of group elements, signer time, in number of exponentiations, and verifier time, in number of exponentiations, values which are shown in Table \ref{table:eff}. For simplicity, we ignore the influence of the one-time signature as it affects all schemes in the same way. Further, we note that one-time signatures can be constructed from symmetric-key primitives and thus, its costs are negligible in comparison to bilinear groups based primitives. We just remark that the three schemes require a hash function $H:\mathcal{VK}_{\mathsf{ots}}\to\Z_q$, which hashes one-time verification keys into integers modulo $q$.
 		\subsection{Chandran et al.'s Ring Signature}
 			\input{appendix/chandran-eff}
-		\subsection{Our Ring Signature}
+		\subsection{Our Ring Signature in the PPA setting}
 			\input{appendix/our-eff}
+		\subsection{Our Ring Signature in the SXDH setting}
+			\input{appendix/our-eff-sxdh}
 			
 	\section{The Ring Signatures of Bose et al.~and of Gritti et al.\protect\footnote{Both flaws were communicated to the respective authors.}\protect\footnote{In this section we use multiplicative notation for the group operations to keep the expressions as they appear in the original works.}}\label{sec:rs-flawed}
     
         	 \input{prelim/flawed}
+        	 
+        	 \section{The Erasures Assumption in Ring Signatures}
+        	 
+        	 	\input{appendix/erasures}
 
 %\section{Our construction in Asymmetric Groups}
 %

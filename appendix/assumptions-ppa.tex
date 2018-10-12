@@ -1,0 +1,25 @@
+% !TEX root = ../main-ring-signature.tex
+
+We will use the natural translation to asymmetric groups of the permutation pairing assumption introduced by Groth and Lu. 
+\begin{definition}[Permutation Pairing Assumption \cite{AC:GroLu07}]\label{def:ppa}
+Let $\mathcal{Q}_{m}=\overbrace{\mathcal{Q}\cat\ldots\cat\mathcal{Q}}^{m\text{ times}}$, where concatenation of  distributions is defined in the natural way and $\mathcal{Q}: \vecb{a}=\smallpmatrix{x\\x^2}$, $x\gets\Z_q$.
+We say that the $m$-permutation pairing assumption holds relative to $\G_a$ if for any adversary $\advA$
+\begin{small}$$
+\Pr\left[
+\begin{array}{l}
+	gk\gets\G_a(1^\lambda);\matr{A}\gets\mathcal{Q}_{m};\\
+	%\begin{array}{c}\vdots\end{array}\\
+	%\\
+	([\matr{Z}]_1,[\underline{\vecb{z}}]_2)\gets\advA(gk,[\matr{A}]_1,[\matr{A}]_2):\\
+	\mathrm{(i)} \sum_{i=1}^m[\vecb{z}_i]_1 = \sum_{i=1}^m[\vecb{a}_i]_1,\\
+	\mathrm{(ii)}\ \forall i\in [m] \ [z_{1,i}]_1[1]_2=[1]_1[\underline{z}_{i}]_2 \text{ and } [z_{2,i}]_1[1]_2=[z_{1,i}]_1[\underline{z}_{i}]_2,\\
+	\text{ and }\matr{Z}\text{ is not a permutation of the columns of }\matr{A}
+\end{array}
+\right],
+$$\end{small}
+where $[\matr{Z}]=[\vecb{z}_1\cat\cdots\cat\vecb{z}_m]_1\in\GG_1^{2\times m}, [\matr{A}]_1=[\vecb{a}_1\cat\cdots\cat\vecb{a}_m]_1\in\GG_1^{2\times m}$, $[\underline{\vecb{z}}]_2=\allowbreak[(\underline{z}_1,\ldots,\allowbreak \underline{z}_m)]_2\in\GG_2^{1\times m}$,
+ is negligible in $\lambda$.
+\end{definition}
+Groth and Lu proved the hardness of the PPA in generic symmetric bilinear groups \cite{AC:GroLu07}. In Appendix \ref{sec:aPPA} we show that the $m$-PPA in generic asymmetric groups is as hard as the PPA in generic symmetric groups.
+
+We recall also the definition of the Decisional Diffie-Hellman assumption (in matrix notation) and the kernel matrix Diffie-Hellman assumption.

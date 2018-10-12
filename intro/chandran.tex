@@ -1,15 +1,15 @@
 % !TEX root = ../main-ring-signature.tex
 
-
-Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,vk)=(x,[x]_2)$ and a {one-time signature scheme}. The signature of the message $m$ for a ring $R=\{[x_1]_2,\ldots,[x_n]_2\}$ is computed as follows:
-\begin{itemize}
-	\item[a)] Pick a one-time signature key $(sk_\mathsf{ot},vk_\mathsf{ot})$, sign $m$ with $sk_\mathsf{ot}$, and sign $vk_\mathsf{ot}$ with $sk$.
-	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[x]_2$ using Groth-Sahai proofs.
-	\item[c)] Show that $[x]_2\in R$.
-\end{itemize}
-The most expensive part is c) and the core of Chandran et al.'s construction is a proof of size $\Theta(\sqrt{n})$ of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
-
-Since we will use this set-membership proof for proving membership in other sets, consider the $S = \{[s_1]_\gamma,\ldots,[s_n]_\gamma\}$ (hence in Chandran et al.'s ring signature $S=R$), for $\gamma\in\{1,2\}$.
+%Consider a {Boneh-Boyen signature scheme} with secret/verification keys of the form $(sk,vk)=(x,[x]_2)$ and a {one-time signature scheme}. The signature of the message $m$ for a ring $R=\{[x_1]_2,\ldots,[x_n]_2\}$ is computed as follows:
+%\begin{itemize}
+%	\item[a)] Pick a one-time signature key $(sk_\mathsf{ot},vk_\mathsf{ot})$, sign $m$ with $sk_\mathsf{ot}$, and sign $vk_\mathsf{ot}$ with $sk$.
+%	\item[b)] Show possession of valid signature of $vk_\mathsf{ot}$ under $[x]_2$ using Groth-Sahai proofs.
+%	\item[c)] Show that $[x]_2\in R$.
+%\end{itemize}
+%The most expensive part is c) and
+The core of Chandran et al.'s ring signature is a set-membership proof of size $\Theta(\sqrt{n})$ for a set $S\subset\GG_\gamma$, $\gamma\in\{1,2\}$, of size $n$. 
+%of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
+Assume that $S = \{[s_1]_\gamma,\ldots,[s_n]_\gamma\}$.
 The proof arranges elements of the set in a matrix of size $m\times m$, where $m:=\sqrt{n}$, as depicted below
 $$
 [\matr{S}]_\gamma:=
@@ -21,23 +21,23 @@ $$
 $$
 where $s_{i,j}:=s_{(i-1)m+j}$ for $1\leq i,j \leq m$.
 
-Let $[s_\alpha]_\gamma$ the verification key for which the prover wants to show that $[x_\alpha]_\gamma\in R$ and let $i_\alpha,j_\alpha$ such that $x_\alpha = x_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{S}]_\gamma$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 
+Let $[s_\alpha]_\gamma$ the element for which the prover wants to show that $[s_\alpha]_\gamma\in S$ and let $i_\alpha,j_\alpha$ such that $s_\alpha = s_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{S}]_\gamma$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 
 \begin{enumerate}
 \item $b_1,\ldots,b_m\in\bits$ such that $b_j=1$ iff $j=j_\alpha$,
 \item $b'_1,\ldots,b'_m\in\bits$ such that $b'_i=1$ iff $i=i_\alpha$,
-\item $[\kappa_1]_\gamma:=[x_{1,j_\alpha}]_\gamma,\ldots,[\kappa_m]_\gamma:=[x_{m,j_\alpha}]_\gamma$.
+\item $[\kappa_1]_\gamma:=[s_{1,j_\alpha}]_\gamma,\ldots,[\kappa_m]_\gamma:=[s_{m,j_\alpha}]_\gamma$.
 \end{enumerate}
 
 Using Groth-Sahai proofs, the prover proves that
 \begin{enumerate}[i.]
 \item $b_1(b_1-1)=0,\ldots,b_m(b_m-1)=0,b'_1(b'_m-1)=0,\ldots,b'_m(b'_m-1)=0$,\label{eq1}
 \item $\sum_{i=1}^m b_i =1$ and $\sum_{i=1}^m b'_i=1$,\label{eq2}
-\item $[\kappa_1]_\gamma=\sum_{j=1}^m b_j [x_{1,j}]_\gamma,\ldots,[\kappa_m]_\gamma=\sum_{j=1}^m b_j[x_{m,j}]_\gamma$,\label{eq3}
-\item $[x_\alpha]_\gamma=\sum_{i=1}^m b'_i[\kappa_i]_\gamma$.\label{eq4}
+\item $[\kappa_1]_\gamma=\sum_{j=1}^m b_j [s_{1,j}]_\gamma,\ldots,[\kappa_m]_\gamma=\sum_{j=1}^m b_j[s_{m,j}]_\gamma$,\label{eq3}
+\item $[s_\alpha]_\gamma=\sum_{i=1}^m b'_i[\kappa_i]_\gamma$.\label{eq4}
 \end{enumerate}
 Equations \ref{eq1} and \ref{eq2} prove that $(b_1,\ldots,b_m)$ and $(b'_1,\ldots,b'_m)$ are unitary vectors, equation \ref{eq3} proves that $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)^\top$ is a column of $[\matr{S}]_\gamma$, and equation \ref{eq4} proves that $[x_\alpha]_\gamma$ is an element of $([\kappa_1]_\gamma,\ldots,[\kappa_m]_\gamma)$.
 
-In our SXDH base ring signature we need this set-membership to show that some vector $[\vecb{s}]_\gamma$ is the re-encryption of one of the elements of the set of commitments $S = \{[\vecb{s}]_\gamma,\ldots,[\vecb{s}_n]_\gamma\}\subseteq\GG_\gamma$. That is, there exists some $\delta\in\Z_q$ such that $[\vecb{s}]_\gamma-\GS.\Com_{ck_\gamma}(0;\delta)\in S$. The proof remains the same but now
+In our SXDH base ring signature we need this set-membership to show that some vector $[\vecb{s}]_\gamma$ is the re-randomization of one of the elements of the set of commitments $S = \{[\vecb{s}]_\gamma,\ldots,[\vecb{s}_n]_\gamma\}\subseteq\GG_\gamma$. That is, there exists some $\delta\in\Z_q$ such that $[\vecb{s}]_\gamma-\GS.\Com_{ck_\gamma}(0;\delta)\in S$. The proof remains the same but now
 the prover computes re-randomizations
 \begin{enumerate}[1'.]
 \setcounter{enumi}{2}
@@ -49,4 +49,4 @@ and Groth-Sahai proofs that
 \item $[\vecb{\kappa}_1]_\gamma - \sum_{j=1}^m b_j [\vecb{s}_{1,j}]_\gamma = \GS.\Com_{ck_\gamma}(0;\delta_1),\ldots,[\vecb{\kappa}_m]_\gamma-\sum_{j=1}^m b_j[\vecb{s}_{m,j}]_\gamma = \GS.\Com_{ck_\gamma}(0;\delta_m)$,\label{eq3p}
 \item $[\vecb{s}]_\gamma - \sum_{i=1}^m b'_i[\vecb{\kappa}_i]_\gamma  = \GS.\Com_{ck_\gamma}(0;\delta-\delta_{i_\alpha})$.\label{eq4p}
 \end{enumerate}
-It will be useful in our ring signature to note that the proof of \ref{eq4p}' contains $\GS.\Com_{ck_{2-\gamma}}(\delta-\delta_{i_\alpha}$ and $\GS.\Com_{ck_{2-\gamma}}(\delta_{i_\alpha})$, from which $[\delta]_{2-\gamma}$ can be extracted, provided that a trapdoor for $ck_{2-\gamma}$ is available (which will be the case).
+It will be useful in our ring signature to note that the proof of \ref{eq4p}' contains $\GS.\Com_{ck_{2-\gamma}}(\delta-\delta_{i_\alpha})$ and $\GS.\Com_{ck_{2-\gamma}}(\delta_{i_\alpha})$, from which $[\delta]_{2-\gamma}$ can be extracted, provided that a trapdoor for $ck_{2-\gamma}$ is available (which will be the case).
