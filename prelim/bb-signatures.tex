@@ -31,14 +31,14 @@ The Boneh-Boyen signature described bellow is wUF-CMA under the $m$-\emph{strong
 %Given $s\in\{1,2\}$, the Boneh-Boyen signature scheme is described below.
 
 \begin{description}
-\item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $vk\gets\Z_q$. The secret/public key pair is defined as $(sk,vk):=(x,[x]_{3-s})$.
+\item[$\mathsf{BB}.\KG$:] Given a group key $gk$, pick $x\gets\Z_q$. The secret/public key pair is defined as $(sk,vk):=(x,[x]_{3-s})$.
 \item[$\mathsf{BB}.\Sign$:] Given a secret key $sk\in\Z_q$ and a message $m\in\Z_q$, output the signature $[\sigma]_{s}:=\left[\frac{1}{x+m}\right]_{s}$. In the unlikely case that $x+m=0$ we let $[\sigma]_{s}:=[0]_{s}$.
 \item[$\mathsf{BB}.\Ver$:] On input the verification key $[vk]_{3-s}$, a message $m\in\Z_q$, and a signature $[\sigma]_{s}$, verify that $[m+x]_{3-s}[\sigma]_{s}=[1]_T$.
 \end{description} 
 
 It is direct to prove knowledge of a Boneh-Boyen signature for some message $m$ under some committed verification key with a Groth-Sahai proof for the verification equation. In our SXDH based ring signature we need to prove a slightly different statement. Since we have a commitment to the secret key $[\vecb{c}]_{2} = \Com_{ck_2}(x;s) = x[\vecb{w}_1]_2+s[\vecb{w}_2]_2$ we need to show that
 \begin{equation}
-e([{\sigma}]_1, m[\vecb{w}_1]_2 + [\vecb{c}]_2) - [\vecb{w}_1]_T= e([s]_1,[w_2]_2),
+e([{\sigma}]_1, m[\vecb{w}_1]_2 + [\vecb{c}]_2) - [\vecb{w}_1]_T= e([\tilde{s}]_1,[w_2]_2),
 \label{eq:bbs-verification}
 \end{equation}
-for some $s\in\Z_q$.
+for some $[\tilde{s}]_1\in\GG_1$.

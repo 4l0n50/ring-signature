@@ -10,15 +10,15 @@
 The core of Chandran et al.'s ring signature is a set-membership proof of size $\Theta(\sqrt{n})$ for a set $S\subset\GG_\gamma$, $\gamma\in\{1,2\}$, of size $n$. 
 %of c). We call this kind of proof a set-membership proof and we describe Chandran et al.'s below.
 Assume that $S = \{[s_1]_\gamma,\ldots,[s_n]_\gamma\}$.
-The proof arranges elements of the set in a matrix of size $m\times m$, where $m:=\sqrt{n}$, as depicted below
-$$
+The proof arranges elements of the set in a matrix of size $m\times m$, where $m:=\sqrt{n}$,
+$
 [\matr{S}]_\gamma:=
-\begin{pmatrix}
+\smallpmatrix{
 [s_{1,1}]_\gamma & \cdots & [s_{1,m}]_\gamma\\
 \vdots     & \ddots & \vdots \\
 [s_{m,1}]_\gamma  & \cdots & [s_{m,m}]_\gamma,
-\end{pmatrix}
-$$
+}
+$
 where $s_{i,j}:=s_{(i-1)m+j}$ for $1\leq i,j \leq m$.
 
 Let $[s_\alpha]_\gamma$ the element for which the prover wants to show that $[s_\alpha]_\gamma\in S$ and let $i_\alpha,j_\alpha$ such that $s_\alpha = s_{i_\alpha,j_\alpha}$. The prover selects the $j_\alpha$ th column of $[\matr{S}]_\gamma$ and then the $i_\alpha$ th element of that column. To do so, the prover commits to 

@@ -1,6 +1,6 @@
 % !TEX root = ../main-ring-signature.tex
 
-\subsubsection{The function $h$.} Consider perfectly binding Groth-Sahai commitment key $[\matr{U}]_1 = [\vecb{u}_1|\vecb{u}_2]_1\in\GG_1^{2\times 2}$ together with its trapdoor $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_1 = 1$ and $\vecb{k}^\top\vecb{u}_2 = 0$. The message space of $h$ the set of matrices $\mathcal{Q}_m\in\Z_q^{2\times m}$ defined as follows
+\subsubsection{The function $h$.} Consider perfectly binding Groth-Sahai commitment key $[\matr{U}]_1 = [\vecb{u}_1|\vecb{u}_2]_1\in\GG_1^{2\times 2}$ together with its trapdoor $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_1 = 1$ and $\vecb{k}^\top\vecb{u}_2 = 0$. The message space of $h$ is the set of matrices $\mathcal{Q}_m\in\Z_q^{2\times m}$ defined as follows
 \begin{align*}
 &\mathcal{Q}_m^\vecb{\beta} := \left\{
 \begin{array}{c}
@@ -60,11 +60,11 @@ Further, given $[\matr{A}]_1$ and proofs that $\matr{a}_1,\ldots,\matr{a}_m\in\m
 where $\gamma = \sum_{i=1}^m \delta_i$,
 which can be proved with a Groth-Sahai proof. Further, such proof corresponds to a proof of membership in the span of $\vecb{u}_2$ which can be proved using more efficient QA-NIZK proofs \cite{C:JutRoy14,EC:KilWee15}. In this case the proof consists of only 1 element of $\GG_1$, instead of the $3$ required by Groth-Sahai proofs.
 
-\subsubsection{The function $g$.} Consider perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1=[\vecb{u}_1\cat\vecb{u}_2]_1,[\matr{V}]_2,[\matr{W}]_2 = [\vecb{w}_1\cat\vecb{w}_2]_2$, together with a trapdoor $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_2=0$ and $\vecb{k}^\top\vecb{u}_1=1$, consider also $[\matr{A}]_1$ such that $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$.
+\subsubsection{The function $g$.} Consider perfectly binding Groth-Sahai commitment keys $[\matr{U}]_1=[\vecb{u}_1\cat\vecb{u}_2]_1,[\matr{V}]_2=[\vecb{v}_1,\vecb{v}_2]_2,[\matr{W}]_2 = [\vecb{w}_1\cat\vecb{w}_2]_2$, together with a trapdoor $\vecb{k}\in\Z_q^2$ such that $\vecb{k}^\top\vecb{u}_2=0$ and $\vecb{k}^\top\vecb{u}_1=1$, consider also $[\matr{A}]_1$ such that $\matr{A}\gets\mathcal{Q}_m^\vecb{\beta}$.
 
 We start defining $g$ as $g_\matr{A}(\vecb{x}) = \vecb{k}^\top\matr{A}\vecb{x} = \vecb{\beta}^\top\vecb{x}$. Although not efficiently computable, similarly as with $h$, it is possible to give a Groth-Sahai proof showing that some $\vecb{x},\vecb{x}'$ are indeed a collision (provided some extra information is given in the key).
 In our ring signature $\vecb{\beta}=0$ but, since it remains hidden to the adversary, we could change to a game where $\vecb{\beta}$ is a random bit-vector of hamming weight 1. Since the unique coordinate $i$ such that $\beta_i=1$ remains hidden, $g_\matr{A}(\vecb{x}) = x_i \neq x'_i =g_\matr{A}(\vecb{x}')$ with probability roughly $1/m$, whenever $\vecb{x}\neq\vecb{x}'$. But this reasoning is flawed, since $\vecb{\beta}=0$ in the actual instantiation and thus $g_\matr{A}(\vecb{x}) = 0$ for all $\vecb{x}\in\Z_q^m$ and is trivial to find collisions.
-We will show that what is indeed hard to compute is the Groth-Sahai proof that $\vecb{\beta}^\top\vecb{x} = \vecb{\beta}^\top\vecb{x}'$, even when $g_\matr{A}(\vecb{x})\equiv 0$.
+We will show that what is indeed hard to compute is the Groth-Sahai proof that $\vecb{\beta}^\top\vecb{x} = \vecb{\beta}^\top\vecb{x}'$.% even when $g_\matr{A}(\vecb{x})\equiv 0$.
 
 The problem is now, how to encode the proof in the hash function? Lets see how the Groth-Sahai proof for the statement $\vecb{\beta}^\top\vecb{x} = y$ looks like. We would like $\vecb{\beta},\vecb{x}$ and $y$ to remain hidden, so we commit to these values with $[\matr{A}]_1$, $[\matr{C}]_2 = [\vecb{w}_1]_2\vecb{x}^\top+[\vecb{u}_2]_2\vecb{s}^\top$ and $[\vecb{d}]_1 = \vecb{\beta}^\top\vecb{x}[\vecb{u}_1]_1+t[\vecb{u}_2]_1$, respectively. The verification equation is
 \begin{align}
@@ -73,8 +73,9 @@ The problem is now, how to encode the proof in the hash function? Lets see how t
 \end{align}
 We define $g$ as the left side of the previous equation
 $$
-g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1):= [\matr{A}]_1[\matr{C}^\top]_2-[\vecb{u}_2]_1[\vecb{\psi}^\top]_2-[\vecb{\omega}]_1[\vecb{w}_2^\top]_2.
+g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1):= [\matr{A}]_1[\matr{C}^\top]_2-[\vecb{u}_2]_1[\vecb{\psi}^\top]_2-[\vecb{\omega}]_1[\vecb{w}_2^\top]_2
 $$
+(which is efficiently computable as required in the introduction).
 Note that there is an alternative of computing $g$ as $g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)=[\vecb{d}]_1[\vecb{w}_1^\top]_2$. For simplicity, we may simply write $g_\matr{A}(\matr{C})$ instead of $g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
 However, there are still two ways of computing collisions. First, one may pick $[\matr{C}]_2,\allowbreak[\vecb{\psi}']_2,[\vecb{\omega}']_1$ such that $[\vecb{u}_2][{\vecb{\psi}'}^\top]_2+[\vecb{\omega}']_1[\vecb{w}_2^\top]_2=[\vecb{u}_2][\vecb{\psi}^\top]_2+[\vecb{\omega}]_1[\vecb{w}_2^\top]_2$. Second, one may pick $[\matr{C}]_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1$ such that $[\matr{C}']_2 = [\matr{C}]_2 + [\vecb{w}_2]\vecb{\delta}^\top$. It turns out that this are the only type of collisions. Consequently, we consider collisions only with respect to the first argument and we we will weaken the equality relation to the following equivalence relation

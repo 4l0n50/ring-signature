@@ -41,10 +41,10 @@ We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_
 
 Note that from commitments $[\vecb{a}_1]_1,\ldots,[\vecb{a}_n]_1$ one can derive a commitment to $h(\matr{A})=h((\vecb{a}_1\cat\cdots\cat\vecb{a}_n))$ by simply computing $\sum_{i=0}^n [\vecb{a}_i]_1$. Similarly one can also compute $[\vecb{g}]_1 = \sum_{i=1}^m[\vecb{d}_i]_1,[\vecb{\psi}]_2 = \sum_{i=1}^m [\vecb{\psi}_i]_2$, and $[\vecb{\omega}_i]_1 = \sum_{i=1}^m [\vecb{\omega}_i]_1$ such that
 \begin{align*}
-[\vecb{g}]_1[\vecb{w}_1^\top]_2 &= \sum_{i=1}^m [\vecb{d}_i]_1[\vecb{w}_1^\top]_2\\
-&= \sum_{i=1}^m [\vecb{a}_i][\vecb{c}_i^\top] - [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_2\right)^\top  -\left(\sum_{i=1}^m[\vecb{\omega}_i]_1\right)[\vecb{w}_2^\top]_2\\
-&= [\matr{A}]_1[\matr{C}^\top]_2 - [\vecb{u}_2]_1[\vecb{\psi}]_2 - [\vecb{\omega}]_1[\vecb{w}_2^\top]_2\\
-&= g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1),
+[\vecb{g}]_1[\vecb{w}_1^\top]_2 &= \sum_{i=1}^m [\vecb{d}_i]_1[\vecb{w}_1^\top]_2
+= \sum_{i=1}^m [\vecb{a}_i][\vecb{c}_i^\top] - [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_2\right)^\top  -\left(\sum_{i=1}^m[\vecb{\omega}_i]_1\right)[\vecb{w}_2^\top]_2\\
+&= [\matr{A}]_1[\matr{C}^\top]_2 - [\vecb{u}_2]_1[\vecb{\psi}]_2 - [\vecb{\omega}]_1[\vecb{w}_2^\top]_2
+= g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1),
 \end{align*}
 where the first step follows from the fact that $[\vecb{d}_i]_1$ satisfies equation (\ref{eq:ver-betax=y}) and $\matr{C}=(\vecb{c}_1\cat\cdots\cat\vecb{c}_m)$. %Note also that $\pi_1,\ldots,\pi_n$ is a proof that $\matr{A}\in\mathcal{Q}_n$.
 

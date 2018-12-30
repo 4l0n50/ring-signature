@@ -12,6 +12,8 @@ of equation (\ref{gseq}) using the GS commitments, and then computes a proof tha
 
 GS proofs are perfectly sound when the CRS is sampled from the perfectly binding distribution, and perfectly witness-indistinguishable when sampled from the perfectly hiding distribution. Computational indistinguishability of  both distributions implies either perfect soundness and computational witness indistinguishability or computational soundness and perfect witness-indistinguishability.
 
+Further, Belenky et al.~noted that Groth-Sahai proofs can be \emph{re-randomized} \cite{C:BCCKLS09}. This means that, given commitments and proofs showing the satisfiability of some equation, on can compute new proofs which looks exactly as fresh proofs (i.e. computed with fresh randomness) for the same equation, even without knowing the commitment openings nor the randomness. In this work compute such proofs for integer equations $\beta(\beta-1)=0$ and $\beta x = y$. For completeness, in App.~\ref{sec:GSproofs-hg} we show how to construct and re-randomize such proofs.
+
 \subsection{Groth-Sahai Commitments.}
 Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_\gamma$, $\gamma\in\{1,2\}$, the form
 \begin{small}\begin{align*}
@@ -28,5 +30,3 @@ We define commitments to row vectors as the horizontal concatenation of commitme
 \end{align*}
 
 Given a Groth-Sahai commitment $[\vecb{c}]_\gamma$, we will say that $[\vecb{c}']_\gamma$ is a re-randomization of $[\vecb{c}]_\gamma$ if $[\vecb{c}']_\gamma = [\vecb{c}]_\gamma + \GS.\Com_{ck_s}(0;\delta)$, for $\delta\gets\Z_q$.
-
-Further, Belenky et al.~noted that Groth-Sahai proofs can be \emph{re-randomized} \cite{C:BCCKLS09}. This means that, given commitments and proofs showing the satisfiability of some equation, on can compute new proofs which looks exactly as fresh proofs (i.e. computed with fresh randomness) for the same equation, even without knowing the commitment openings nor the randomness. In this work compute such proofs for integer equations $\beta(\beta-1)=0$ and $\beta x = y$. For completeness, in App.~\ref{sec:GSproofs-hg} we show how to construct and re-randomize such proofs.

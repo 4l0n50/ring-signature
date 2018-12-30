@@ -15,11 +15,14 @@
 \rule{0pt}{2.5ex}Signature generation \#exps. & $37\sqrt{n}+23$                        & $80\sqrt[3]{n}+71$&$72\sqrt[3]{n}+61$\\
 \rule{0pt}{2.5ex}Verification \#pairings         & $2n + 60\sqrt{n}+38$                & $8n^{2/3} + 162\sqrt[3]{n} + 118$&$8n^{2/3} + 122\sqrt[3]{n} + 94$\\
 \rule{0pt}{2.5ex}Assumption         & SXDH                & PPA & SXDH\\
+\rule{0pt}{2.5ex}Erasures         & No                & Yes & No\\
 %\hline 
 \end{tabular}
 \end{scriptsize}
 \end{center}
-\caption{Comparison of Chandran et al.'s ring signature and ours for a ring of size $n$. `Signature generation' is given in number of exponentiations, `Verification time' is given in number of pairings, and all other rows are given in number of group elements. A quick calculation shows that our signature outperforms Chandran et al.'s (roughly) for $n>180$.\label{table:eff}}
+\caption{Comparison of Chandran et al.'s ring signature and ours for a ring of size $n$. `Signature generation' is given in number of exponentiations, `Verification time' is given in number of pairings, and all other rows are given in number of group elements. The last row states if the key generation algorithm erases its random coins after generating the verification and secret keys.
+%A quick calculation shows that our signature outperforms Chandran et al.'s (roughly) for $n>180$.
+\label{table:eff}}
 \end{minipage}
 \end{center}
 \end{table}

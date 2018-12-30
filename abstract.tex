@@ -4,7 +4,7 @@ Ring signatures, introduced by Rivest, Shamir and Tauman (ASIACRYPT 2001), allow
 However, all these short signatures are only obtained relying on strong and controversial assumptions. Namely, the former schemes are both proven secure in the random oracle model while the later requires non-falsifiable assumptions.
 
 %Under more standard assumptions Chase and Lysyanskaya (CRYPTO 2006) proposed a constant-size, but impractical, ring signature that requires simulation sound NIZK proofs systems for circuit satisfiability.
-The most practical construction under mild assumptions remains the construction of Chandran et al.~(ICALP 2007) with a signature of size $\Theta(\sqrt{n})$, where $n$ is the number of users, and security is based on the Diffie-Hellman assumption in bilinear groups (the SXDH assumption in asymmetric bilinear groups).
+The most efficient construction under mild assumptions remains the construction of Chandran et al.~(ICALP 2007) with a signature of size $\Theta(\sqrt{n})$, where $n$ is the number of users, and security is based on the Diffie-Hellman assumption in bilinear groups (the SXDH assumption in asymmetric bilinear groups).
 
 In this work we construct an asymptotically shorter ring signature from the hardness of the Diffie-Hellman assumption in bilinear groups.
  Each signature comprises $\Theta(\sqrt[3]{n})$ group elements, signing a message requires computing $\Theta(\sqrt[3]{n})$ exponentiations, and verifying a signature requires $\Theta(n^{2/3})$ pairing operations. To the best of our knowledge, this is the first practical ring signature with $o(\sqrt{n})$ signatures and sublinear verification time.
