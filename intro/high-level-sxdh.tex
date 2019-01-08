@@ -33,11 +33,15 @@
 
 \subsubsection{High Level Description.} %Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
 %
-Our proof consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
+Our construction follow the lines depicted in section \ref{sec:tech-overview} with the only difference that we do not use the verification key of the Boneh-Boyen signature, but a commitment to the secret key. The only reason is efficiency, since in this way we need to give Groth-Sahai proofs for integer equations instead of equations involving group elements. 
+
+Each signature consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
 Let $(x,vk)$ be Boneh-Boyen secret/verification keys (note that $[x]_2=vk$).
-We enlarge user's verification keys the by including $g$'s local key $([\vecb{a}]_1, \pi)\gets \KGen_{\mathsf{local}}(gk,k_0,\beta)$, where $\beta=0$, plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ defined below. 
+We consider extended verification keys the by including $[\vecb{a}]_1 = \Com_{[\matr{U}]_1}(\beta;r)$, where $\beta=0$ and $r\gets\Z_q$, $\pi$ a Groth-Sahai proof that $\beta(\beta-1)=0$, 
+plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ defined below. 
+
 %Recall that $[\vecb{a}]_1$, where $\vecb{a}\gets\mathcal{Q}_1^\beta$, is a commitment to $\beta$, as well as $[\vecb{b}]_2=\Com_{[\matr{V}]_2}(\beta;\rho)$.
-We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_2=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([x_i]_2,[\vecb{a}_i]_1,[\vecb{b}_i]_2,[\vecb{c}_i]_2,[\vecb{d}_i]_1,[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1,\pi_i)$.
+We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_1=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([x_i]_2,[\vecb{a}_i]_1,[\vecb{c}_i]_2,[\vecb{d}_i]_1,[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1,\pi_i)$.
 
 Note that from commitments $[\vecb{a}_1]_1,\ldots,[\vecb{a}_n]_1$ one can derive a commitment to $h(\matr{A})=h((\vecb{a}_1\cat\cdots\cat\vecb{a}_n))$ by simply computing $\sum_{i=0}^n [\vecb{a}_i]_1$. Similarly one can also compute $[\vecb{g}]_1 = \sum_{i=1}^m[\vecb{d}_i]_1,[\vecb{\psi}]_2 = \sum_{i=1}^m [\vecb{\psi}_i]_2$, and $[\vecb{\omega}_i]_1 = \sum_{i=1}^m [\vecb{\omega}_i]_1$ such that
 \begin{align*}
