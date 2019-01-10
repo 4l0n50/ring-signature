@@ -31,47 +31,43 @@
 %$$
 
 
-\subsubsection{High Level Description.} %Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
+%Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
 %
-Our construction follow the lines depicted in section \ref{sec:tech-overview} with the only difference that we do not use the verification key of the Boneh-Boyen signature, but a commitment to the secret key. The only reason is efficiency, since in this way we need to give Groth-Sahai proofs for integer equations instead of equations involving group elements. 
-
+Our construction follow the high-level description depicted in section \ref{sec:tech-overview} with the only difference that we do not use the verification key of the Boneh-Boyen signature, but a commitment to the secret key. The only reason is efficiency since in this way we use Groth-Sahai proofs for integer equations instead of equations involving group elements. 
 Each signature consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
-Let $(x,vk)$ be Boneh-Boyen secret/verification keys (note that $[x]_2=vk$).
-We consider extended verification keys the by including $[\vecb{a}]_1 = \Com_{[\matr{U}]_1}(\beta;r)$, where $\beta=0$ and $r\gets\Z_q$, $\pi$ a Groth-Sahai proof that $\beta(\beta-1)=0$, 
-plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ defined below. 
 
+%Let $(x,vk)$ be Boneh-Boyen secret/verification keys (note that $[x]_2=vk$) and let $[\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_1$ Groth-Sahai commitment keys.
+%We consider extended verification keys which includes $[\vecb{a}]_1 = \Com_{[\matr{U}]_1}(\beta;r)$, where $\beta=0$ and $r\gets\Z_q$, $\pi$ a Groth-Sahai proof that $\beta(\beta-1)=0$ (see App.~\ref{sec:GSproofs-h}), 
+%plus $[\vecb{c}]_2,[\vecb{d}]_1$ and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ defined as follows.
 %Recall that $[\vecb{a}]_1$, where $\vecb{a}\gets\mathcal{Q}_1^\beta$, is a commitment to $\beta$, as well as $[\vecb{b}]_2=\Com_{[\matr{V}]_2}(\beta;\rho)$.
-We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_1=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby, verification key of the $i$ th user is of the form $\vecb{vk}_i:=([x_i]_2,[\vecb{a}_i]_1,[\vecb{c}_i]_2,[\vecb{d}_i]_1,[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1,\pi_i)$.
+%We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_1=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby,  the extended verification key of each user is of the form $\widetilde{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,[\vecb{d}]_1,\pi,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
-Note that from commitments $[\vecb{a}_1]_1,\ldots,[\vecb{a}_n]_1$ one can derive a commitment to $h(\matr{A})=h((\vecb{a}_1\cat\cdots\cat\vecb{a}_n))$ by simply computing $\sum_{i=0}^n [\vecb{a}_i]_1$. Similarly one can also compute $[\vecb{g}]_1 = \sum_{i=1}^m[\vecb{d}_i]_1,[\vecb{\psi}]_2 = \sum_{i=1}^m [\vecb{\psi}_i]_2$, and $[\vecb{\omega}_i]_1 = \sum_{i=1}^m [\vecb{\omega}_i]_1$ such that
+For $[\matr{A}]_1\in\GG_1^{2\times m}$ , a matrix whose colum $[\vecb{a}_i]$ is a Groth-Sahai commitment to $\beta_i$, and $\vecb{x}\in\Z_q^m$ we define $h([\matr{A}]_1) := \sum_{i=1}^m \beta_i$ and $g_\matr{A}(\vecb{x}) = \sum_{i=1}^m \beta_i x_i$. Unlike the PPA-based construction, we do not prove collision resistance of $h$ or $g$ (they are not) but instead these functions are only used as an intuitive link with the simpler PPA-based construction.
+
+The high level description of our ring signature in the SXDH setting was already given in section \ref{sec:tech-overview}. It was left to show how to re-randomize of proofs for the equations $\beta\in\bits$ and $y = \beta x$,  which can be done with the techniques of \cite{C:BCCKLS09} and for completeness we give in App.~\ref{sec:GSproofs-h} and App.~\ref{sec:GSproofs-g}, respectively. It was also left to show how to derive a proof that $g_{\matr{A}'}(\vecb{x}') = g_{\matr{A}_\mu}(\vecb{x}_\mu)$ and we do it in the following section.
+
+\subsection{NIZK proof that $g_{\matr{A}'}(\vecb{x}') = g_{\matr{A}}(\vecb{x})$}
+Let $[\matr{U}]_1$ and $[\matr{W}]_2$ Groth-Sahai commitment keys. Consider $[\vecb{a}_i]_1 = \Com(\beta_i;r_i)$, $[\vecb{c}_i]_2 = \Com_{[\matr{W}]_2}(x_i;s)$, and $[\vecb{d}_i] = \Com_{[\matr{U}]_1}(y_i;t)$, where $y_i=\beta_ix_i$, $\beta\in\bits$, $r,s,t\in\Z_q$, and $1\leq i\leq m$. Consider also $[\vecb{g}]_1$, a re-randomization of $\sum_{i=1}^m [\vecb{d}_i] = \Com(g_\matr{A}(\vecb{x}))$, and $[\matr{A}']_1$ and $[\matr{C}']_2$ re-randomizations of permutations of $[\matr{A}]_1 := ([\vecb{a}_1]|\cdots|[\vecb{a}_m])$ and $[\matr{C}]_2 := ([\vecb{c}_1]_2|\cdots|[\vecb{c}_m]_2)$, respectively. We want to construct a proof that $g_{\matr{A}'}(\vecb{x}') = g_\matr{A}(\vecb{x})$, or equivalently $\sum_{i=1}^m \beta'_ix'_i = \sum_{i=1}^m \beta_i x_i$, only from the extended verification keys and the random coins used in the re-randomizations.
+
+Apart from $[\vecb{a}_i]_1,[\vecb{c}_i]_2,[\vecb{d}_i]_1$, the extended verification key contains Groth-Sahai proofs $[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1$ for the equation $\beta_ix_i = y_i$ defined in App.~\ref{sec:GSproofs-g}. Each of these proofs satisfy the verification equation
+$$
+[\vecb{a}_i]_1[\vecb{c}_i^\top]_2 - [\vecb{d}_i]_1[\vecb{w}_1^\top]_2 = [\vecb{u}_2]_1[\vecb{\psi}^\top_i]_2 + [\vecb{\omega}_i]_1[\vecb{w}_2^\top]_2.
+$$
+
+$[\matr{A}']_1$, $[\matr{C}']_2$ and $[\vecb{g}]_1$ are computed as $[\matr{A}']_1 = [\matr{A}]_1\matr{P}+[\vecb{u}_2]_1\vecb{\delta}_a^\top$, $[\matr{C}']_2 = [\matr{C}]_2\matr{P}+[\vecb{w}_2]_2\vecb{\delta}_c^\top$, and $[\vecb{g}]_1 = \sum_{i=1}^m [\vecb{d}_i]_1 + [\vecb{u}_2]_1\delta_g$, where $\matr{P}$ is a permutation matrix and $\vecb{\delta}_a,\vecb{\delta}_c\in\Z_q^m$ and $\delta_g\in\Z_q$.
+The right side of the verification equation for equation $\sum_{i=1}^m\beta'_i x'_i - y = 0$, where $y=\sum_{i=1}^n \beta_ix_i$ is the opening of $[\vecb{d}']_1$ and $\vecb{\beta}',\vecb{x}'$ are the openings of $[\matr{A}']_1$ and $[\matr{C}']_2$ respectively, is equal to
 \begin{align*}
-[\vecb{g}]_1[\vecb{w}_1^\top]_2 &= \sum_{i=1}^m [\vecb{d}_i]_1[\vecb{w}_1^\top]_2
-= \sum_{i=1}^m [\vecb{a}_i][\vecb{c}_i^\top] - [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_2\right)^\top  -\left(\sum_{i=1}^m[\vecb{\omega}_i]_1\right)[\vecb{w}_2^\top]_2\\
-&= [\matr{A}]_1[\matr{C}^\top]_2 - [\vecb{u}_2]_1[\vecb{\psi}]_2 - [\vecb{\omega}]_1[\vecb{w}_2^\top]_2
-= g_{\matr{A}}([\matr{C}]_2,[\vecb{\psi}]_2,[\vecb{\omega}]_1),
+&[\matr{A}']_1[{\matr{C}'}^\top]_2 - [\vecb{d}']_1[\vecb{w}_1^\top]_2\\
+&= [\matr{A}]_1\matr{P}\matr{P}^\top[\matr{C}^\top]_2 + [\matr{A}]_1\matr{P}\vecb{\delta}_c[\vecb{w}_2^\top]_2 + [\vecb{u}_2]_1\vecb{\delta}_a^\top[\matr{C}'^\top]_2-[\vecb{d}']_1[\vecb{w}_2^\top]_2\\
+&=\sum_{i=1}^m ([\vecb{a}_i]_1[\vecb{c}_i^\top]_2-[\vecb{d}_i]_1[\vecb{w}_1^\top]) +[\matr{A}]_1\matr{P}\vecb{\delta}_c[\vecb{w}_2^\top]_2 + [\vecb{u}_2]_1(\vecb{\delta}_a^\top[\matr{C}'^\top]_2-\delta_g[\vecb{w}_1^\top]_2)\\
+&= [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_1+[\matr{C}']_2\vecb{\delta}_a-\delta_g[\vecb{w}_1]_2\right)^\top + \left(\sum_{i=1}^m[\vecb{\omega}_i]_1+[\matr{A}]_1\matr{P}\vecb{\delta}_c\right)[\vecb{w}_2^\top]_2.
 \end{align*}
-where the first step follows from the fact that $[\vecb{d}_i]_1$ satisfies equation (\ref{eq:ver-betax=y}) and $\matr{C}=(\vecb{c}_1\cat\cdots\cat\vecb{c}_m)$. %Note also that $\pi_1,\ldots,\pi_n$ is a proof that $\matr{A}\in\mathcal{Q}_n$.
 
-%In spite of all these differences with Chandran et al.'s proof, we also show that the opening of a Groth-Sahai commitment is a Boneh-Boyen verification key $[x_i]_2$ and belongs to $\{[x_1]_2,\ldots,[x_n]_2\}$.
-Our first step is to arrange the verification keys in $n^{2/3}$ blocks of size $m=\sqrt[3]{n}$. To do so we use the following notation: for a sequence $\{s\}_{1\leq i \leq n}$ define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$, where  $1\leq\mu\leq n^{2/3},1\leq \nu\leq m$. The prover and the verifier arrange some elements of the verification keys into $[\matr{C}_1]_2,\ldots, [\matr{C}_{n^{2/3}}]_2$, and $[\matr{A}_1]_1,\ldots, [\matr{A}_{n^{2/3}}]_1$ such that $[\matr{C}_i]_2:= [\vecb{c}_{i,1}\cat\cdots\cat\vecb{c}_{i,m}]_2\in\GG_2^{2\times m}$,  and $[\matr{A}_i]_1=[\vecb{a}_{i,1}\cat\cdots\cat\vecb{a}_{i,m}]_1\in\GG^{2\times m}_1$. They also define the sets
-\begin{align*}
-&H:=\{[\vecb{h}_1]_1,\ldots,\allowbreak [\vecb{h}_{n^{2/3}}]_1\},
-&G:=\{[\vecb{g}_1]_1,\ldots,[\vecb{g}_{n^{2/3}}]_1\}, 
-\end{align*}
-where $[\vecb{h}_i]_1 = \sum_{j=1}^m [\vecb{a}_{i,j}]_1$ and $[\vecb{g}_i]_1 =  \sum_{j=1}^m [\vecb{d}_{i,j}]_1$.
+The last equation indicates that the proof must be the factors of $[\vecb{u}_2]_1$ and $[\vecb{w}_2^\top]_2$ plus randomization terms. That is, for $\xi\gets\Z_q$
+\begin{align}
+&[\vecb{\psi}']_2 = \sum_{i=1}^m[\vecb{\psi}_i]_1+[\matr{C}']_2\vecb{\delta}_a-\delta_g[\vecb{w}_1]_2 + \xi[\vecb{w}_2]_2\nonumber\\
+&
+[\vecb{\omega}']_1 = \sum_{i=1}^m[\vecb{\omega}_i]_1+[\matr{A}]_1\matr{P}\vecb{\delta}_c - \xi[\vecb{u}_2]_1.\label{eq:rerand-proofs-g}
+\end{align}
 
-Assume that prover's secret key is $x_\alpha = x_{\mu,\nu}$.
-The prover starts computing $[\vecb{h}']_1$,
-%a Groth-Sahai commitment $[\vecb{c}_{\mu,\nu}]_2$ to its secret key $x_\alpha=x_{\mu,\nu}$, and 
-a re-randomization of $[\vecb{h}_\mu]_1$, and computes the first set-membership proof showing that $[\vecb{h}']_1\in H$.
-The prover computes a matrix $[\matr{A}']_1$ such that the first column is a re-randomization of $[\vecb{a}_{\mu,\nu}]_1$, and the columns that follow are re-randomizations of the other columns of $[\matr{A}_\mu]_1$ (preserving the order). The prover also derives a proof that $\matr{A}'\in\mathcal{Q}_m$ re-randomizing proofs $\pi_{\mu,1},\ldots,\pi_{\mu,m}$ and shows that $h(\matr{A}_\mu)=h(\matr{A}')$ with a Groth-Sahai proof of the satisfiability of equation equation (\ref{eq:coll-h}). Then, the prover computes $[\vecb{g}']_1$, a re-randomization of $[\vecb{g}_{\mu'}]$ where $\mu'=\mu$, and computes a  second set-membership proof showing that $[\vecb{g}']\in G$ and that $\mu'=\mu$.
-
-Let $[\vecb{\psi}_\mu]_2 := \sum_{i=1}^m[\vecb{\psi}_{\mu,i}]_2$ and $[\vecb{\omega}_\mu]_1 := \sum_{i=1}^m[\vecb{\omega}_{\mu,i}]_1$. Note that $g_{\matr{A}_\mu}([\matr{C}_\mu]_2,\allowbreak[\vecb{\psi}_\mu]_2,[\vecb{\omega}_\mu]_1) = [\vecb{g}_\mu]_1[\vecb{w}_1^\top]_2$. Let $[\matr{C}']_2$ such that its first column is a re-ran\-do\-mi\-za\-tion of $[\vecb{c}_{\mu,\nu}]$ and the following columns are re-ran\-do\-mi\-za\-tions of $[\vecb{c}_{\mu,1}]_1,\ldots,\allowbreak[\vecb{c}_{\mu,\nu-1}]_1,\allowbreak[\vecb{c}_{\mu,\nu+1}]_1,\ldots,[\vecb{c}_{\mu,m}]$. Let $[\vecb{\psi}']_2,[\vecb{\omega}']_1$ as computed in equation (\ref{eq:g-rerand-proofs}).  It holds that $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{g}']_1[\vecb{w}_1^\top]_2$.
-
-%For $i\in[m]$, consider $[\vecb{c}'_i]_2,[\vecb{d}'_i]_1$ re-randomizations of, respectively, $[\vecb{c}_{\mu,i}]_1,[\vecb{d}_{\mu,i}]_2$ and $\theta'_i = ([\vecb{\psi}'_i]_2,[\vecb{\omega}']_1)$ the corresponding re-randomized proof. Clearly, $[\vecb{d}']$
-%Consider proofs $\theta_{\mu,\nu},\theta_{\mu,1},\ldots,\allowbreak\theta_{\mu,\nu-1},\theta_{\mu,\nu+1},\ldots,\theta_{\mu,m}$. Recall that $\theta_{i,j} = \allowbreak([\vecb{\psi}_{i,j}]_2,\allowbreak[\vecb{\omega}_{i,j}]_1)$ is such that $g_{\vecb{a}_{i,j}}([x_{i,j}]_2,[\vecb{\psi}_{i,j}]_2,[\vecb{\omega}_{i,j}]_1)=[\vecb{d}_{i,j}]_1[\vecb{w}_1^\top]_2$. 
-
-%Next, the prover computes $[\matr{C}']_2,[\matr{D}']_2\in\GG_2^{2\times m}$, whose first columns are, respectively, re-randomizations of $[\vecb{c}_{\mu,\nu}],[\vecb{d}_{\mu,\nu}]$ and the following columns are re-ran\-do\-mi\-za\-tions of $[\vecb{c}_{\mu,1}]_1,\ldots,[\vecb{c}_{\mu,\nu-1}]_1,\allowbreak[\vecb{c}_{\mu,\nu+1}]_1,\ldots,[\vecb{c}_{\mu,m}]$ and $[\vecb{d}_{\mu,1}]_1,\ldots,[\vecb{d}_{\mu,\nu-1}]_1,\allowbreak[\vecb{d}_{\mu,\nu+1}]_1,\allowbreak\ldots,\allowbreak[\vecb{d}_{\mu,m}]$ (preserving the order). It re-randomizes proofs $\theta_{\mu,\nu},\theta_{\mu,1},\ldots,\allowbreak\theta_{\mu,\nu-1},\theta_{\mu,\nu+1},\ldots,\theta_{\mu,m}$, showing that
-
-We will show that one can extract some $[\vecb{\varphi}]_2$ such that $g_{\matr{A}_\mu}([\matr{C}_\mu]_2,[\vecb{\varphi}]_2,[\vecb{\omega}_\mu]_1) =g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1)$. Furhtermore,
-since $\matr{A}'\sim_{\matr{U}}\matr{A}_\mu$, Lemma \ref{lemma:g-crp-sxdh} implies that $\matr{C}'\sim_\matr{W}\matr{C}$, which in turn implies that $\vecb{x}'$ is a permutation of $\vecb{x}_\mu$. Therefore, $[\vecb{c}_{\mu,\nu}]_1$, opens to $x_{\mu,\nu}=x_\alpha$ which is in the ring of secret keys.
+Assuming $[\vecb{d}']_1$ is correctly computed, the proof is sound because it satisfy the Groth-Sahai verification equation. Furthermore, the proof is uniformly distributed conditioned on satisfying the verification equation and thus follows exactly the same distribution as a fresh Groth-Sahai proof.

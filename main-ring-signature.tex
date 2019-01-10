@@ -98,17 +98,17 @@
 
 		\input{prelim/hash}
 
-    \section{Our Hash Functions} \label{sec:hf}
+    \section{Our Construction in the PPA setting} \label{sec:hf}
     
     	\input{our-construction/our-hashes}
     	
     	\subsection{Our hash functions from the PPA assumption} \label{sec:hf-ppa}
     	
     		\input{our-construction/our-hashes-ppa}
+    		
+    	\subsection{Our Ring Signature}\label{sec:our-construction-ppa}
+        			\input{our-construction/construction} 
 
-	\subsection{Our hash functions from the SXDH Assumption} \label{sec:hf-sxdh}
-
-		\input{our-construction/our-hashes-sxdh}
 
 	\input{our-construction/hash}
 	
@@ -150,19 +150,15 @@ Shorter Ring Signatures from Standard Assumptions: Supplementary Material
 		%\input{our-construction/our-hashes}
 		
 		
-	\section{Our Construction in the PPA setting} \label{sec:ppa-full}
+	\section{Security Proof of the PPA-based Ring Signature} \label{sec:ppa-sec-proof}
 	
-		\input{intro/high-level}
-		
-		\subsection{Our Ring Signature}\label{sec:our-construction-ppa}
-        			\input{our-construction/construction} 
 			\input{appendix/security-proof}
 
 
 	%\section{Proof of Theorem \ref{theo:security}} \label{sec:sec-proof}
-	\section{Groth-Sahai proofs for $h$ and $g$ in the SXDH setting} \label{sec:GSproofs-hg}
+	\section{Re-radomizable Groth-Sahai NIZK proofs} \label{sec:GSproofs-hg}
 	
-	In this section we detail the Groth-Sahai proofs used by $h$ and $g$ in section \ref{sec:hf-sxdh}. We also describe how these proofs can be re-randomized, as shown by Belenky et al.~\cite{C:BCCKLS09}.
+	In this section we detail the Groth-Sahai proofs used by the SXDH-based ring signature. We also describe how these proofs can be re-randomized, as shown by Belenky et al.~\cite{C:BCCKLS09}.
 		\subsection{Groth-Sahai proofs for $\beta(\beta-1)=0$} \label{sec:GSproofs-h}
 		
 			\input{appendix/GSproofs-h}

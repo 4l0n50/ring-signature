@@ -1,17 +1,17 @@
 % !TEX root = ../main-ring-signature.tex
 
-In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme.
+In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme. We assume that ring descriptions doesn't contain repeated elements.
 
 \begin{description}
-\item[$\mathsf{CRSGen}(gk)$:] Pick three perfectly hiding CRS for the Groth-Sahai proof system $ck_1,ck_2,ck'_2$, where $ck_1 := [\matr{U}]_1,ck_2 :=[\matr{V}]_2,ck'_2:=[\matr{W}]_2$ and define $k_0 := (ck_1,ck_2,ck'_2)$. We use $ck_1,ck'_2$ for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,k_0).$
+\item[$\mathsf{CRSGen}(gk)$:] Pick three perfectly hiding CRS for the Groth-Sahai proof system $ck_1,ck_2,ck'_2$, where $ck_1 := [\matr{U}]_1,ck_2 :=[\matr{V}]_2,ck'_2:=[\matr{W}]_2$. We use $ck_1,ck'_2$ for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,ck_1,ck_2,ck'_2).$
 
-\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $([\vecb{a}]_1,\pi)\allowbreak\gets\KGen_{\mathsf{local}}(gk,\allowbreak k_0,\beta = 0)$. Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 :=x[\vecb{a}]_1+t[\vecb{u}]_2 = \GS.\Com_{ck_1}(y)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$ (see App.~\ref{sec:GSproofs-g}). The secret key is $x$ and the verification key is $\vecb{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,\allowbreak[\vecb{d}]_1,[\vecb{\psi}]_2,[\vecb{\omega}]_1,\pi)$.
+\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1:=\Com_{[\matr{U}]_1}(\beta = 0;r)$, where $r\gets\Z_q$, plus a Groth-Sahai proof $\pi$ that $\beta(\beta-1)=0$ (see App.~\ref{sec:GSproofs-h}). Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 :=x[\vecb{a}]_1+t[\vecb{u}]_2 = \GS.\Com_{ck_1}(y)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$ (see App.~\ref{sec:GSproofs-g}). The secret key is $x$ and the extended verification key is $\widetilde{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,\allowbreak[\vecb{d}]_1,\pi,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
 \item[$\mathsf{Sign}_{\rho,x}(m,R)$:] Let $\alpha=(\mu-1)m+\nu$ the index of the signer with respect to $R$.
 \begin{enumerate}
 \item Compute $(sk_\mathsf{ot},vk_\mathsf{ot})\gets\mathsf{OT}.\KG(gk)$ and $\sigma_\mathsf{ot}\gets\allowbreak\mathsf{OT}.\allowbreak\mathsf{Sign}_{sk_\mathsf{ot}}(m,R)$.
 
-\item For $1\leq i \leq n^{2/3}$, let $[\matr{A}_i]_1:=[\vecb{a}_{i,1}\cat\allowbreak\ldots\cat\allowbreak\vecb{a}_{i,m}]_1$, $[\vecb{h}_i]_1 := \sum_{j=1}^m[\vecb{a}_{i,j}]_1$, $[\vecb{g}_i]_1:=\sum_{j=1}^{m}[\vecb{d}_{i,j}]_1$, $[\vecb{\psi}_i]_2 :=\sum_{j=1}^m [\vecb{\psi}_{i,j}]_2$, and $[\vecb{\omega}_i]_1:=\sum_{j=1}^m[\vecb{\omega}_{i,j}]_1$. Define the sets
+\item For $1\leq i \leq n^{2/3}$, let $[\matr{A}_i]_1:=[\vecb{a}_{i,1}\cat\allowbreak\ldots\cat\allowbreak\vecb{a}_{i,m}]_1$, $[\vecb{h}_i]_1 := \sum_{j=1}^m[\vecb{a}_{i,j}]_1$ and $[\vecb{g}_i]_1:=\sum_{j=1}^{m}[\vecb{d}_{i,j}]_1$. Define the sets
 $H=\{[\vecb{h}_1]_2,\ldots,[\vecb{h}_{n^{2/3}}]_2\}$ and
 $G=\{
 	[\vecb{g}_1]_2
@@ -22,17 +22,17 @@ $G=\{
 
 \item Let
 $
-[\matr{C}']_2:=[\vecb{c}_{\mu,\nu}\cat\vecb{c}_{\mu,1}\cat\cdots\cat\vecb{c}_{\mu,m}]+[\vecb{w}_2]_2\vecb{\delta}_c^\top$ and $[\matr{A}']_1:=[\vecb{a}_{\mu,\nu} \cat\allowbreak \vecb{a}_{\mu,1} \cat \cdots \cat\vecb{a}_{\mu,m}]_1+[\vecb{u}_2]_1\vecb{\delta}_a^\top\in\GG^{2\times m}_1$, where $\vecb{\delta}_a,\vecb{\delta}_c\gets\Z_q^m$ (the $\nu$-th row is moved to the front of each matrix).
-Use $[\matr{A}']_1,[\matr{C}']_2,[\matr{A}_\mu]_1,[\matr{C}_\mu]_2,[\vecb{\psi}_\mu]_2,[\vecb{\omega}_\mu]_1,[\vecb{g}_\mu]$ and $[\vecb{g}]_2$ to derive $[\vecb{\psi}']_2,[\vecb{\omega}']_1$ as in equation (\ref{eq:g-rerand-proofs}). Compute also a proof $\pi_h$ that $h(\matr{A}')=h(\matr{A}_\mu)$ using $[\matr{A}']_1$ and $[\vecb{h}
-]_1$ to compute a GS proof of equation (\ref{eq:coll-h}).
-\item Compute a GS proof $\pi_{\mathcal{Q}}$ that $\matr{A}'\in \mathcal{Q}_m$ re-randomizing proofs $\pi_{\mu,\nu},\pi_{\mu,1},\allowbreak\ldots,\pi_{\mu,m}$.
+[\matr{C}']_2:=[\vecb{c}_{\mu,\nu}\cat\vecb{c}_{\mu,1}\cat\cdots\cat\vecb{c}_{\mu,m}]_2+[\vecb{w}_2]_2\vecb{\delta}_c^\top$ and $[\matr{A}']_1:=[\vecb{a}_{\mu,\nu} \cat\allowbreak \vecb{a}_{\mu,1} \cat \cdots \cat\allowbreak\vecb{a}_{\mu,m}]_1+[\vecb{u}_2]_1\vecb{\delta}_a^\top\in\GG^{2\times m}_1$, where $\vecb{\delta}_a,\vecb{\delta}_c\gets\Z_q^m$ (the $\nu$-th row is moved to the front of each matrix).
+Use $[\matr{A}_\mu]_1,[\matr{C}']_2$, $\matr{P}$ the permutation matrix that swaps the first element with the $\nu$-th element, and $[\vecb{\psi}_{\mu,i}]_2,[\vecb{\omega}_{\mu,i}]_1$ plus $\vecb{\delta}_a,\vecb{\delta}_c,\delta_g$ to derive $[\vecb{\psi}']_2,[\vecb{\omega}']_1$, a proof that $g_{\matr{A}'}(\vecb{x}')=g_\matr{A}(\vecb{x})$, as in equation (\ref{eq:rerand-proofs-g}).
+\item Compute a proof $\pi_h$ that $h(\matr{A}')=h(\matr{A}_\mu)$ as the GS proof that $\sum_{i=1}^m [\vecb{a}'_i]_1-[\vecb{h}]_1 = \tilde{\delta}_h[\vecb{u}_2]$, where $\tilde{\delta}_h = \sum_{i=1}^m\delta_{a,i}-\delta_h$.
+\item Compute a GS proof $\pi_\mathsf{bits}$ that $\vecb{\beta}'$, the vector of openings of  $\matr{A}'$, belongs to $\bits^m$ re-randomizing proofs $\pi_{\mu,\nu},\pi_{\mu,1},\allowbreak\ldots,\pi_{\mu,m}$.
 
 \item Compute $[\sigma]_1\gets\mathsf{BB}.\mathsf{Sign}_{x_{\mu,\nu}}(vk_\mathsf{ot})$, $[\vecb{f}]_1\gets\GS.\Com_{ck_1}([\sigma]_1)$, and a GS proof $\pi_\mathsf{BB}$ of satisfiability of equation (\ref{eq:bbs-verification}) with $[\vecb{c}_{\mu,\nu}]_2$ the commitment to the secret key.
 
-\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_1,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_h,\pi_{\mathcal{Q}},\pi_\mathsf{BB})$. (GS proofs include commitments to variables).
+\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_1,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_h,\pi_{\mathsf{bits}},\pi_\mathsf{BB})$. (GS proofs include commitments to variables).
 \end{enumerate}
 
-\item[$\mathsf{Verify}_{\rho,R}(m,\grkb{\sigma})$:] Verify the validity of the one-time signature and of all the proofs, and check also that $g_{\matr{A}'}([\matr{C}']_2,[\vecb{\psi}']_2,[\vecb{\omega}']_1) = [\vecb{g}]_1[\vecb{w}_1^\top]_2$. Return 0 if any of these checks fails and 1 otherwise.
+\item[$\mathsf{Verify}_{\rho,R}(m,\grkb{\sigma})$:] Verify the validity of the one-time signature and of all the proofs. Return 0 if any of these checks fails and 1 otherwise.
 \end{description}
 
 We prove the following theorem which states the security of our construction.
@@ -44,7 +44,7 @@ $\mathrm{SXDH}$ assumption, and the assumption
 that the one-time signature and the Boneh-Boyen signature are unforgeable.
 Concretely, for any PPT adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3$ such that
 \begin{align*}
-\adv(\advA)\leq &\left(1+\frac{2q\cdot q_\mathsf{gen}}{q-m^2}\right)\adv_{\mathrm{SXDH}}(\advB_1)+\frac{q\cdot q_\mathsf{gen}}{q-m^2}(q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_2)+\adv_{\mathsf{BB}}(\advB_3)),
+\adv(\advA)\leq &(Q_\mathsf{gen}^2+1)\adv_{\mathrm{SXDH}}(\advB_1)+Q_\mathsf{gen}Q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_2)+Q_\mathsf{gen}\adv_{\mathsf{BB}}(\advB_3),
 \end{align*}
-where $q_\mathsf{gen},q_\mathsf{sign},$ and $m$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles, and $m$ is the cubic root of the size of the ring in $\advA$'s forgery.
+where $Q_\mathsf{gen},Q_\mathsf{sign},$ and $m$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles, and $m$ is the cubic root of the size of the ring in $\advA$'s forgery.
 \end{theorem}

@@ -40,12 +40,12 @@ We prove the following theorem which states the security of our construction.
 \begin{theorem}\label{theo:security}
 The scheme presented in this section is a ring signature scheme
 with perfect correctness, perfect anonymity and computational unforgeability under the
-$q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\skermdh$ assumption, the $\mathrm{SXDH}$ assumption, and the assumption
+$Q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{Q_\mathsf{gen}}^\top\mbox{-}\skermdh$ assumption, the $\mathrm{SXDH}$ assumption, and the assumption
 that the one-time signature and the Boneh-Boyen signature are unforgeable.
 Concretely, for any PPT adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3,\advB_4,\advB_5$ such that
 \begin{align*}
-\adv(\advA)\leq &\adv_{\mathrm{SXDH}}(\advB_1)+\adv_{q_\mathsf{gen}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)+\\
-&q_\mathsf{gen}(q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)),
+\adv(\advA)\leq &\adv_{\mathrm{SXDH}}(\advB_1)+\adv_{Q_\mathsf{gen}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{Q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)+\\
+&Q_\mathsf{gen}(Q_\mathsf{sign}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)),
 \end{align*}
-where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
+where $Q_\mathsf{gen}$ and $Q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
 \end{theorem}

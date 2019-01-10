@@ -1,13 +1,15 @@
 % !TEX root = ../main-ring-signature.tex
 
-In this section we construct two different (but related) hash functions. The functions $g$ and $h$ defined in section \ref{sec:hf-ppa}  are proven collision resistant under the PPA (and the $\kermdh$) assumption. In section \ref{sec:hf-sxdh} we give another pair of functions $g$ and $h$ which we prove collision resistant under the SXDH assumtion.
+The high level description of out PPA based ring signature was already given in sect. \ref{sec:tech-overview}. Next we proceed to formally define the hash functions $h$ and $g$ a then we give the formal description of the protocol. We defer the proof of security to App. \ref{sec:ppa-sec-proof} 
 
-Collision resistance of functions from section \ref{sec:hf-ppa} are almost direct consequence of the PPA assumption, while the functions from \ref{sec:hf-sxdh} are inspired on the PPA instantiations but are more complex. %For example, neither $h$ and $g$ are efficiently computable, but we manage to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in $g$'s key $k$. 
+%In this section we construct two different (but related) hash functions. The functions $g$ and $h$ defined in section \ref{sec:hf-ppa}  are proven collision resistant under the PPA (and the $\kermdh$) assumption. In section \ref{sec:hf-sxdh} we give another pair of functions $g$ and $h$ which we prove collision resistant under the SXDH assumtion.
 
-Function $h$ in the SXDH setting is unconditionally collision resistant under a relaxation of the notion of equality of purported collisions. Note that unconditionality implies that collision resistance holds with respect to any auxiliary information (in particular $k$). On the other hand, function $h$ in the PPA instantiation is only second-preimage collision resistant.
+%Collision resistance of functions from section \ref{sec:hf-ppa} are almost direct consequence of the PPA assumption, while the functions from \ref{sec:hf-sxdh} are inspired on the PPA instantiations but are more complex. %For example, neither $h$ and $g$ are efficiently computable, but we manage to prove that $h(x)=h(x')$ and $g_k(x)=h_k(x')$ for concrete values encoded in $g$'s key $k$. 
 
-For both functions $g$, $k$ is computed in a distributed fashion $k = (k_0,k_1,\ldots,k_n)$, such that $k_i$ is computed only from $k_0$ and hence, if $j\neq i$, then $k_i$ and $k_j$ are independent conditioned on $k_0$. In our ring signature, $k_0$ will be the global reference string and $k_i$ will be the verification key which is locally computed by the $i$-th party. 
-Function $g$ is adaptive collision resistant under the SXDH assumption, while the PPA instantiation is only statically collision resistant.
+%Function $h$ in the SXDH setting is unconditionally collision resistant under a relaxation of the notion of equality of purported collisions. Note that unconditionality implies that collision resistance holds with respect to any auxiliary information (in particular $k$). On the other hand, function $h$ in the PPA instantiation is only second-preimage collision resistant.
+
+%For both functions $g$, $k$ is computed in a distributed fashion $k = (k_0,k_1,\ldots,k_n)$, such that $k_i$ is computed only from $k_0$ and hence, if $j\neq i$, then $k_i$ and $k_j$ are independent conditioned on $k_0$. In our ring signature, $k_0$ will be the global reference string and $k_i$ will be the verification key which is locally computed by the $i$-th party. 
+%Function $g$ is adaptive collision resistant under the SXDH assumption, while the PPA instantiation is only statically collision resistant.
 
 %We additionally show how to compute zero-knowledge proofs of membership in the message space of $h$ and of satisfiability of $g_k(x)=g_k(x')$.
 %We obtain shorter proofs replacing some commitments by ElGamal encryptions as done in \cite{PKC:EscGro14}. Although the security of this shorter proofs is shown in \cite{PKC:EscGro14}, for completeness we include in Appendix XXX the security proofs of our instantiations of the general framwork described in \cite{PKC:EscGro14}.
