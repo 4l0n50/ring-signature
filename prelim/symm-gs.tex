@@ -12,10 +12,10 @@ of equation (\ref{gseq}) using the GS commitments, and then computes a proof tha
 
 GS proofs are perfectly sound when the CRS is sampled from the perfectly binding distribution, and perfectly witness-indistinguishable when sampled from the perfectly hiding distribution. Computational indistinguishability of  both distributions implies either perfect soundness and computational witness indistinguishability or computational soundness and perfect witness-indistinguishability.
 
-Further, Belenky et al.~noted that Groth-Sahai proofs can be \emph{re-randomized} \cite{C:BCCKLS09}. This means that, given commitments and proofs showing the satisfiability of some equation, on can compute new proofs which looks exactly as fresh proofs (i.e. computed with fresh randomness) for the same equation, even without knowing the commitment openings nor the randomness. In this work compute such proofs for integer equations $\beta(\beta-1)=0$ and $\beta x = y$. For completeness, in App.~\ref{sec:GSproofs-hg} we show how to construct and re-randomize such proofs.
+Further, Belenky et al.~noted that Groth-Sahai proofs can be \emph{re-randomized} \cite{C:BCCKLS09}. This means that, given commitments and proofs showing the satisfiability of some equation, on can compute new proofs which looks exactly as fresh proofs (i.e. computed with fresh randomness) for the same equation, even without knowing the commitment openings nor the randomness. In this work compute such proofs for integer equations $\beta(\beta-1)=0$ and $\beta x = y$. \ifPKC\else For completeness, in App.~\ref{sec:GSproofs-hg} we show how to construct and re-randomize such proofs.\fi
 
 \subsection{Groth-Sahai Commitments.}
-Following Groth and Sahai's work \cite{EC:GroSah08}, in symmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_\gamma$, $\gamma\in\{1,2\}$, the form
+Following Groth and Sahai's work \cite{EC:GroSah08}, in asymmetric groups and using the SXDH assumption, GS commitments are vectors in $\GG^2_\gamma$, $\gamma\in\{1,2\}$, the form
 \begin{small}\begin{align*}
 &\GS.\Com_{ck_\gamma}([x]_\gamma;\vecb{r}):=\pmatri{{[0]_\gamma}\\{[x]_\gamma}}+r_\gamma\left[\vecb{u}_1-\pmatri{0\\1}\right]_\gamma+{r}_2[\vecb{u}_2]_\gamma\\
 &\GS.\Com_{ck_\gamma}(x;\vecb{r}):=x[\vecb{u}_1]_\gamma+{r}[\vecb{u}_2]_\gamma

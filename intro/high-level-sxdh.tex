@@ -33,8 +33,8 @@
 
 %Our scheme builds on top of the ring signature of Chandran et al.~and improves the underlying $\Theta(\sqrt{n})$ proof that the opening of a Groth-Sahai commitment is a Boneh-Boyen signature verification key $vk$ and belongs to the ring of verification keys $R=\{vk_1\ldots,vk_n\}$. In the rest of this section we simply refer to this proof as a ``set-membership proof'' and we remark that it might be applied to any set of (vectors of) group elements (not only of verification keys).
 %
-Our construction follow the high-level description depicted in section \ref{sec:tech-overview} with the only difference that we do not use the verification key of the Boneh-Boyen signature, but a commitment to the secret key. The only reason is efficiency since in this way we use Groth-Sahai proofs for integer equations instead of equations involving group elements. 
-Each signature consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
+Our construction follow the high-level description depicted in section \ref{sec:tech-overview} with the only difference that we do not use the verification key of the Boneh-Boyen signature $vk$, but a commitment to the secret key $x$. The only reason is efficiency since in this way we use Groth-Sahai proofs for integer equations instead of equations involving group elements. 
+%Each signature consists of two set-membership proofs in sets of size $n^{2/3}$ --- i.e.~each proof is of size $\Theta(\sqrt[3]{n})$ ---  plus $\Theta(\sqrt[3]{n})$ Groth-Sahai proofs and Groth-Sahai commitments.
 
 %Let $(x,vk)$ be Boneh-Boyen secret/verification keys (note that $[x]_2=vk$) and let $[\matr{U}]_1,[\matr{V}]_2,[\matr{W}]_1$ Groth-Sahai commitment keys.
 %We consider extended verification keys which includes $[\vecb{a}]_1 = \Com_{[\matr{U}]_1}(\beta;r)$, where $\beta=0$ and $r\gets\Z_q$, $\pi$ a Groth-Sahai proof that $\beta(\beta-1)=0$ (see App.~\ref{sec:GSproofs-h}), 
@@ -42,14 +42,14 @@ Each signature consists of two set-membership proofs in sets of size $n^{2/3}$ -
 %Recall that $[\vecb{a}]_1$, where $\vecb{a}\gets\mathcal{Q}_1^\beta$, is a commitment to $\beta$, as well as $[\vecb{b}]_2=\Com_{[\matr{V}]_2}(\beta;\rho)$.
 %We compute $[\vecb{c}]_2=\Com_{[\matr{W}]_2}(x;s)$, $[\vecb{d}]_1 = x[\vecb{a}]_1+t[\vecb{u}_2]_1=\Com_{[\matr{U}]_1}(y)$, for $y:=\beta x$, and $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ is a Groth-Sahai proof that $\beta x = y$ (see App. \ref{sec:GSproofs-g} for more details). Thereby,  the extended verification key of each user is of the form $\widetilde{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,[\vecb{d}]_1,\pi,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
-For $[\matr{A}]_1\in\GG_1^{2\times m}$ , a matrix whose colum $[\vecb{a}_i]$ is a Groth-Sahai commitment to $\beta_i$, and $\vecb{x}\in\Z_q^m$ we define $h([\matr{A}]_1) := \sum_{i=1}^m \beta_i$ and $g_\matr{A}(\vecb{x}) = \sum_{i=1}^m \beta_i x_i$. Unlike the PPA-based construction, we do not prove collision resistance of $h$ or $g$ (they are not) but instead these functions are only used as an intuitive link with the simpler PPA-based construction.
+For $\vecb{\beta}\in\bits^m$ we define $h(\vecb{\beta}) := \sum_{i=1}^m \beta_i$ and $g_\vecb{\beta}(\vecb{x}) := \sum_{i=1}^m \beta_i x_i$. Unlike the PPA-based construction, we do not prove collision resistance of $h$ or $g$ ($g$ is not collision resistant). Instead, these functions are only used as shorthand and to keep an intuitive link with the PPA-based construction.
 
-The high level description of our ring signature in the SXDH setting was already given in section \ref{sec:tech-overview}. It was left to show how to re-randomize of proofs for the equations $\beta\in\bits$ and $y = \beta x$,  which can be done with the techniques of \cite{C:BCCKLS09} and for completeness we give in App.~\ref{sec:GSproofs-h} and App.~\ref{sec:GSproofs-g}, respectively. It was also left to show how to derive a proof that $g_{\matr{A}'}(\vecb{x}') = g_{\matr{A}_\mu}(\vecb{x}_\mu)$ and we do it in the following section.
+In the high level description of our ring signature in the SXDH setting from section \ref{sec:tech-overview} it was left to show how to derive a proof that $g_{\vecb{\beta}'}(\vecb{x}') = g_{\vecb{\beta}_\mu}(\vecb{x}_\mu)$, which is described in following section. \ifPKC\else For completeness, in App.~\ref{sec:GSproofs-h} and App.~\ref{sec:GSproofs-g} we describe how to re-randomize proofs for the equations $\beta\in\bits$ and $y = \beta x$ following \cite{C:BCCKLS09}.\fi
 
-\subsection{NIZK proof that $g_{\matr{A}'}(\vecb{x}') = g_{\matr{A}}(\vecb{x})$}
-Let $[\matr{U}]_1$ and $[\matr{W}]_2$ Groth-Sahai commitment keys. Consider $[\vecb{a}_i]_1 = \Com(\beta_i;r_i)$, $[\vecb{c}_i]_2 = \Com_{[\matr{W}]_2}(x_i;s)$, and $[\vecb{d}_i] = \Com_{[\matr{U}]_1}(y_i;t)$, where $y_i=\beta_ix_i$, $\beta\in\bits$, $r,s,t\in\Z_q$, and $1\leq i\leq m$. Consider also $[\vecb{g}]_1$, a re-randomization of $\sum_{i=1}^m [\vecb{d}_i] = \Com(g_\matr{A}(\vecb{x}))$, and $[\matr{A}']_1$ and $[\matr{C}']_2$ re-randomizations of permutations of $[\matr{A}]_1 := ([\vecb{a}_1]|\cdots|[\vecb{a}_m])$ and $[\matr{C}]_2 := ([\vecb{c}_1]_2|\cdots|[\vecb{c}_m]_2)$, respectively. We want to construct a proof that $g_{\matr{A}'}(\vecb{x}') = g_\matr{A}(\vecb{x})$, or equivalently $\sum_{i=1}^m \beta'_ix'_i = \sum_{i=1}^m \beta_i x_i$, only from the extended verification keys and the random coins used in the re-randomizations.
+\subsection{NIZK proof that $g_{\vecb{\beta}'}(\vecb{x}') = g_{\vecb{\beta}}(\vecb{x})$} \label{sec:prueba-g}
+Let $[\matr{U}]_1$ and $[\matr{W}]_2$ Groth-Sahai commitment keys. Consider $[\vecb{a}_i]_1 = \Com(\beta_i;r_i)$, $[\vecb{c}_i]_2 = \Com_{[\matr{W}]_2}(x_i;s)$, and $[\vecb{d}_i] = \Com_{[\matr{U}]_1}(y_i;t)$, where $y_i=\beta_ix_i$, $\beta\in\bits$, $r,s,t\in\Z_q$, and $1\leq i\leq m$. Consider also $[\vecb{g}]_1$, a re-randomization of $\sum_{i=1}^m [\vecb{d}_i]_1 = \Com(g_\vecb{\beta}(\vecb{x}))$, and $[\matr{A}']_1$ and $[\matr{C}']_2$ permutations of re-randomizations of $[\matr{A}]_1 := ([\vecb{a}_1]|\cdots|[\vecb{a}_m])$ and $[\matr{C}]_2 := ([\vecb{c}_1]_2|\cdots|[\vecb{c}_m]_2)$, respectively. We want to construct a proof that $g_{\vecb{\beta}'}(\vecb{x}') = g_\vecb{\beta}(\vecb{x})$, or equivalently $\sum_{i=1}^m \beta'_ix'_i = \sum_{i=1}^m \beta_i x_i$, only from the extended verification keys and the random coins used in the re-randomizations.
 
-Apart from $[\vecb{a}_i]_1,[\vecb{c}_i]_2,[\vecb{d}_i]_1$, the extended verification key contains Groth-Sahai proofs $[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1$ for the equation $\beta_ix_i = y_i$ defined in App.~\ref{sec:GSproofs-g}. Each of these proofs satisfy the verification equation
+Apart from $[\vecb{a}_i]_1,[\vecb{c}_i]_2,[\vecb{d}_i]_1$, the extended verification key contains Groth-Sahai proofs $[\vecb{\psi}_i]_2,[\vecb{\omega}_i]_1$ for the equation $\beta_ix_i = y_i$\ifPKC\else as defined in App.~\ref{sec:GSproofs-g}\fi. Each of these proofs satisfy the verification equation
 $$
 [\vecb{a}_i]_1[\vecb{c}_i^\top]_2 - [\vecb{d}_i]_1[\vecb{w}_1^\top]_2 = [\vecb{u}_2]_1[\vecb{\psi}^\top_i]_2 + [\vecb{\omega}_i]_1[\vecb{w}_2^\top]_2.
 $$
@@ -63,11 +63,11 @@ The right side of the verification equation for equation $\sum_{i=1}^m\beta'_i x
 &= [\vecb{u}_2]_1\left(\sum_{i=1}^m[\vecb{\psi}_i]_1+[\matr{C}']_2\vecb{\delta}_a-\delta_g[\vecb{w}_1]_2\right)^\top + \left(\sum_{i=1}^m[\vecb{\omega}_i]_1+[\matr{A}]_1\matr{P}\vecb{\delta}_c\right)[\vecb{w}_2^\top]_2.
 \end{align*}
 
-The last equation indicates that the proof must be the factors of $[\vecb{u}_2]_1$ and $[\vecb{w}_2^\top]_2$ plus randomization terms. That is, for $\xi\gets\Z_q$
+The last equation indicates that the proof must be the terms multiplying $[\vecb{u}_2]_1$ and $[\vecb{w}_2^\top]_2$ plus randomization terms. That is, for $\xi\gets\Z_q$
 \begin{align}
 &[\vecb{\psi}']_2 = \sum_{i=1}^m[\vecb{\psi}_i]_1+[\matr{C}']_2\vecb{\delta}_a-\delta_g[\vecb{w}_1]_2 + \xi[\vecb{w}_2]_2\nonumber\\
 &
 [\vecb{\omega}']_1 = \sum_{i=1}^m[\vecb{\omega}_i]_1+[\matr{A}]_1\matr{P}\vecb{\delta}_c - \xi[\vecb{u}_2]_1.\label{eq:rerand-proofs-g}
 \end{align}
 
-Assuming $[\vecb{d}']_1$ is correctly computed, the proof is sound because it satisfy the Groth-Sahai verification equation. Furthermore, the proof is uniformly distributed conditioned on satisfying the verification equation and thus follows exactly the same distribution as a fresh Groth-Sahai proof.
+Assuming $[\vecb{d}']_1$ is correctly computed, the proof is sound because it satisfy the Groth-Sahai verification equation for $\sum_{i=1}^m \beta'_ix'_i - \sum_{i=1}^m \beta_i x_i=0$. Furthermore, the proof is uniformly distributed conditioned on satisfying the verification equation and thus follows exactly the same distribution as a fresh Groth-Sahai proof.

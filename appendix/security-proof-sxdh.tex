@@ -15,7 +15,7 @@
 %\end{theorem}
 
 \begin{proof}
-Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\vecb{vk}$. Further, the re-randomized commitments are random elements $\GG_2^1$ or $\GG_2^2$, and hence independent of the original commitments, and the re-randomized proofs follows the same distribution of the honest proofs and hence, they don't reveal any information about $\vecb{vk}$.
+Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai commitment keys defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\widetilde{vk}$ and $x$. Further, the re-randomized commitments are random elements $\GG_2^1$ or $\GG_2^2$, and hence independent of the original commitments, and the re-randomized proofs follows the same distribution of the honest proofs and hence, they don't reveal any information about $\widetilde{vk}$ and $x$.
 
 We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${Q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''. This is justified by the fact that the output of $\mathsf{VKGen}$ is independent of all previous outputs.
 
@@ -41,8 +41,8 @@ W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeabil
 \item[$\sfGame_3$:] This is game exactly as $\sfGame_2$ except that, if $\mathsf{err}_3$ or $\err_4$ are set to 1, $\sfGame_3$ aborts.
 \item[$\sfGame_4$:] This is game exactly as $\sfGame_3$ except that, if $\mathsf{err}_3$ is set to 1, $\sfGame_4$ aborts. 
 \end{itemize}
-Since in $\sfGame_1$ variables $\err_1,\err_2$ and $\err_3$ are just dummy variables, the only difference with $\sfGame_0$ comes from $ck'_2$ distribution. Simlarly, the only difference between $\sfGame_{2,2}$ and $\sfGame_{2,3}$ comes from $ck_1$ and $ck_2$ distribution.
-It follows that there an adversares $\advB_{1},\adv{B}_{2}$ against SXDH such that $|\Pr[\sfGame_0=1]-\Pr[\sfGame_1=1]|\leq \adv_{\mathrm{SXDH}}(\advB_{1})$ and $|\Pr[\sfGame_{2,2}=1]-\Pr[\sfGame_{2,3}=1]|\leq \adv_{\mathrm{SXDH}}(\advB_{2})$.
+Since in $\sfGame_1$ variables $\err_1,\err_2$ and $\err_3$ are just dummy variables, the only difference with $\sfGame_0$ comes from $ck'_2$ distribution. Similarly, the only difference between $\sfGame_{2,2}$ and $\sfGame_{2,3}$ comes from $ck_1$ and $ck_2$ distribution.
+It follows that there an adversaries $\advB_{1},\advB_{2}$ against SXDH such that $|\Pr[\sfGame_0=1]-\Pr[\sfGame_1=1]|\leq \adv_{\mathrm{SXDH}}(\advB_{1})$ and $|\Pr[\sfGame_{2,2}=1]-\Pr[\sfGame_{2,3}=1]|\leq \adv_{\mathrm{SXDH}}(\advB_{2})$.
 
 \begin{lemma} 
 $$
@@ -63,13 +63,14 @@ Now we proceed to bound $\Pr[\sfGame_1=1|\err_1=1]\Pr[\err_1=1]$. It holds that
 &= \Pr[\err_2=0|\sfGame_1=1,\err_1=1]\Pr[\sfGame_1 = 1,\err_1=1]\\
 &\geq \frac{1}{Q_\mathsf{gen}}\Pr[\sfGame_1=1|\err_1=1]\Pr[\err_1=1].
 \end{align*}
-where the last inequality follows from the fact that $\err_1=1$ implies that $[x'_1]_2\notin R$ and hence $[\vecb{x}']_2$ is not a permutation of $[\vecb{x}_\mu]_2$. Since all entries of $\vecb{x}_\mu$ must be different, there is least one $j\in[m]$ such that $x_{\mu,j}\neq x'_k$ for all $k\in[m]$. Since $j^*$ is completely hidden to the adversary, it follows that $\Pr[\err_2=0|\sfGame_1=1,\err_1=1] \geq \Pr[j^*=(m-1)\mu+j] = 1/Q_\mathsf{gen}$.
+where the last inequality follows from the fact that $\err_1=1$ implies that $[x'_1]_2\notin R$ and then $x'_i \neq x_{\mu,k}$ for all $k\in [m]$. Given that all entries of $\vecb{x}_\mu$ must be different, there is least one $j\in[m]$ such that $x_{\mu,j}\neq x'_k$ for all $k\in[m]$. Since $j^*$ is completely hidden to the adversary, it follows that $\Pr[\err_2=0|\sfGame_1=1,\err_1=1] \geq \Pr[j^*=(m-1)\mu+j] = 1/Q_\mathsf{gen}$.
 \end{proof}
 
 \begin{lemma} $\Pr[\sfGame_{2,1}=1] \leq Q_\mathsf{gen}\Pr[\sfGame_{2,2}=1]$
 \end{lemma}
 \begin{proof}
-Since $ck_1$ and $ck_2$ are perfectly hiding there is not information revealed about $\vecb{\beta}$ through the extended verification keys or the signatures. Then, it holds that $\Pr[\sfGame_{2,2}=1] = \Pr[\err_3=0|\sfGame_{2,1}=1]\Pr[\sfGame_{2,1}=1] =(Q_\mathsf{gen} - Q_\mathsf{corr})/Q_\mathsf{gen}\Pr[\sfGame_{2,1}=1] \geq 1/Q_{\mathsf{gen}}\Pr[\sfGame_{2,1}=1]$, where $Q_\mathsf{corr}$ is the number of queries to $\mathsf{Corrupt}$.
+Since $ck_1$ and $ck_2$ are perfectly hiding there is no information revealed about $\vecb{\beta}$ through the extended verification keys or the signatures. Then, it holds that $\Pr[\sfGame_{2,2}=1] = \Pr[\err_3=0|\sfGame_{2,1}=1]\Pr[\sfGame_{2,1}=1]$
+and $ \Pr[\err_3=0|\sfGame_{2,1}=1]$ is the probability that the ${Q_\mathsf{corr}}$ calls to $\mathsf{Corrupt}$ do not abort. Since $\advA$ is an eager adversary, the probability that $i^*$ doesn't hit any of the $Q_\mathsf{corr}$ corrupted users is $(Q_\mathsf{gen}-Q_\mathsf{corr})/Q_\mathsf{gen} \geq 1/Q_\mathsf{gen}$ and then $\Pr[\sfGame_{2,2}=1] \geq 1/Q_\mathsf{gen}\Pr[\sfGame_{2,1}=1]$.
 \end{proof}
 
 \begin{lemma}
@@ -78,7 +79,7 @@ $\Pr[\sfGame_{2,3}=1] = 0$
 \begin{proof}
 Since $ck_1,ck_2$ and $ck'_2$ are perfectly binding, all Groth-Sahai proofs are perfectly sound. If $\pi_\sfbits$ and $\pi_h$  are valid proofs, then $\vecb{\beta}'$, the opening of $[\matr{A}']$, is a permutation of $\vecb{\beta}_\mu$. Since $\err_1 = 1$ and $\err_2 = 0$, it holds that $x_{i^*} = x_{\mu, i^*_\mu}$, for some $i^*_\mu\in[m]$, and $x_{\mu,i^*}\neq x'_j$ for all $j$. Furthermore, since $\beta_{i^*} = \beta_{\mu,i^*_\mu}=1$, then $\beta_{j^*}=1$ for some unique $j^*\in[m]$.
 
-Finally, equation $\sum_{i=1}^m\beta'_i x'_i = \sum_{i=1}^m \beta_{\mu,i}x_{\mu,i}$ becomes $x'_{j^*} = x_{\mu,i^*_\mu}$, and therefore can't be satisfied. We conclude that $\pi_g$ can't be a valid proof and thus $\sfGame_1 = 0$.
+Finally, equation $\sum_{i=1}^m\beta'_i x'_i = \sum_{i=1}^m \beta_{\mu,i}x_{\mu,i}$ becomes $x'_{j^*} = x_{\mu,i^*_\mu}$, and therefore can't be satisfied. We conclude that $\pi_\sfbits,\pi_h,$ and $\pi_g$ can't be valid proofs simultaneously and thus $\Pr[\sfGame_{2,3}=1]=0$.
 \end{proof}
 
 \begin{lemma}

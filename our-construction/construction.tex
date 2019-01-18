@@ -5,7 +5,7 @@ In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ defi
 \begin{description}
 \item[$\mathsf{CRSGen}(gk)$:] Pick a perfectly hiding CRS for the Groth-Sahai proof system $\crs_\GS$ and define $(ck_1,ck_2):=\crs_\GS$. Note that $\crs_\GS$ can be also used for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,\crs_\GS).$
 
-\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1$, $[\vecb{a}]_2$ and then erase $\vecb{a}$ (but if not erased we prove security under the $(\ell,m)$-PPA). The secret key is $sk$ and the verification key is $\vecb{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$.
+\item[$\KG(\rho)$:] Pick $\vecb{a}\gets\mathcal{Q}$ and $(sk,[vk]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1$, $[\vecb{a}]_2$ and then erase $\vecb{a}$ (but if not erased we prove security under the $(\ell,m)$-PPA). The secret key is $sk$ and the extended verification key is $\tilde{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$.
 
 \item[$\mathsf{Sign}_{\rho,sk}(m,R)$:] Let $\alpha$ the index of the signer with respect to $R$.
 \begin{enumerate}
@@ -26,7 +26,7 @@ $G=\{
 $
 [\vecb{\kappa'}]_2:=([vk_\alpha]_2,[vk_{\mu,1}]_2,\ldots,[vk_{\alpha-1}]_2,[vk_{\alpha+1}]_2,\ldots,[vk_{\mu,m}]_2)^\top\in\GG^m_2$, 
 $[\matr{A}']_1:=[\vecb{a}_\alpha \cat \vecb{a}_{\mu,1} \cat \cdots \cat \vecb{a}_{\alpha-1}\cat \vecb{a}_{\alpha+1}\cat\cdots\cat\vecb{a}_{\mu,m}]_1\in\GG^{2\times m}_1$ and
-$A'=\{([\vecb{a}_{\mu,1}]_1,[\vecb{a}_{\mu,1}]_2),\ldots,([\vecb{a}_{\mu,1}]_1,\allowbreak [\vecb{a}_{\mu,1}]_2)\}$.
+$A'=\{([\vecb{a}_{\mu,1}]_1,\allowbreak[\vecb{a}_{\mu,1}]_2),\ldots,([\vecb{a}_{\mu,1}]_1,\allowbreak [\vecb{a}_{\mu,1}]_2)\}$.
 Compute GS commitments to all but the first element of $[\vecb{\kappa}']_2$ (note that $[\vecb{c}]_2$ is a commitment to the first element of $[\vecb{\kappa}']_2$). Compute also a GS proof $\pi_g$ that $g_{[\matr{A}']_1}([\vecb{\kappa}']_2)=[\vecb{y}]_2$, a GS proof $\pi_{h}$ that $h(A')=[\vecb{x}]_1$, and a GS proof $\pi_{Q_m}$ that $A'\in Q_m$.
 
 \item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\pi_{\mathsf{BB}},\pi_G,\pi_H, \pi_g,\pi_h,\pi_{Q_m})$. (GS proofs include commitments to variables).

@@ -1,11 +1,11 @@
 % !TEX root = ../main-ring-signature.tex
 
-In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme. We assume that ring descriptions doesn't contain repeated elements.
+In the following let $n:=|R|, m:=\sqrt[3]{n}$, and for $1\leq \alpha\leq n$ define $1\leq \mu \leq n^{2/3}$ and $1\leq \nu\leq m$ such that $\alpha=(\mu-1)m+\nu$. For a sequence $\{s\}_{1\leq i\leq n}$ we define $s_{\mu,\nu}:=s_{(\mu-1)m+\nu}$. Consider $\mathsf{OT}=(\mathsf{OT}.\KG,\mathsf{OT}.\mathsf{Sign},\allowbreak\mathsf{OT}.\mathsf{Ver})$ a one-time signature scheme. We assume that ring descriptions don't contain repeated elements.
 
 \begin{description}
-\item[$\mathsf{CRSGen}(gk)$:] Pick three perfectly hiding CRS for the Groth-Sahai proof system $ck_1,ck_2,ck'_2$, where $ck_1 := [\matr{U}]_1,ck_2 :=[\matr{V}]_2,ck'_2:=[\matr{W}]_2$. We use $ck_1,ck'_2$ for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,ck_1,ck_2,ck'_2).$
+\item[$\mathsf{CRSGen}(gk)$:] Pick three perfectly hiding CRS for the Groth-Sahai proof system $ck_1,ck_2,ck'_2$, where $ck_1 := [\matr{U}]_1,ck_2 :=[\matr{V}]_2,ck'_2:=[\matr{W}]_2$. We use $ck_1,ck_2$ for the $\Theta(\sqrt{n})$ set-membership of Chandran et al. The CRS is $\rho:=(gk,ck_1,ck_2,ck'_2).$
 
-\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1:=\Com_{[\matr{U}]_1}(\beta = 0;r)$, where $r\gets\Z_q$, plus a Groth-Sahai proof $\pi$ that $\beta(\beta-1)=0$ (see App.~\ref{sec:GSproofs-h}). Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 :=x[\vecb{a}]_1+t[\vecb{u}]_2 = \GS.\Com_{ck_1}(y)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$ (see App.~\ref{sec:GSproofs-g}). The secret key is $x$ and the extended verification key is $\widetilde{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,\allowbreak[\vecb{d}]_1,\pi,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
+\item[$\KG(\rho)$:] Pick $(x,[x]_2)\gets\mathsf{BB}.\KG(gk)$, compute $[\vecb{a}]_1:=\Com_{[\matr{U}]_1}(\beta = 0;r)$, where $r\gets\Z_q$, plus a Groth-Sahai proof $\pi$ that $\beta(\beta-1)=0$\ifPKC\else (see App.~\ref{sec:GSproofs-h})\fi. Compute also $[\vecb{c}]_2 = \GS.\Com_{ck'_2}(x;s),[\vecb{d}]_1 := \GS.\Com_{ck_1}(y;t)$, where $s,t\gets\Z_q$, and a proof $[\vecb{\psi}]_2,[\vecb{\omega}]_1$ that $\beta x = y$\ifPKC\else (see App.~\ref{sec:GSproofs-g})\fi. The secret key is $x$ and the extended verification key is $\widetilde{vk}:=([x]_2,[\vecb{a}]_1,[\vecb{c}]_2,\allowbreak[\vecb{d}]_1,\pi,[\vecb{\psi}]_2,[\vecb{\omega}]_1)$.
 
 \item[$\mathsf{Sign}_{\rho,x}(m,R)$:] Let $\alpha=(\mu-1)m+\nu$ the index of the signer with respect to $R$.
 \begin{enumerate}
@@ -23,13 +23,13 @@ $G=\{
 \item Let
 $
 [\matr{C}']_2:=[\vecb{c}_{\mu,\nu}\cat\vecb{c}_{\mu,1}\cat\cdots\cat\vecb{c}_{\mu,m}]_2+[\vecb{w}_2]_2\vecb{\delta}_c^\top$ and $[\matr{A}']_1:=[\vecb{a}_{\mu,\nu} \cat\allowbreak \vecb{a}_{\mu,1} \cat \cdots \cat\allowbreak\vecb{a}_{\mu,m}]_1+[\vecb{u}_2]_1\vecb{\delta}_a^\top\in\GG^{2\times m}_1$, where $\vecb{\delta}_a,\vecb{\delta}_c\gets\Z_q^m$ (the $\nu$-th row is moved to the front of each matrix).
-Use $[\matr{A}_\mu]_1,[\matr{C}']_2$, $\matr{P}$ the permutation matrix that swaps the first element with the $\nu$-th element, and $[\vecb{\psi}_{\mu,i}]_2,[\vecb{\omega}_{\mu,i}]_1$ plus $\vecb{\delta}_a,\vecb{\delta}_c,\delta_g$ to derive $[\vecb{\psi}']_2,[\vecb{\omega}']_1$, a proof that $g_{\matr{A}'}(\vecb{x}')=g_\matr{A}(\vecb{x})$, as in equation (\ref{eq:rerand-proofs-g}).
-\item Compute a proof $\pi_h$ that $h(\matr{A}')=h(\matr{A}_\mu)$ as the GS proof that $\sum_{i=1}^m [\vecb{a}'_i]_1-[\vecb{h}]_1 = \tilde{\delta}_h[\vecb{u}_2]$, where $\tilde{\delta}_h = \sum_{i=1}^m\delta_{a,i}-\delta_h$.
+Use $[\matr{A}_\mu]_1,[\matr{C}']_2$, $\matr{P}$ the permutation matrix that swaps the first element with the $\nu$-th element, and $[\vecb{\psi}_{\mu,i}]_2,[\vecb{\omega}_{\mu,i}]_1$ plus $\vecb{\delta}_a,\vecb{\delta}_c,\delta_g$ to derive $\pi_g = ([\vecb{\psi}']_2,[\vecb{\omega}']_1)$, a proof that $g_{\vecb{\beta}'}(\vecb{x}')=g_\vecb{\beta}(\vecb{x})$, as in equation (\ref{eq:rerand-proofs-g}).
+\item Compute a proof $\pi_h$ that $h(\vecb{\beta}')=h(\vecb{\beta}_\mu)$ as the GS proof that $\sum_{i=1}^m [\vecb{a}'_i]_1-[\vecb{h}]_1 = \tilde{\delta}_h[\vecb{u}_2]$, where $\tilde{\delta}_h = \sum_{i=1}^m\delta_{a,i}-\delta_h$.
 \item Compute a GS proof $\pi_\mathsf{bits}$ that $\vecb{\beta}'$, the vector of openings of  $\matr{A}'$, belongs to $\bits^m$ re-randomizing proofs $\pi_{\mu,\nu},\pi_{\mu,1},\allowbreak\ldots,\pi_{\mu,m}$.
 
 \item Compute $[\sigma]_1\gets\mathsf{BB}.\mathsf{Sign}_{x_{\mu,\nu}}(vk_\mathsf{ot})$, $[\vecb{f}]_1\gets\GS.\Com_{ck_1}([\sigma]_1)$, and a GS proof $\pi_\mathsf{BB}$ of satisfiability of equation (\ref{eq:bbs-verification}) with $[\vecb{c}_{\mu,\nu}]_2$ the commitment to the secret key.
 
-\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{\psi}']_1,[\vecb{\omega}']_1,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_h,\pi_{\mathsf{bits}},\pi_\mathsf{BB})$. (GS proofs include commitments to variables).
+\item Return the signature $\grkb{\sigma}:=(vk_\mathsf{ot},\sigma_\mathsf{ot},[\vecb{f}]_1,[\matr{A}']_2,[\matr{C}']_2,[\vecb{g}]_1,[\vecb{h}]_1,\allowbreak\pi_G,\pi_H, \pi_g,\allowbreak \pi_h,\pi_{\mathsf{bits}},\pi_\mathsf{BB})$. (GS proofs include commitments to variables).
 \end{enumerate}
 
 \item[$\mathsf{Verify}_{\rho,R}(m,\grkb{\sigma})$:] Verify the validity of the one-time signature and of all the proofs. Return 0 if any of these checks fails and 1 otherwise.
@@ -46,5 +46,5 @@ Concretely, for any PPT adversary $\advA$ against the unforgeability of the sche
 \begin{align*}
 \adv(\advA)\leq &(Q_\mathsf{gen}^2+1)\adv_{\mathrm{SXDH}}(\advB_1)+Q_\mathsf{gen}Q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_2)+Q_\mathsf{gen}\adv_{\mathsf{BB}}(\advB_3),
 \end{align*}
-where $Q_\mathsf{gen},Q_\mathsf{sign},$ and $m$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles, and $m$ is the cubic root of the size of the ring in $\advA$'s forgery.
+where $Q_\mathsf{gen}$ and $Q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
 \end{theorem}

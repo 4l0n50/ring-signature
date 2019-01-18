@@ -1,23 +1,23 @@
 % !TEX root = ../main-ring-signature.tex
 
-We restate Theorem \ref{theo:security} and prove it.
-\begin{theorem}
-The scheme presented in Section \ref{sec:our-construction} is a ring signature scheme
-with perfect correctness, perfect anonymity and computational unforgeability under the
-$q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{q_\mathsf{gen}}^\top\mbox{-}\skermdh$ assumption, the $\mathrm{SXDH}$ assumption, and the assumption
-that the one-time signature and the Boneh-Boyen signature are unforgeable.
-Concretely, for any PPT adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3,\advB_4,\advB_5$ such that
-\begin{align*}
-\adv(\advA)\leq &\adv_{\mathrm{SXDH}}(\advB_1)+\adv_{q_\mathsf{gen}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)+\\
-&q_\mathsf{gen}(q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)),
-\end{align*}
-where $q_\mathsf{gen}$ and $q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
-\end{theorem}
+%We restate Theorem \ref{theo:security} and prove it.
+%\begin{theorem}
+%The scheme presented in Section \ref{sec:our-construction} is a ring signature scheme
+%with perfect correctness, perfect anonymity and computational unforgeability under the
+%$Q_\mathsf{gen}$-permutation pairing assumption, the $\mathcal{Q}_{Q_\mathsf{gen}}^\top\mbox{-}\skermdh$ assumption, the $\mathrm{SXDH}$ assumption, and the assumption
+%that the one-time signature and the Boneh-Boyen signature are unforgeable.
+%Concretely, for any PPT adversary $\advA$ against the unforgeability of the scheme, there exist adversaries $\advB_1,\advB_2,\advB_3,\advB_4,\advB_5$ such that
+%\begin{align*}
+%\adv(\advA)\leq &\adv_{\mathrm{SXDH}}(\advB_1)+\adv_{Q_\mathsf{gen}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{Q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)+\\
+%&Q_\mathsf{gen}(Q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)),
+%\end{align*}
+%where $Q_\mathsf{gen}$ and $Q_\mathsf{sign}$ are, respectively, upper bounds for the number of queries that $\advA$ makes to its $\mathsf{VKGen}$ and $\mathsf{Sign}$ oracles.
+%\end{theorem}
 
 \begin{proof}
-Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\vecb{vk}$.
+Perfect correctness follows directly from the definitions. Perfect anonymity follows from the fact that the perfectly hiding Groth-Sahai CRS defines perfectly hiding commitments and perfect witness-indistinguishable proofs, information theoretically hiding any information about $\tilde{vk}$.
 
-We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''. This is justified by the fact that the output of $\mathsf{VKGen}$ is independent of all previous outputs.
+We say that an unforgeability adversary is ``eager'' if  makes all its queries to the $\mathsf{VKGen}$ oracle at the beginning. Note that any non-eager adversary $\advA'$ can be perfectly simulated  by an eager adversary that makes ${Q_\mathsf{gen}}$ queries to $\mathsf{VKGen}$ and answers $\advA'$ queries to $\mathsf{VKGen}$ ``on demand''. This is justified by the fact that the output of $\mathsf{VKGen}$ is independent of all previous outputs.
 
 W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeability follows from the indistinguishability of the following games
 \begin{itemize}
@@ -25,7 +25,7 @@ W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeabil
 \item[$\sfGame_1$:] This is game exactly as $\sfGame_0$ with the following differences: 
     \begin{itemize}
     \item The Groth-Sahai CRS is sampled together with its discrete logarithms from the perfectly binding distribution. Note that the discrete logarithms of the CRS allow to open the Groth-Sahai commitments.
-    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$ and a random index $i^*$ is chosen from $\{1,\ldots, q_\mathsf{gen}\}$.
+    \item At the beginning, variables $\mathsf{err}_2$ and $\mathsf{err}_3$ are initialized to $0$ and a random index $i^*$ is chosen from $\{1,\ldots, Q_\mathsf{gen}\}$.
     \item On a query to $\mathsf{Corrupt}$ with argument $i$, if $i=i^*$ set $\mathsf{err_3}\gets 1$ and proceed as in $\sfGame_0$.
     \item Let $(m,R,\sigma)$ the purported forgery output by $\advA$. If $[vk]_2$, the opening of commitment $[\vecb{c}_{\mu,\nu}]_2$ from $\sigma$, is not equal to $[vk_{i^*}]_2$,  set $\mathsf{err}_3\gets 1$. If $[vk]_2\notin R$, then set $\mathsf{err}_2=1$.
     \end{itemize}
@@ -34,9 +34,9 @@ W.l.o.g.~we assume that $\advA$ is an eager adversary. Computational unforgeabil
 \end{itemize}
 Since in $\sfGame_1$ variables $\err_2$ and $\err_3$ are just dummy variables, the only difference with $\sfGame_0$ comes from the Groth-Sahai CRS distribution. It follows that there is an adversary $\advB_{1}$ against SXDH such that $|\Pr[\sfGame_0=1]-\Pr[\sfGame_1=1]|\leq \adv_{\mathrm{SXDH}}(\advB_{1})$.
 
-\begin{lemma} There exist adversaries $\advB_2$ and $\advB_3$ against the ${q_\mathsf{gen}}$-permutation pairing assumption and against the $\mathcal{Q}^\top_{{q_\mathsf{gen}}}\mbox{-}\kermdh$ assumption, respectively, such that
+\begin{lemma} There exist adversaries $\advB_2$ and $\advB_3$ against the ${Q_\mathsf{gen}}$-permutation pairing assumption and against the $\mathcal{Q}^\top_{{Q_\mathsf{gen}}}\mbox{-}\kermdh$ assumption, respectively, such that
 $$
-|\Pr[\sfGame_2=1]-\Pr[\sfGame_1=1]|\leq \adv_{{q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{{q_\mathsf{gen}}}\mbox{-}\skermdh}(\advB_3).
+|\Pr[\sfGame_2=1]-\Pr[\sfGame_1=1]|\leq \adv_{{Q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{{Q_\mathsf{gen}}}\mbox{-}\skermdh}(\advB_3).
 $$\label{lemma:fin}
 \end{lemma}
 \begin{proof}
@@ -50,16 +50,16 @@ Note that
 \end{align*}
 We proceed to bound this last probability constructing two adversaries against collision resistance of $g$ and preimage resistance of $h$. Let $1\leq \mu\leq n^{2/3}$ the index defined in $\pi_G$ and $\pi_S$.
 
-Consider an adversary $\advA_h$ that finds a second preimage of $h$ when $\mathcal{M}=Q_{q_\mathsf{gen}}$. $\advA_h$ receives as challenge $B\in Q_{q_\mathsf{gen}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\vecb{vk}_i):=(sk,([vk]_2,[\vecb{b}_i]_1,[\vecb{b}_i]_2,sk[\vecb{b}_i]_2))$, where $([\vecb{b}_i]_1,[\vecb{b}_i]_2)$ is the $i$ th element of $B$. When $\advA$ corrupts the $i$ th party, it returns $sk_i$ but it might also request $\vecb{a}_i$ to its oracle if we are proving security under the $(\ell,m)$-PPA assumption. When $\advA$ outputs and $\pi_{Q_m}$, $\advA_h$ extracts $A'=\{([\vecb{a}'_1]_1,[\vecb{a}'_1]_2),\ldots,([\vecb{a}'_m]_1,[\vecb{a}'_m]_2\}$ and returns $A'\cup \bar{A}_\mu$, where $\bar{A}_\mu:= B\setminus A_\mu$.
+Consider an adversary $\advA_h$ that finds a second preimage of $h$ when $\mathcal{M}=Q_{Q_\mathsf{gen}}$. $\advA_h$ receives as challenge $B\in Q_{Q_\mathsf{gen}}$ and honestly simulates $\sfGame_1$ with the following exception. On the $i$ th query of $\advA$ to $\mathsf{VKGen}$ picks $(sk,[vk])\gets\mathsf{BB}.\KG(1^\lambda)$ and sets $(sk_i,\tilde{vk}_i):=(sk,([vk]_2,[\vecb{b}_i]_1,[\vecb{b}_i]_2,sk[\vecb{b}_i]_2))$, where $([\vecb{b}_i]_1,[\vecb{b}_i]_2)$ is the $i$ th element of $B$. When $\advA$ corrupts the $i$ th party, it returns $sk_i$ but it might also request $\vecb{a}_i$ to its oracle if we are proving security under the $(\ell,m)$-PPA assumption. When $\advA$ outputs and $\pi_{Q_m}$, $\advA_h$ extracts $A'=\{([\vecb{a}'_1]_1,[\vecb{a}'_1]_2),\ldots,([\vecb{a}'_m]_1,[\vecb{a}'_m]_2\}$ and returns $A'\cup \bar{A}_\mu$, where $\bar{A}_\mu:= B\setminus A_\mu$.
 
-Consider another adversary $\advA_g$ against the collision resistance of $g$ when $\mathcal{M}=\GG^{q_\mathsf{gen}}$. $\advB$ receives as challenge $[\matr{B}]_1\in\GG^{2\times {q_\mathsf{gen}}}_1$ and $[\matr{B}]_2\in\GG^{2\times {q_\mathsf{gen}}}_2$ and honestly simulates $\sfGame_1$ embedding $[\matr{B}]_1,[\matr{B}]_2$ in the user keys in the same way as $\advA_h$. When $\advA$ outputs $[\vecb{c}]_2,\allowbreak\GS.\Com_{ck_2}([\kappa'_2]_2),\ldots,\allowbreak\GS.\Com_{ck_2}([\kappa'_m]_2)$, $\advA_g$ extracts $[vk],[\kappa'_2],\ldots,[\kappa'_m]$. W.l.o.g.~\allowbreak assume that $\matr{B}=\matr{A}_\mu\cat\bar{\matr{A}}_\mu$, where $\bar{\matr{A}}_\mu$ is some matrix whose rows are the discrete logs of the elements of $\bar{A}_\mu$. $\advA_g$ attempts to extract a permutation matrix $\matr{P}$ such that  $[\matr{A}']_1=[\matr{A}_\mu]_1\matr{P}$. If there is no such permutation matrix, then $\advA_g$ aborts. Else,  $\advA_g$ returns
+Consider another adversary $\advA_g$ against the collision resistance of $g$ when $\mathcal{M}=\GG^{Q_\mathsf{gen}}$. $\advB$ receives as challenge $[\matr{B}]_1\in\GG^{2\times {Q_\mathsf{gen}}}_1$ and $[\matr{B}]_2\in\GG^{2\times {Q_\mathsf{gen}}}_2$ and honestly simulates $\sfGame_1$ embedding $[\matr{B}]_1,[\matr{B}]_2$ in the user keys in the same way as $\advA_h$. When $\advA$ outputs $[\vecb{c}]_2,\allowbreak\GS.\Com_{ck_2}([\kappa'_2]_2),\ldots,\allowbreak\GS.\Com_{ck_2}([\kappa'_m]_2)$, $\advA_g$ extracts $[vk],[\kappa'_2],\ldots,[\kappa'_m]$. W.l.o.g.~\allowbreak assume that $\matr{B}=\matr{A}_\mu\cat\bar{\matr{A}}_\mu$, where $\bar{\matr{A}}_\mu$ is some matrix whose rows are the discrete logs of the elements of $\bar{A}_\mu$. $\advA_g$ attempts to extract a permutation matrix $\matr{P}$ such that  $[\matr{A}']_1=[\matr{A}_\mu]_1\matr{P}$. If there is no such permutation matrix, then $\advA_g$ aborts. Else,  $\advA_g$ returns
 $\pmatri{
 	{[\vecb{\kappa}_\mu]_2}\\
 	{[\vecb{0}]_2}},
 \pmatri{
 	{\matr{P}[\vecb{\kappa}']_2}\\
 	{[\vecb{0}]_2}}
-\in\GG^{q_\mathsf{gen}}_2$,
+\in\GG^{Q_\mathsf{gen}}_2$,
 where $[\kappa'_1]$ is the opening of $[\vecb{c}]$.
 
 Perfect soundness of proof $\pi_g$  (recall that the Groth-Sahai CRS is perfectly binding)  implies that
@@ -91,15 +91,15 @@ g_{[\matr{B}]_1}\pmatri{
 $$ 
 and $\advA_g$ is successful.
 
-As stated in Section \ref{sec:hash}, from $\advA_h$ we can construct an adversary $\advB_2$ that breaks the $q_\mathsf{gen}$-PPA assumption and from $\advA_g$ we can construct an adversary $\advB_3$ that breaks the $\mathcal{Q}^\top_m\mbox{-}\skermdh$ assumption, with the same advantages. We conclude that 
+As stated in Section \ref{sec:hash}, from $\advA_h$ we can construct an adversary $\advB_2$ that breaks the $Q_\mathsf{gen}$-PPA assumption and from $\advA_g$ we can construct an adversary $\advB_3$ that breaks the $\mathcal{Q}^\top_m\mbox{-}\skermdh$ assumption, with the same advantages. We conclude that 
 \begin{align*}
-\Pr[\sfGame_1=1|\err_2=1] \leq & \adv_{{q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)
+\Pr[\sfGame_1=1|\err_2=1] \leq & \adv_{{Q_\mathsf{gen}}\mbox{-}\mathrm{PPA}}(\advB_2)+\adv_{\mathcal{Q}^\top_{Q_\mathsf{gen}}\mbox{-}\skermdh}(\advB_3)
 \end{align*}
 \end{proof}
 
 \begin{lemma}
 $$
-\Pr[\sfGame_3=1]\geq \frac{1}{{q_\mathsf{gen}}}\Pr[\sfGame_2=1].
+\Pr[\sfGame_3=1]\geq \frac{1}{{Q_\mathsf{gen}}}\Pr[\sfGame_2=1].
 $$
 \end{lemma}
 \begin{proof}
@@ -110,39 +110,34 @@ It holds that
 &=\Pr[\sfGame_2=1|\mathsf{err}_3=0]\Pr[\mathsf{err}_3=0]\\
 &=\Pr[\mathsf{err}_3=0|\sfGame_2=1]\Pr[\sfGame_2=1].
 \end{align*}
-The probability that $\mathsf{err}_3=0$ given $\sfGame_2=1$ is the probability that the ${q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[vk]_2=[vk_{i^*}]_2$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i^*$ is uniformly distributed over the ${q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[vk]_2=[vk_{i^*}]_2$ is $1/({q_\mathsf{gen}}-{q_\mathsf{cor}})$, since $[vk]_2\in R$ (or otherwise $\sfGame_2$ would have aborted). Therefore
+The probability that $\mathsf{err}_3=0$ given $\sfGame_2=1$ is the probability that the ${Q_\mathsf{cor}}$ calls to $\mathsf{Corrupt}$ do not abort and that $[vk]_2=[vk_{i^*}]_2$. Since $\advA$ is an eager adversary, at the $i$ th call to $\mathsf{Corrupt}$ the index $i^*$ is uniformly distributed over the ${Q_\mathsf{gen}}-i+1$ indices of uncorrupted users. Similarly, when $\advA$ outputs its purported forgery, the probability that $[vk]_2=[vk_{i^*}]_2$ is $1/({Q_\mathsf{gen}}-{Q_\mathsf{cor}})$, since $[vk]_2\in R$ (or otherwise $\sfGame_2$ would have aborted). Therefore
 $$
-\Pr[\mathsf{err}_2=1|\sfGame_2=1]=\frac{{q_\mathsf{gen}}-1}{{q_\mathsf{gen}}}\frac{{q_\mathsf{gen}}-2}{{q_\mathsf{gen}}-1}\ldots\frac{{q_\mathsf{gen}}-{q_\mathsf{cor}}}{{q_\mathsf{gen}}-{q_\mathsf{cor}}+1}\frac{1}{{q_\mathsf{gen}}-{q_\mathsf{cor}}}=\frac{1}{{q_\mathsf{gen}}}.
+\Pr[\mathsf{err}_2=1|\sfGame_2=1]=\frac{{Q_\mathsf{gen}}-1}{{Q_\mathsf{gen}}}\frac{{Q_\mathsf{gen}}-2}{{Q_\mathsf{gen}}-1}\ldots\frac{{Q_\mathsf{gen}}-{Q_\mathsf{cor}}}{{Q_\mathsf{gen}}-{Q_\mathsf{cor}}+1}\frac{1}{{Q_\mathsf{gen}}-{Q_\mathsf{cor}}}=\frac{1}{{Q_\mathsf{gen}}}.
 $$ 
 \end{proof}
 
 \begin{lemma}  There exist adversaries $\advB_4$ and $\advB_5$ against the unforgeability of the one-time signature scheme and the weak unforgeability of the Boneh-Boyen signature scheme such that
 $$
-\Pr[\sfGame_3=1]\leq q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)
+\Pr[\sfGame_3=1]\leq Q_\mathsf{sig}\adv_{\mathsf{OT}}(\advB_4)+\adv_{\mathsf{BB}}(\advB_5)
 $$
 \end{lemma}
 \begin{proof}
 We construct adversaries $\advB_4$ and $\advB_5$ as follows.
 
-$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in\{1,\ldots, q_\mathsf{sig}\}$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-time verification key. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
+$\advB_4$ receives $vk_\mathsf{ot}^\dag$ and simulates $\sfGame_3$ honestly but with the following differences. It chooses a random $j^*\in\{1,\ldots, Q_\mathsf{sig}\}$ and answer the $j^*$ th query to $\mathsf{Sign}(i,m^\dag,R^\dag)$ honestly but computing $\sigma_\mathsf{ot}^\dag$ querying on $(m^\dag,R^\dag)$ its oracle and setting $vk_\mathsf{ot}^\dag$ as the corresponding one-time verification key. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},\ldots))$, $\advB_4$ outputs the corresponding one-time signature.
 
-$\advB_5$ receives $[vk]$ and simulates $\sfGame_3$ honestly but with the following differences. Let $i:=0$. $\advB_5$ computes $(sk_\mathsf{ot}^i,vk_\mathsf{ot}^i)\gets\mathsf{OT}.\mathsf{KeyGen}(gk)$, for each $1\leq i\leq q_\mathsf{sig}$ and queries its signing oracle on $(vk_{\mathsf{ot}}^1,\ldots,vk_\mathsf{ot}^{q_{\mathsf{sig}}})$ obtaining $[\sigma_1]_1,\ldots,[\sigma_{q_\mathsf{sig}}]_1$. On the $i^*$ th query of $\advA$ to the key generation algorithm, $\advB_5$ picks $\vecb{a}\gets\mathcal{Q}$ and outputs $\vecb{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$. When $\advA$ queries the signing oracle on input $(i^*,m,R)$, $\advB_5$ computes an honest signature but replaces $vk_\mathsf{ot}$ with $vk_\mathsf{ot}^i$ and $[\sigma]_1$ with $[\sigma_i]_2$, and then adds 1 to $i$. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\ldots))$, it extracts $[\sigma]_1$ from $[\vecb{d}]_1$ as its forgery for $vk_\mathsf{ot}$.
+$\advB_5$ receives $[vk]_2$ and simulates $\sfGame_3$ honestly but with the following differences. Let $i:=0$. $\advB_5$ computes $(sk_\mathsf{ot}^i,vk_\mathsf{ot}^i)\gets\mathsf{OT}.\mathsf{KeyGen}(gk)$, for each $1\leq i\leq Q_\mathsf{sig}$ and queries its signing oracle on $(vk_{\mathsf{ot}}^1,\ldots,vk_\mathsf{ot}^{Q_{\mathsf{sig}}})$ obtaining $[\sigma_1]_1,\ldots,[\sigma_{Q_\mathsf{sig}}]_1$. On the $i^*$ th query of $\advA$ to the key generation algorithm, $\advB_5$ picks $\vecb{a}\gets\mathcal{Q}$ and outputs $\tilde{vk}:=([vk]_2,[\vecb{a}]_1,[\vecb{a}]_2,\vecb{a}[vk]_2)$. When $\advA$ queries the signing oracle on input $(i^*,m,R)$, $\advB_5$ computes an honest signature but replaces $vk_\mathsf{ot}$ with $vk_\mathsf{ot}^i$ and $[\sigma]_1$ with $[\sigma_i]_2$, and then adds 1 to $i$. Finally, when $\advA$ outputs its purported forgery $(m,R,(\sigma_\mathsf{ot},vk_\mathsf{ot},[\vecb{c}]_2,[\vecb{d}]_1,\ldots))$, it extracts $[\sigma]_1$ from $[\vecb{d}]_1$ as its forgery for $vk_\mathsf{ot}$.
 
 Let $E$ be the event where $vk_\mathsf{ot}$, from the purported forgery of $\advA$, has been previously output by $\Sign$. We have that
 $$
 \Pr[\sfGame_3=1]\leq \Pr[\sfGame_3=1|E]+\Pr[\sfGame_3=1|\neg E].
 $$
-Since  $(m,R)$ has never been signed by a one-time signature and that, conditioned on $E$, the probability of $vk_\mathsf{ot}=vk_\mathsf{ot}^\dag$ is $1/q_\mathsf{sig}$, then
+Since  $(m,R)$ has never been signed by a one-time signature and that, conditioned on $E$, the probability of $vk_\mathsf{ot}=vk_\mathsf{ot}^\dag$ is $1/Q_\mathsf{sig}$, then
 \begin{align*}
-q_{\mathsf{sig}}\adv_\mathsf{OT}(\advB_4)\geq  \Pr[\sfGame_3=1|E]
+Q_{\mathsf{sig}}\adv_\mathsf{OT}(\advB_4)\geq  \Pr[\sfGame_3=1|E]
 \end{align*}
 Finally, if $\neg E$ holds, then $[\sigma]$ is a forgery for $vk_\mathsf{ot}$ and thus
 $$
 \adv_{\mathsf{BB}}(\advB_5)\geq \Pr[\sfGame_3=1|\neg E]$$
 \end{proof}
 \end{proof}
-
-\subsection{Getting rid off the CRS}
-Malavolta et al. showed how to get rid of the CRS distributing it among the users public keys \cite{AC:MalSch17}. To eliminate the CRS, which is a pair of Groth-Sahai commitment keys, each party appends its own Groth-Sahai commitment keys to its public key. The signer and the verifier combines all the commitment keys by simply adding them and, as long as at least one verification key was honestly generated, the combined commitment keys are correctly distributed. We can easily apply this approach to our construction. That is, each participant's verification is appended with $[\vecb{u}_{i,1}]_1,[\vecb{u}_{i,2}],[\vecb{v}_{i,1}]_2,[\vecb{v}_{i,2}]$, perfectly hiding Groth-Sahai commitments keys, and the Groth-Sahai proofs are computed using the following commitment keys: $[\vecb{u}_{i,j}]_1 :=\sum_{i=1}^n [\vecb{u}_{i,j}]_1,[\vecb{v}_{i,j}]_2 :=\sum_{i=1}^n [\vecb{v}_{i,j}]_2$, for $j=1,2$ and the ring of verification keys is $\{\vecb{vk}_1,\ldots,\vecb{vk}_n\}$.
-
-Nevertheless, as noted on Section \ref{sect:erasures}, this approach requires erasures. Indeed, when proving unforgeability one needs to move from perfectly hiding commitment keys to perfectly binding commitment keys. This implies that the reduction must change itself the verification keys of all the users to perfectly binding ones (as done by adversary $\advA_h$ on Lemma \ref{lemma:fin}). In the perfectly hiding setting commitment keys are chosen as $\vecb{u}_1 = \lambda\vecb{u}_2$ and $\vecb{u}_2 = (a,1)^\top$, for a random $\lambda$ and random $a$.  On the other hand, perfectly binding commitments keys have the only difference that $\vecb{u}_1 = (1,0)^\top+\lambda\vecb{u}_2$. An adversary that dynamically corrupts parties will eventually gets access to $\lambda$ and $a$, which clearly allows him to detect any change on the commitment keys. Hence, also this values must be erased after the verification key is computed.

@@ -1,13 +1,14 @@
 % !TEX root = ../main-ring-signature.tex
 
-Given $[\vecb{a}]_2 = \beta[\vecb{u}_1]_1 + r[\vecb{u}_2]_1$, we construct a Groth-Sahai proofs that $\beta x=y$ even without knowledge of $\beta$. Let $s,t,\delta\gets\Z_q$, these proofs  consists of two vectors
+We construct a Groth-Sahai proof that $\beta x=y$ and then show how can be re-randomized. Let $r,s,t,\delta\gets\Z_q$, these proofs  consists of two vectors
 \begin{align}
-[&\vecb{\psi}]_2=-t[\vecb{w}_1]_2-\delta[\vecb{w}_2]_2 &[\vecb{\omega}]_1 =s[\vecb{a}]_1+\delta[\vecb{u}_2]_1
+[&\vecb{\psi}]_2=r[\vecb{c}]_2-t[\vecb{w}_1]_2-\delta[\vecb{w}_2]_2 &[\vecb{\omega}]_1 =\beta s[\vecb{u}]_1+\delta[\vecb{u}_2]_1
 \label{eq:wi-proofs}
 \end{align}
-and commitments to $x$ and to $y$
+and commitments to $\beta,x$ and to $y$
 \begin{align*}
-&[\vecb{c}]_2= x[\vecb{w}_1]_2+s[\vecb{w}_2]_2, &[\vecb{d}]_1 =x[\vecb{a}_1]_2 + t[\vecb{u}_2]_2,
+&[\vecb{a}]_1 = \beta[\vecb{u}_1]_1 + r[\vecb{u}]_2, &[\vecb{c}]_2= x[\vecb{w}_1]_2+s[\vecb{w}_2]_2,\\
+&[\vecb{d}]_1 =\beta x[\vecb{u}_1]_2 + t[\vecb{u}_2]_2,
 \end{align*}
 satisfying the following verification equation
 \begin{equation}
